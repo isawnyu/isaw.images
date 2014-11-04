@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 """
-test template for nosetests
+nose tests for code in isaw.images/isaw/images/package.py
 """
 
 from io import BytesIO
