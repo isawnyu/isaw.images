@@ -18,9 +18,11 @@ We start with a filesystem structure for for managing each notional image as an 
 
  * original.[EXT] = the unchanged original image file, in whatever its original format, the only changes being: normalizing the filename to the string "original" and lower-casing the extension
 
+ * original.sha1 = file containing the sha1 hash for original.[EXT], to be used for fixity tests, etc.
+
  * original-exif.json = a dump of all the EXIF data found in the original image at time of import (if any), extracted with EXIFTool and dumped to disk in its default JSON output serialization.
 
- * original-exif.sha1 = file containing the sha1 hash for original.[EXT], to be used for fixity tests etc.
+ * original-exif.sha1 = file containing the sha1 hash for original-exif.json, to be used for fixity tests etc.
 
  * master.tif = a TIFF file created from original.[EXT] at time of import. The main purpose of this file is to provide a color-managed, digital-preservation-friendly version of the image, captured as early as possible in the lifecycle. The only changes made to the image in converting from original to TIFF are the format itself and the conversion from the original color profile (if any) to the [sRGB v4 Preference Profile](http://www.color.org/srgbprofiles.xalter#v4pref).
 
