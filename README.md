@@ -30,6 +30,17 @@ We start with a filesystem structure for for managing each notional image as an 
 
  * history.txt = a text file to which is appended a single-line notice about each major change to the IIP
 
+Dependencies
+-------------
+
+This software has been tested under Python 2.7.8 running on Mac OSX 10.9.5 in a virtual environment. The following packages are installed:
+
+ * nose 1.3.3, installed with pip
+ * wsgiref 0.1.2, auto-installed with nose
+ * a fork of head thread of Pillow, installed with pip -e from a local clone of https://github.com/paregorios/Pillow
+ * pyexiftool, installed with pip -e from a local clone of git://github.com/smarnach/pyexiftool.git because it's not in pypi
+ 
+
 Classes and Methods
 --------------------
 
