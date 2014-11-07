@@ -13,7 +13,7 @@ This package is intended to house various routines for managing ISAW's imagery c
 Filesystem Structure
 ---------------------
 
-We start with a filesystem structure for for managing each notional image as an "isaw image package" (IIP): a directory that contains multiple files related to a single notional image. This IIP directory has the following components:
+We start with a filesystem structure for managing each notional image as an "isaw image package" (IIP): a directory that contains multiple files related to a single notional image. This IIP directory has the following components:
 
  * manifest-sha1.txt = a text file containing filenames and corresponding sha1 hashes for each file in the IIP. Format must conform to that specified for the [BagIt](https://github.com/jkunze/bagitspec) manifest.
 
