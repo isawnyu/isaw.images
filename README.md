@@ -9,6 +9,7 @@ For rights and licensing, see LICENSE.txt file.
 
 This package is intended to house various routines for managing ISAW's imagery collections. 
 
+
 Filesystem Structure
 ---------------------
 
@@ -18,17 +19,20 @@ We start with a filesystem structure for for managing each notional image as an 
 
  * original.[EXT] = the unchanged original image file, in whatever its original format, the only changes being: normalizing the filename to the string "original" and lower-casing the extension
 
- * original.sha1 = file containing the sha1 hash for original.[EXT], to be used for fixity tests, etc.
-
  * original-exif.json = a dump of all the EXIF data found in the original image at time of import (if any), extracted with EXIFTool and dumped to disk in its default JSON output serialization.
 
- * original-exif.sha1 = file containing the sha1 hash for original-exif.json, to be used for fixity tests etc.
+ * master.tif = a TIFF file created from original.[EXT] at time of import. The main purpose of this file is to provide a color-managed, digital-preservation-friendly version of the image, captured as early as possible in the lifecycle. The only changes made to the image in converting from original to TIFF are the format itself, the standardization of header content, and the conversion from the original color profile (if any) to the [sRGB v4 Preference Profile](http://www.color.org/srgbprofiles.xalter#v4pref).
 
- * master.tif = a TIFF file created from original.[EXT] at time of import. The main purpose of this file is to provide a color-managed, digital-preservation-friendly version of the image, captured as early as possible in the lifecycle. The only changes made to the image in converting from original to TIFF are the format itself and the conversion from the original color profile (if any) to the [sRGB v4 Preference Profile](http://www.color.org/srgbprofiles.xalter#v4pref).
+ * preview.jpg = a JPEG file derived from master.tif at time of import, maximum length of long axis: 800 pixels at 72dpi. The main purpose of this file is to provide a ready image of legible but minimal size to facilitate rapid preview in application and reuse contexts. 
 
- * master.sha1 = file containing the sha1 hash for master.tif, to be used for fixity tests etc.
+ * thumbnail.jpg = a JPEG file derived from master.tif at time of import, maximum length of long axis: 200 pixels at 72dpi. The main purpose of this file is to provide a ready image of standard dimensions suitable for use in browse contexts, search results, contact sheets, and the like.
+
+ * metadata.xml = an XML file, conforming to the [ISAW Images Metadata Schema](./isaw/images/meta/meta-schema.rnc), that contains descriptive information about the image.
 
  * history.txt = a text file to which is appended a single-line notice about each major change to the IIP
+
+ * a series of files whose names follow the form [filename].sha1 = files containing the sha1 hash for each of the other files in the directory, to be used for fixity tests, etc.
+
 
 Dependencies
 -------------
