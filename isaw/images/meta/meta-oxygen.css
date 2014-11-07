@@ -1,0 +1,165 @@
+@media oxygen {
+image-info {
+    display:block;
+    margin: 0px;
+    padding: 0px;
+}
+status, license-release-verified, isaw-publish-cleared, change description, change date, change agent, note name, note date, note content {
+    display: block;
+    margin: 0px;
+    padding: 0px;
+}
+status:before, license-release-verified:before, isaw-publish-cleared:before, change description:before, change date:before, change agent:before, note name:before, note date:before, note content:before {
+    display:inline;
+    font-weight: bold;
+    margin: 0px;
+    padding: 0px;
+    content: concat(local-name(), ": ")
+}
+license-release-verified:before {
+    content: "license verified for release: "
+}
+isaw-publish-cleared:before {
+    content: "image and metadata cleared by ISAW for release: "
+}
+review-notes, image-files, info, geography, chronology, prosopography, typology, photographed-place, find-place, original-place, change-history, change, notes {
+    display:block;
+    foldable:true;
+    margin:10px;
+}
+review-notes:before, image-files:before, info:before,
+change-history:before {
+    display:block;
+    font-weight: bold;
+    background-color: #AAAAAA;
+    margin: 0px;
+    margin-top: 2em;
+    padding: 0px;
+}
+geography:before, chronology:before, prosopography:before, typology:before, notes:before, change:before {
+    display: block;
+    font-weight: bold;
+    border-bottom: thin solid black;
+    border-top: thin solid black;
+    margin: 0px;
+    margin-top: 1em;
+    padding: 0px;
+}
+photographed-place:before, find-place:before, original-place:before {
+    display: block;
+    font-weight: bold;
+    text-decoration: underline;
+    margin: 0px;
+    margin-top: 1em;
+    padding: 0px;
+}
+image-files:before {
+    content: "image files"
+}
+info:before {
+    content: concat(attr(type), " information");
+}
+review-notes:before, geography:before, chronology:before, prosopography:before, typology:before,
+photographed-place:before, find-place:before, original-place:before, change-history:before, change:before, notes:before, note:before {
+    content: local-name()
+}
+image {
+    display:block;
+    margin: 0px;
+    margin-top: 5px;
+    padding: 0px;
+    font-weight: normal;
+    content: attr(href);
+}
+image:before {
+    display:inline;
+    content:concat(attr(type), " image: ");
+    font-weight:bold;
+}
+image[type='thumbnail'] {
+    display:block;
+    content: attr(href, url);
+}
+image[type="thumbnail"]:before {
+    display:block;
+    font-weight: bold;
+    content: concat(attr(type), " image: ", attr(href));
+}
+title, original-file-name, origin, description, photographer, date-photographed, date-scanned, copyright-holder, copyright-date, copyright-contact, license, note, notes,
+photographed-place, find-place, original-place, feature, flickr-url, fda-handle, authority,
+ancient-name, modern-name, uri, institution, keyword {
+    display: block;
+    margin: 0px;
+    margin-top: 5px;
+    padding: 0px;
+}
+name, given-name, family-name {
+    display: block;
+    margin: 0px;
+    margin-top: 5px;
+    margin-left: 5em;
+    padding: 0px;
+}
+info[type="original"] title:before,
+info[type="original"] description:before,
+info[type="original"] flickr-url:before,
+info[type="original"] fda-handle:before,
+info[type="original"] authority:before,
+info[type="original"] photographer:before,
+info[type="original"] date-photographed:before,
+info[type="original"] date-scanned:before,
+info[type="original"] copyright-holder:before,
+info[type="original"] copyright-date:before,
+info[type="original"] copyright-contact:before,
+info[type="original"] license:before {
+    display: inline;
+    color: black;
+    font-style: normal;
+    font-weight: bold;
+    content: concat("original ", local-name(), ": ");
+}
+info[type="original"] photographer name:before, original-file-name:before,
+origin:before {
+    display: inline;
+    color: black;
+    font-style: normal;
+    font-weight: bold;
+    content: concat(local-name(), ": ");
+}
+info[type="isaw"] title:before,
+info[type="isaw"] description:before,
+info[type="isaw"] flickr-url:before,
+info[type="isaw"] fda-handle:before,
+info[type="isaw"] authority:before,
+info[type="isaw"] photographer:before,
+info[type="isaw"] date-photographed:before,
+info[type="isaw"] date-scanned:before,
+info[type="isaw"] copyright-holder:before,
+info[type="isaw"] copyright-date:before,
+info[type="isaw"] copyright-contact:before,
+info[type="isaw"] license:before,
+info[type="isaw"] photographer given-name:before,
+info[type="isaw"] photographer family-name:before,
+ancient-name:before,
+modern-name:before,
+uri:before,
+institution:before,
+keyword:before,
+change date:before,
+change agent:before,
+change description:before {
+    display: inline;
+    color: black;
+    font-style: normal;
+    font-weight: bold;
+    content: concat(local-name(), ": ");
+}
+note:before {
+    display: inline;
+    color: black;
+    font-style: normal;
+    font-weight: bold;
+    text-decoration: underline;
+    content: "note:";
+}
+}

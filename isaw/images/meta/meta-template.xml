@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/css" href="meta-oxygen.css" title="Oxygen Authoring CSS" alternate="no"?>
+<?oxygen RNGSchema="meta-schema.rnc" type="compact"?>
+<image-info>
+    <status>draft</status>
+    <license-release-verified>no</license-release-verified>
+    <isaw-publish-cleared>no</isaw-publish-cleared>
+    <review-notes></review-notes>
+    <image-files>
+        <image type="thumbnail" href=""></image>
+        <image type="review" href=""></image>
+        <image type="master" href=""></image>
+        <image type="original" href=""></image>
+    </image-files>
+    <info type="original">
+        <original-file-name></original-file-name>
+        <origin>undetermined</origin>
+        <title></title>
+        <flickr-url></flickr-url>
+        <fda-handle></fda-handle>
+        <photographer>
+            <name></name>
+        </photographer>
+        <authority></authority>
+        <description></description>
+        <date-photographed></date-photographed>
+        <date-scanned></date-scanned>
+        <copyright-holder></copyright-holder>
+        <copyright-date></copyright-date>
+        <copyright-contact></copyright-contact>
+        <license>undetermined</license>
+    </info>
+    <info type="isaw">
+        <title></title>
+        <flickr-url></flickr-url>
+        <fda-handle></fda-handle>
+        <photographer>
+            <given-name></given-name>
+            <family-name></family-name>
+        </photographer>
+        <authority></authority>
+        <description></description>
+        <date-photographed></date-photographed>
+        <date-scanned></date-scanned>
+        <copyright-holder></copyright-holder>
+        <copyright-date></copyright-date>
+        <copyright-contact></copyright-contact>
+        <license>undetermined</license>
+        <geography>
+            <photographed-place>
+                <ancient-name></ancient-name>
+                <modern-name></modern-name>
+                <uri></uri>
+                <institution></institution>
+            </photographed-place>
+            <find-place></find-place>
+            <original-place></original-place>
+        </geography>
+        <chronology> </chronology>
+        <prosopography> </prosopography>
+        <typology> </typology>
+        <notes> </notes>
+    </info>
+    <change-history> </change-history>
+</image-info>
