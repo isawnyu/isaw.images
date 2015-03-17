@@ -108,7 +108,7 @@ function startcopy {
 			histFileName="$sitedestdir/$code/history.txt"
 			touch $histFileName || exit
 			
-			current_time=$(date --utc +%FT%TZ)
+			current_time=$(date -u +%FT%TZ)
 			printf '%s\n\t%s\n' $current_time 'Uttara Chavan' >> $histFileName
 		fi		
 	done
@@ -137,6 +137,7 @@ src="$1"
 checksrc "$src"
 
 sitedestdir="dest"`echo "$src" | sed -e 's/^.*\(\/[^/]\)/\1/g'`
+echo "sitedestdir=$sitedestdir"
 startcopy "$src" "$sitedestdir"
 
 
