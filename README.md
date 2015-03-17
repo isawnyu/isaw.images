@@ -33,6 +33,8 @@ We start with a filesystem structure for managing each notional image as an "isa
 
  * a series of files whose names follow the form [filename].sha1 = files containing the sha1 hash for each of the other files in the directory, to be used for fixity tests, etc.
 
+ ![image showing structure of example directory without hash files](./documentation/file-structure.png)
+
 
 Dependencies
 -------------
