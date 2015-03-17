@@ -125,15 +125,14 @@ then
 	echo "parameter 1 not a directory" 1>&2
 	#exit 1
 fi
+src="$1"
 
 #if [ ! -d "$2" ];
 #then
 	#echo "parameter 2 not a directory" 1>&2
 	##exit 1
 #fi
-
-src="$1"
-dest="$2"
+#dest="$2"
 
 checksrc "$src"
 
