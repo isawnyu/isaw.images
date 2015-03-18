@@ -10,3 +10,7 @@ import logging
 from nose.tools import assert_equals, assert_not_equal, assert_in, assert_is
     
 logging.basicConfig(level=logging.DEBUG)
+
+def test_instantiate_proof_sheet():
+    s = proof_sheet.Proof()
+    
