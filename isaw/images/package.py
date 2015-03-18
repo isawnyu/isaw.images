@@ -4,6 +4,7 @@
 ISAW Images: Image Package
 """
 
+from arglogger import arglogger
 from io import BytesIO
 import datetime
 import exiftool
@@ -57,18 +58,6 @@ for k in IMAGETYPES.keys():
         except:
             r = ext
         EXTENSIONS[ext] = r
-
-
-def arglogger(func):
-    """
-    decorator to log argument calls to functions
-    """
-    @wraps(func)
-    def inner(*args, **kwargs): 
-        logger = logging.getLogger(func.__name__)
-        logger.debug("called with arguments: %s, %s" % (args, kwargs))
-        return func(*args, **kwargs) 
-    return inner    
 
 
 def hash_of_file(filepath):
