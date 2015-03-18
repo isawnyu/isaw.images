@@ -41,6 +41,8 @@ Dependencies
 
 This software has been tested under Python 2.7.8 running on Mac OSX 10.9.5 in a virtual environment. The following packages are installed:
 
+ * [dominate](https://github.com/Knio/dominate) 2.1.12, installed with pip
+
  * nose 1.3.3, installed with pip
  
  * wsgiref 0.1.2, auto-installed with nose

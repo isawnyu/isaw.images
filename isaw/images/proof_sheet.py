@@ -5,6 +5,8 @@ code to create an HTML proof sheet from a folder full of isaw.image packages
 """
 
 from arglogger import arglogger
+import dominate
+from dominate.tags import *
 import logging
 
 class Proof():
