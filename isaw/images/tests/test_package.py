@@ -109,5 +109,15 @@ def test_open_package():
     # try to open the package we just created
     pp = package.Package()
     pp.open(os.path.join(temp, 'test_package'))
+    # make sure the manifest file is as expected
+    manifest = pp.manifest
+    assert_equals(len(manifest),6)
+    assert_in('original.jpg', manifest[0])
+    assert_in('original.sha1', manifest[1])
+    assert_in('original-exif.json', manifest[2])
+    assert_in('original-exif.sha1', manifest[3])
+    assert_in('master.tif', manifest[4])
+    assert_in('master.sha1', manifest[5])
+
     #assert_equals(pp.manifest,'foooooooooo')
     shutil.rmtree(temp)
