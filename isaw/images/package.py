@@ -252,7 +252,7 @@ class Package:
         """
         open an existing image package at the targeted path
         """
-        result = True
+        logger = logging.getLogger(sys._getframe().f_code.co_name)        
         self.path = validate_path(path, 'directory')
         # verify original and master and metadata and checksums
         # open manifest
@@ -260,9 +260,12 @@ class Package:
         try:
             manifest_file = open(manifest_path, "r")
         except IOError:
-            result = False
-        # stopped here
-        return result
+            raise IOError("could not open package manifest file at {0}".format(manifest_path))
+        self.manifest = manifest_file.readlines()
+        manifest_file.close()
+        logger.debug('manifest file contents: ' + '\n'.join(self.manifest) + '\n')
+        print('manifest file contents: ' + '\n'.join(self.manifest) + '\n')
+        return self
 
 
     @arglogger

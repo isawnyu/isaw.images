@@ -9,6 +9,7 @@ import dominate
 from dominate.tags import *
 import logging
 import os
+import package
 import sys
 
 class Proof():
@@ -29,5 +30,17 @@ class Proof():
         """
         create the proof sheet
         """
-        self.doc = dominate.document(title='Proof Sheet: {0}'.format(path))
-        dirs = [os.path.join(path,o) for o in os.listdir(path) if os.path.isdir(os.path.join(path,o))]
+        #self.doc = dominate.document(title='Proof Sheet: {0}'.format(path))
+        # get a list of all the directories at path and determine which are image packages
+        directories = [o for o in os.listdir(path) if os.path.isdir(os.path.join(path,o))]
+        self.packages = []
+        self.other_directories = []
+        for d in directories:
+            p = package.Package()
+            try:
+                self.packages.append(p.open(os.path.join(path,d)))
+            except IOError:
+                self.other_directories.append(d)
+
+        
+

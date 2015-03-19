@@ -32,9 +32,14 @@ def test_generate_proof_sheet():
     original_path = os.path.join(current, 'data', 'turkey_road.jpg')
     for x in range(0, 3):
         p = package.Package(temp, 'test{0}'.format(x), original_path)
+    os.makedirs(os.path.join(temp, 'foobar'))
 
     # try to generate the proof sheet
     s = proof_sheet.Proof(temp)
+
+    # the proof sheet should find 3 valid packages and one other directory
+    assert_equals(len(s.packages), 3) 
+    assert_equals(len(s.other_directories), 1)
     
     # clean up the test/temp directory
     shutil.rmtree(temp)
