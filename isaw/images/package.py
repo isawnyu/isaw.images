@@ -280,7 +280,11 @@ class Package:
         self.manifest = manifest_file.readlines()
         manifest_file.close()
         logger.debug('manifest file contents: ' + ''.join(self.manifest) + '\n')
-        print('manifest file contents: ' + ''.join(self.manifest) + '\n')
+        # parse manifest into a list of components (without checksums)
+        self.components = []
+        for item in self.manifest:
+            checksum, filename = item.split()
+            self.components.append(filename)
         return self
 
 
@@ -297,5 +301,28 @@ class Package:
         """
         verify completeness and fixity of the current package
         """
-        pass
+        logger = logging.getLogger(sys._getframe().f_code.co_name)  
+        try:
+            path = self.path
+        except AttributeError:
+            logger.warning('Package.validate() was called before Package.path was set.')
+            return False
+        try:
+            manifest = self.manifest
+        except AttributeError:
+            logger.warning('Package.validate() was called before Package.manifest was set.')
+            return False
+        result = True
+        for item in manifest:
+            checksum, filename = item.split()
+            filepath = os.path.join(path, filename)
+            real_filepath = validate_path(filepath, 'file')
+            if checksum != hash_of_file(real_filepath):
+                logger.error("checksum verification FAILED on '{0}' in Package.validate()".format(real_filepath))
+                result = False
+
+        return result
+
+
+
 

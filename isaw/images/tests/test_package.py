@@ -119,3 +119,29 @@ def test_open_package():
     assert_in('master.tif', manifest[4])
     assert_in('master.sha1', manifest[5])
     shutil.rmtree(temp)
+
+def test_validate_package():
+    # create and open a package in the temp directory
+    current = os.path.dirname(os.path.abspath(__file__))
+    temp = os.path.join(current, 'temp')
+    os.makedirs(temp)
+    original_path = os.path.join(current, 'data', 'turkey_road.jpg')
+    p = package.Package(temp, 'test_package', original_path)    
+    del p
+    pp = package.Package()
+    # trying to validate before open should fail
+    assert_equals(pp.validate(), False)
+    # opening a properly created package should succeed
+    pp.open(os.path.join(temp, 'test_package'))
+    assert_equals(pp.validate(), True)
+    # clobber a file in that package; opening it should fail
+    del pp
+    f = open(os.path.join(temp, 'test_package', 'master.tif'), 'w')
+    f.write("foo")
+    f.close()
+    pp = package.Package()
+    pp.open(os.path.join(temp, 'test_package'))
+    assert_equals(pp.validate(), False)
+    del pp
+
+    shutil.rmtree(temp)

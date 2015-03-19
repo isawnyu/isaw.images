@@ -19,6 +19,7 @@ def test_instantiate_proof_sheet():
     verify that we can instantiate a proof_sheet.Proof object
     """
     s = proof_sheet.Proof()
+    del s
 
 def test_generate_proof_sheet():
     """
@@ -37,9 +38,19 @@ def test_generate_proof_sheet():
     # try to generate the proof sheet
     s = proof_sheet.Proof(temp)
 
-    # the proof sheet should find 3 valid packages and one other directory
+    # the proof sheet should find 3 packages and one other directory
     assert_equals(len(s.packages), 3) 
     assert_equals(len(s.other_directories), 1)
+
+    # get rid of that proof sheet, mess up a package, try again
+    del s
+    f = open(os.path.join(temp, 'test1', 'master.tif'), 'w')
+    f.write("foo")
+    f.close()
+    s = proof_sheet.Proof(temp)
+    assert_equals(len(s.packages), 2) 
+    assert_equals(len(s.other_directories), 2)
+    del s
     
     # clean up the test/temp directory
     shutil.rmtree(temp)

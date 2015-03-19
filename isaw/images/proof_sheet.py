@@ -38,9 +38,15 @@ class Proof():
         for d in directories:
             p = package.Package()
             try:
-                self.packages.append(p.open(os.path.join(path,d)))
+                p.open(os.path.join(path,d))
             except IOError:
                 self.other_directories.append(d)
+            else:
+                if p.validate():
+                    self.packages.append(p)
+                else:
+                    self.other_directories.append(p)
+
 
         
 
