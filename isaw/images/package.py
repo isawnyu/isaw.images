@@ -93,6 +93,21 @@ class Package:
         if path is not None and id is not None and original_path is not None:
             self.create(path, id, original_path)
 
+    @arglogger
+    def __del__(self):
+        try:
+            manifest_f = self.manifest_file
+        except AttributeError:
+            pass
+        else:
+            manifest_f.close()
+        try:
+            history_f = self.history_file
+        except AttributeError:            
+            pass
+        else:
+            history_f.close()
+
 
     @arglogger
     def __import_original__(self, original_path):
@@ -208,7 +223,7 @@ class Package:
             logger.debug("opened history file at {path}".format(path=history_path))
             history_f = self.history_file
         history_f.write(event)
-
+        history_f.flush()
 
 
     def __append_to_manifest__(self, filename, filehash=None):
@@ -231,6 +246,7 @@ class Package:
             logger.debug("opened manifest file at {path}".format(path=manifest_path))
             manifest_f = self.manifest_file
         manifest_f.write(line)
+        manifest_f.flush()
 
 
     @arglogger
@@ -263,8 +279,8 @@ class Package:
             raise IOError("could not open package manifest file at {0}".format(manifest_path))
         self.manifest = manifest_file.readlines()
         manifest_file.close()
-        logger.debug('manifest file contents: ' + '\n'.join(self.manifest) + '\n')
-        print('manifest file contents: ' + '\n'.join(self.manifest) + '\n')
+        logger.debug('manifest file contents: ' + ''.join(self.manifest) + '\n')
+        print('manifest file contents: ' + ''.join(self.manifest) + '\n')
         return self
 
 
