@@ -37,7 +37,7 @@ def test_create_package():
     assert_equals(os.path.isfile(os.path.join(temp, 'test_package', 'master.tif')), True)
     assert_equals(os.path.isfile(os.path.join(temp, 'test_package', 'master.sha1')), True)
 
-    # does manifest file contain expected content (TBD)
+    # does manifest file contain expected content
     try:
         manifest_file = open(manifest_path, "r")
     except IOError:
@@ -118,6 +118,4 @@ def test_open_package():
     assert_in('original-exif.sha1', manifest[3])
     assert_in('master.tif', manifest[4])
     assert_in('master.sha1', manifest[5])
-
-    #assert_equals(pp.manifest,'foooooooooo')
     shutil.rmtree(temp)
