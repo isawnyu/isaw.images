@@ -155,7 +155,7 @@ class Package:
         self.__append_to_manifest__('original-exif.sha1')
 
         # capture and store technical metadata using jhove (TBD)
-
+        logger.warning('no jhove metadata is created, nor is a descriptive metadata file created')
 
     @arglogger
     def __generate_master__(self):
@@ -285,6 +285,10 @@ class Package:
         for item in self.manifest:
             checksum, filename = item.split()
             self.components.append(filename)
+            if 'original.' in filename:
+                front, extension = os.path.splitext(filename)
+                if 'sha1' not in extension:
+                    self.original = filename
         return self
 
 
@@ -313,6 +317,16 @@ class Package:
             logger.warning('Package.validate() was called before Package.manifest was set.')
             return False
         result = True
+
+        # make sure the minimally required components are present and have been successfully opened
+        if 'master.tif' not in self.components:
+            result = False
+        if self.original not in self.components:
+            result = False
+        if 'original-exif.json' not in self.components:
+            result = False
+
+        # verify that checksums are valid for every item in the manifest
         for item in manifest:
             checksum, filename = item.split()
             filepath = os.path.join(path, filename)
