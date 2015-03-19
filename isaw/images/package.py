@@ -17,6 +17,7 @@ import os
 from PIL import Image, TiffImagePlugin
 import shutil
 import sys
+from validate_path import validate_path
 
 IMAGETYPES = {
     'BMP' : {'mimetype' : 'image/bmp', 'description' : 'Windows or OS/2 Bitmap', 'write' : True, 'extensions' : ['bmp',]},
@@ -101,11 +102,7 @@ class Package:
         logger = logging.getLogger(sys._getframe().f_code.co_name)
 
         # verify and copy the original image
-        real_path = os.path.realpath(original_path)
-        if not os.path.exists(real_path):
-            raise IOError("non-existant original source path '%s'" % real_path)
-        if not os.path.isfile(real_path):
-            raise IOError("item at original source path is not a file '%s'" % real_path)
+        real_path = validate_path(original_path, 'file')
         filename, extension = os.path.splitext(real_path)
         self.original = '.'.join(('original', EXTENSIONS[extension[1:].lower()]))
         dest_path = os.path.join(self.path, self.original) # fix up filename extensions
@@ -241,10 +238,8 @@ class Package:
         """
         create a new image package at the targeted path
         """
-        real_path = os.path.realpath(path)
-        if not os.path.isdir(real_path):
-            raise IOError("create package given non-existant working directory '%s'" % real_path)
-        os.makedirs(os.path.join(real_path, id, 'temp'))
+        real_path = validate_path(path, 'directory')
+        os.makedirs(os.path.join(real_path, id, 'temp')) # don't we need to destroy this?
         self.path = os.path.join(real_path, id)
         self.__append_event__('created package at {path}'.format(path=self.path))
         self.__import_original__(original_path)
@@ -257,8 +252,17 @@ class Package:
         """
         open an existing image package at the targeted path
         """
-        package_path = self.__validate_path__(path)
+        result = True
+        self.path = validate_path(path, 'directory')
         # verify original and master and metadata and checksums
+        # open manifest
+        manifest_path = validate_path(os.path.join(self.path, "manifest-sha1.txt"), 'file')
+        try:
+            manifest_file = open(manifest_path, "r")
+        except IOError:
+            result = False
+        # stopped here
+        return result
 
 
     @arglogger
@@ -266,7 +270,7 @@ class Package:
         """
         delete the current image package
         """
-        package_path = self.__validate_path__(path)
+        pass
 
 
     @arglogger
