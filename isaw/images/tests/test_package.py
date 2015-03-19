@@ -12,6 +12,7 @@ import os
 from PIL import Image
 from PIL.ImageCms import getOpenProfile, getProfileName
 import shutil
+import textwrap
 
 logging.basicConfig(level=logging.DEBUG)
 
@@ -37,6 +38,19 @@ def test_create_package():
     assert_equals(os.path.isfile(os.path.join(temp, 'test_package', 'master.sha1')), True)
 
     # does manifest file contain expected content (TBD)
+    try:
+        manifest_file = open(manifest_path, "r")
+    except IOError:
+        raise IOError("could not open package manifest file at {0}".format(manifest_path))
+    manifest = manifest_file.readlines()
+    assert_equals(len(manifest),6)
+    assert_in('original.jpg', manifest[0])
+    assert_in('original.sha1', manifest[1])
+    assert_in('original-exif.json', manifest[2])
+    assert_in('original-exif.sha1', manifest[3])
+    assert_in('master.tif', manifest[4])
+    assert_in('master.sha1', manifest[5])
+
 
     # are ICC color profiles handled as expected
     # i.e., assumed/forced to sRGBv2 in original and converted to sRGBv4 in master
@@ -85,4 +99,15 @@ def test_create_with_profile():
     assert_equals(getProfileName(getOpenProfile(BytesIO(im.info['icc_profile']))).strip(), 'sRGB v4 ICC preference perceptual intent beta')
     shutil.rmtree(temp)
 
-
+def test_open_package():
+    # create a package in the temp directory
+    current = os.path.dirname(os.path.abspath(__file__))
+    temp = os.path.join(current, 'temp')
+    os.makedirs(temp)
+    original_path = os.path.join(current, 'data', 'turkey_road.jpg')
+    p = package.Package(temp, 'test_package', original_path)    
+    # try to open the package we just created
+    pp = package.Package()
+    pp.open(os.path.join(temp, 'test_package'))
+    #assert_equals(pp.manifest,'foooooooooo')
+    shutil.rmtree(temp)
