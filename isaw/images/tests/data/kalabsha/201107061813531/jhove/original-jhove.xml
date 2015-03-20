@@ -1,0 +1,519 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jhove xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://hul.harvard.edu/ois/xml/ns/jhove" xsi:schemaLocation="http://hul.harvard.edu/ois/xml/ns/jhove http://hul.harvard.edu/ois/xml/xsd/jhove/1.5/jhove.xsd" name="Jhove" release="1.1" date="2008-02-21">
+ <date>2011-07-06T14:13:56-04:00</date>
+ <repInfo uri="/Volumes/Lacie2Big/images-work/rogerdigifoto/kalabsha/originals/isawi-201107061813531-original.jpg">
+  <reportingModule release="1.2" date="2007-02-13">JPEG-hul</reportingModule>
+  <lastModified>2011-07-06T14:13:48-04:00</lastModified>
+  <size>943709</size>
+  <format>JPEG</format>
+  <status>Well-Formed and valid</status>
+  <sigMatch>
+  <module>JPEG-hul</module>
+  </sigMatch>
+  <mimeType>image/jpeg</mimeType>
+  <properties>
+   <property>
+    <name>JPEGMetadata</name>
+    <values arity="List" type="Property">
+    <property>
+     <name>CompressionType</name>
+     <values arity="Scalar" type="String">
+      <value>Huffman coding, Baseline DCT</value>
+     </values>
+    </property>
+    <property>
+     <name>Images</name>
+     <values arity="List" type="Property">
+     <property>
+      <name>Number</name>
+      <values arity="Scalar" type="Integer">
+       <value>1</value>
+      </values>
+     </property>
+     <property>
+      <name>Image</name>
+      <values arity="List" type="Property">
+      <property>
+       <name>NisoImageMetadata</name>
+       <values arity="Scalar" type="NISOImageMetadata">
+        <value>
+      <mix:mix xmlns:mix="http://www.loc.gov/mix/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.loc.gov/mix/ http://www.loc.gov/mix/mix02.xsd">
+       <mix:BasicImageParameters>
+        <mix:Format>
+         <mix:MIMEType>image/jpeg</mix:MIMEType>
+         <mix:ByteOrder>big-endian</mix:ByteOrder>
+         <mix:Compression>
+          <mix:CompressionScheme>6</mix:CompressionScheme>
+         </mix:Compression>
+        </mix:Format>
+       </mix:BasicImageParameters>
+       <mix:ImageCreation>
+        <mix:ScanningSystemCapture>
+         <mix:ScanningSystemHardware>
+          <mix:ScannerManufacturer>SONY</mix:ScannerManufacturer>
+          <mix:ScannerModel>
+           <mix:ScannerModelName>DSC-H7</mix:ScannerModelName>
+          </mix:ScannerModel>
+         </mix:ScanningSystemHardware>
+        </mix:ScanningSystemCapture>
+       </mix:ImageCreation>
+        <mix:ImagingPerformanceAssessment>
+         <mix:SpatialMetrics>
+          <mix:ImageWidth>2836</mix:ImageWidth>
+          <mix:ImageLength>2071</mix:ImageLength>
+        </mix:SpatialMetrics>
+        <mix:Energetics>
+         <mix:BitsPerSample>8,8,8</mix:BitsPerSample>
+         <mix:SamplesPerPixel>3</mix:SamplesPerPixel>
+        </mix:Energetics>
+       </mix:ImagingPerformanceAssessment>
+      </mix:mix>
+        </value>
+       </values>
+      </property>
+      <property>
+       <name>PixelAspectRatio</name>
+       <values arity="List" type="Property">
+       <property>
+        <name>PixelAspectRatioX</name>
+        <values arity="Scalar" type="Integer">
+         <value>0</value>
+        </values>
+       </property>
+       <property>
+        <name>PixelAspectRatioY</name>
+        <values arity="Scalar" type="Integer">
+         <value>0</value>
+        </values>
+       </property>
+       </values>
+      </property>
+      <property>
+       <name>RestartInterval</name>
+       <values arity="Scalar" type="Integer">
+        <value>355</value>
+       </values>
+      </property>
+      <property>
+       <name>Scans</name>
+       <values arity="Scalar" type="Integer">
+        <value>1</value>
+       </values>
+      </property>
+      <property>
+       <name>QuantizationTables</name>
+       <values arity="List" type="Property">
+       <property>
+        <name>QuantizationTable</name>
+        <values arity="Array" type="Property">
+        <property>
+         <name>Precision</name>
+         <values arity="Scalar" type="String">
+          <value>8-bit</value>
+         </values>
+        </property>
+        <property>
+         <name>DestinationIdentifier</name>
+         <values arity="Scalar" type="Integer">
+          <value>0</value>
+         </values>
+        </property>
+        </values>
+       </property>
+       </values>
+      </property>
+      <property>
+       <name>Exif</name>
+       <values arity="List" type="Property">
+       <property>
+        <name>ExifVersion</name>
+        <values arity="Scalar" type="String">
+         <value>0221</value>
+        </values>
+       </property>
+       <property>
+        <name>FlashpixVersion</name>
+        <values arity="Scalar" type="String">
+         <value>0100</value>
+        </values>
+       </property>
+       <property>
+        <name>UserComment</name>
+        <values arity="Array" type="Property">
+        <property>
+         <name>IDCode</name>
+         <values arity="Scalar" type="String">
+          <value>ASCII</value>
+         </values>
+        </property>
+        <property>
+         <name>Value</name>
+         <values arity="Scalar" type="String">
+          <value>ASCII</value>
+         </values>
+        </property>
+        <property>
+         <name>RawValue</name>
+         <values arity="Array" type="Integer">
+          <value>65</value>
+          <value>83</value>
+          <value>67</value>
+          <value>73</value>
+          <value>73</value>
+          <value>0</value>
+          <value>0</value>
+          <value>0</value>
+          <value>59</value>
+          <value>32</value>
+          <value>111</value>
+          <value>114</value>
+          <value>105</value>
+          <value>103</value>
+          <value>105</value>
+          <value>110</value>
+          <value>97</value>
+          <value>108</value>
+          <value>32</value>
+          <value>102</value>
+          <value>105</value>
+          <value>108</value>
+          <value>101</value>
+          <value>32</value>
+          <value>110</value>
+          <value>97</value>
+          <value>109</value>
+          <value>101</value>
+          <value>32</value>
+          <value>119</value>
+          <value>97</value>
+          <value>115</value>
+          <value>58</value>
+          <value>32</value>
+          <value>68</value>
+          <value>83</value>
+          <value>67</value>
+          <value>48</value>
+          <value>57</value>
+          <value>54</value>
+          <value>57</value>
+          <value>54</value>
+          <value>95</value>
+          <value>49</value>
+          <value>46</value>
+          <value>74</value>
+          <value>80</value>
+          <value>71</value>
+         </values>
+        </property>
+        </values>
+       </property>
+       <property>
+        <name>DateTimeOriginal</name>
+        <values arity="Scalar" type="String">
+         <value>2009:02:27 09:17:48</value>
+        </values>
+       </property>
+       <property>
+        <name>DateTimeDigitized</name>
+        <values arity="Scalar" type="String">
+         <value>2009:02:27 09:17:48</value>
+        </values>
+       </property>
+       <property>
+        <name>ExposureTime</name>
+        <values arity="Scalar" type="String">
+         <value>0.001</value>
+        </values>
+       </property>
+       <property>
+        <name>FNumber</name>
+        <values arity="Scalar" type="String">
+         <value>5.6</value>
+        </values>
+       </property>
+       <property>
+        <name>ExposureProgram</name>
+        <values arity="Scalar" type="String">
+         <value>unidentified</value>
+        </values>
+       </property>
+       <property>
+        <name>ISOSpeedRatings</name>
+        <values arity="Array" type="Integer">
+         <value>100</value>
+        </values>
+       </property>
+       <property>
+        <name>ShutterSpeedValue</name>
+        <values arity="Scalar" type="String">
+         <value>10.644</value>
+        </values>
+       </property>
+       <property>
+        <name>ApertureValue</name>
+        <values arity="Scalar" type="String">
+         <value>4.971</value>
+        </values>
+       </property>
+       <property>
+        <name>ExposureBiasValue</name>
+        <values arity="Scalar" type="String">
+         <value>0</value>
+        </values>
+       </property>
+       <property>
+        <name>MaxApertureValue</name>
+        <values arity="Scalar" type="String">
+         <value>2.875</value>
+        </values>
+       </property>
+       <property>
+        <name>MeteringMode</name>
+        <values arity="Scalar" type="String">
+         <value>pattern</value>
+        </values>
+       </property>
+       <property>
+        <name>LightSource</name>
+        <values arity="Scalar" type="String">
+         <value>unknown</value>
+        </values>
+       </property>
+       <property>
+        <name>Flash</name>
+        <values arity="Scalar" type="String">
+         <value>did not fire, compulsory flash mode</value>
+        </values>
+       </property>
+       <property>
+        <name>FocalLength</name>
+        <values arity="Scalar" type="String">
+         <value>5.5</value>
+        </values>
+       </property>
+       <property>
+        <name>FocalPlaneResolutionUnit</name>
+        <values arity="Scalar" type="String">
+         <value>inches</value>
+        </values>
+       </property>
+       <property>
+        <name>FileSource</name>
+        <values arity="Scalar" type="String">
+         <value>DSC</value>
+        </values>
+       </property>
+       <property>
+        <name>SceneType</name>
+        <values arity="Scalar" type="String">
+         <value>directly photographed image</value>
+        </values>
+       </property>
+       <property>
+        <name>CustomRendered</name>
+        <values arity="Scalar" type="String">
+         <value>normal</value>
+        </values>
+       </property>
+       <property>
+        <name>ExposureMode</name>
+        <values arity="Scalar" type="String">
+         <value>auto</value>
+        </values>
+       </property>
+       <property>
+        <name>FocalLengthIn35mmFilm</name>
+        <values arity="Scalar" type="Integer">
+         <value>0</value>
+        </values>
+       </property>
+       <property>
+        <name>SceneCaptureType</name>
+        <values arity="Scalar" type="String">
+         <value>night</value>
+        </values>
+       </property>
+       <property>
+        <name>Saturation</name>
+        <values arity="Scalar" type="String">
+         <value>normal</value>
+        </values>
+       </property>
+       <property>
+        <name>Sharpness</name>
+        <values arity="Scalar" type="String">
+         <value>normal</value>
+        </values>
+       </property>
+       <property>
+        <name>SubjectDistanceRange</name>
+        <values arity="Scalar" type="String">
+         <value>unknown</value>
+        </values>
+       </property>
+       </values>
+      </property>
+      <property>
+       <name>XMP</name>
+       <values arity="Scalar" type="String">
+        <value>&lt;x:xmpmeta xmlns:x="adobe:ns:meta/" x:xmptk="Adobe XMP Core 4.2-c020 1.124078, Tue Sep 11 2007 23:21:40        "&gt;
+ &lt;rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"&gt;
+  &lt;rdf:Description rdf:about=""
+    xmlns:tiff="http://ns.adobe.com/tiff/1.0/"
+    xmlns:exif="http://ns.adobe.com/exif/1.0/"
+    xmlns:xap="http://ns.adobe.com/xap/1.0/"
+    xmlns:crs="http://ns.adobe.com/camera-raw-settings/1.0/"
+   tiff:Make="SONY"
+   tiff:Model="DSC-H7"
+   tiff:ImageWidth="2836"
+   tiff:ImageLength="2071"
+   tiff:XResolution="240/1"
+   tiff:YResolution="240/1"
+   tiff:ResolutionUnit="2"
+   exif:ExifVersion="0221"
+   exif:ExposureTime="1/1600"
+   exif:ShutterSpeedValue="10643856/1000000"
+   exif:FNumber="56/10"
+   exif:ApertureValue="4970854/1000000"
+   exif:ExposureProgram="0"
+   exif:DateTimeOriginal="2009-02-27T09:17:48-05:00"
+   exif:DateTimeDigitized="2009-02-27T09:17:48-05:00"
+   exif:ExposureBiasValue="0/10"
+   exif:MaxApertureValue="46/16"
+   exif:MeteringMode="5"
+   exif:LightSource="0"
+   exif:FocalLength="55/10"
+   exif:FileSource="3"
+   exif:SceneType="1"
+   exif:CustomRendered="0"
+   exif:ExposureMode="0"
+   exif:WhiteBalance="0"
+   exif:SceneCaptureType="3"
+   exif:Contrast="0"
+   exif:Saturation="0"
+   exif:Sharpness="0"
+   exif:PixelXDimension="2836"
+   exif:PixelYDimension="2071"
+   xap:ModifyDate="2011-03-24T16:08:38-04:00"
+   xap:CreateDate="2009-02-27T09:17:48-05:00"
+   crs:RawFileName="DSC09696.JPG"
+   crs:Version="5.0"
+   crs:WhiteBalance="As Shot"
+   crs:IncrementalTemperature="0"
+   crs:IncrementalTint="0"
+   crs:Exposure="+0.75"
+   crs:Shadows="0"
+   crs:Brightness="0"
+   crs:Contrast="+11"
+   crs:Saturation="0"
+   crs:Sharpness="0"
+   crs:LuminanceSmoothing="0"
+   crs:ColorNoiseReduction="0"
+   crs:ChromaticAberrationR="0"
+   crs:ChromaticAberrationB="0"
+   crs:VignetteAmount="0"
+   crs:ShadowTint="0"
+   crs:RedHue="0"
+   crs:RedSaturation="0"
+   crs:GreenHue="0"
+   crs:GreenSaturation="0"
+   crs:BlueHue="0"
+   crs:BlueSaturation="0"
+   crs:FillLight="0"
+   crs:Vibrance="+30"
+   crs:HighlightRecovery="0"
+   crs:Clarity="0"
+   crs:Defringe="0"
+   crs:HueAdjustmentRed="0"
+   crs:HueAdjustmentOrange="0"
+   crs:HueAdjustmentYellow="0"
+   crs:HueAdjustmentGreen="0"
+   crs:HueAdjustmentAqua="0"
+   crs:HueAdjustmentBlue="0"
+   crs:HueAdjustmentPurple="0"
+   crs:HueAdjustmentMagenta="0"
+   crs:SaturationAdjustmentRed="0"
+   crs:SaturationAdjustmentOrange="0"
+   crs:SaturationAdjustmentYellow="0"
+   crs:SaturationAdjustmentGreen="0"
+   crs:SaturationAdjustmentAqua="0"
+   crs:SaturationAdjustmentBlue="0"
+   crs:SaturationAdjustmentPurple="0"
+   crs:SaturationAdjustmentMagenta="0"
+   crs:LuminanceAdjustmentRed="0"
+   crs:LuminanceAdjustmentOrange="0"
+   crs:LuminanceAdjustmentYellow="0"
+   crs:LuminanceAdjustmentGreen="0"
+   crs:LuminanceAdjustmentAqua="0"
+   crs:LuminanceAdjustmentBlue="0"
+   crs:LuminanceAdjustmentPurple="0"
+   crs:LuminanceAdjustmentMagenta="0"
+   crs:SplitToningShadowHue="0"
+   crs:SplitToningShadowSaturation="0"
+   crs:SplitToningHighlightHue="0"
+   crs:SplitToningHighlightSaturation="0"
+   crs:SplitToningBalance="0"
+   crs:ParametricShadows="0"
+   crs:ParametricDarks="0"
+   crs:ParametricLights="0"
+   crs:ParametricHighlights="0"
+   crs:ParametricShadowSplit="25"
+   crs:ParametricMidtoneSplit="50"
+   crs:ParametricHighlightSplit="75"
+   crs:SharpenRadius="+1.0"
+   crs:SharpenDetail="25"
+   crs:SharpenEdgeMasking="0"
+   crs:PostCropVignetteAmount="0"
+   crs:ConvertToGrayscale="False"
+   crs:ToneCurveName="Linear"
+   crs:CameraProfile="Embedded"
+   crs:CameraProfileDigest="54650A341B5B5CCAE8442D0B43A92BCE"
+   crs:HasSettings="True"
+   crs:CropTop="0.122023"
+   crs:CropLeft="0.048689"
+   crs:CropBottom="0.953319"
+   crs:CropRight="0.925637"
+   crs:CropAngle="-0.71835"
+   crs:HasCrop="True"
+   crs:AlreadyApplied="True"&gt;
+   &lt;exif:ISOSpeedRatings&gt;
+    &lt;rdf:Seq&gt;
+     &lt;rdf:li&gt;100&lt;/rdf:li&gt;
+    &lt;/rdf:Seq&gt;
+   &lt;/exif:ISOSpeedRatings&gt;
+   &lt;exif:Flash
+    exif:Fired="False"
+    exif:Return="0"
+    exif:Mode="2"
+    exif:Function="False"
+    exif:RedEyeMode="False"/&gt;
+   &lt;crs:ToneCurve&gt;
+    &lt;rdf:Seq&gt;
+     &lt;rdf:li&gt;0, 0&lt;/rdf:li&gt;
+     &lt;rdf:li&gt;255, 255&lt;/rdf:li&gt;
+    &lt;/rdf:Seq&gt;
+   &lt;/crs:ToneCurve&gt;
+  &lt;/rdf:Description&gt;
+ &lt;/rdf:RDF&gt;
+&lt;/x:xmpmeta&gt;</value>
+       </values>
+      </property>
+      </values>
+     </property>
+     </values>
+    </property>
+    <property>
+     <name>ApplicationSegments</name>
+     <values arity="List" type="String">
+      <value>APP1</value>
+      <value>APP13</value>
+      <value>APP2</value>
+      <value>APP1</value>
+      <value>APP14</value>
+     </values>
+    </property>
+    </values>
+   </property>
+  </properties>
+ </repInfo>
+</jhove>

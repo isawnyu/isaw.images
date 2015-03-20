@@ -1,0 +1,233 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<rdf:RDF xmlns:rdf='http://www.w3.org/1999/02/22-rdf-syntax-ns#'>
+
+<rdf:Description rdf:about='/Volumes/Lacie2Big/images-work/rogerdigifoto/kalabsha/originals/isawi-201107061813531-original.jpg'
+  xmlns:et='http://ns.exiftool.ca/1.0/' et:toolkit='Image::ExifTool 7.76'
+  xmlns:ExifTool='http://ns.exiftool.ca/ExifTool/1.0/'
+  xmlns:File='http://ns.exiftool.ca/File/1.0/'
+  xmlns:IFD0='http://ns.exiftool.ca/EXIF/IFD0/1.0/'
+  xmlns:ExifIFD='http://ns.exiftool.ca/EXIF/ExifIFD/1.0/'
+  xmlns:Photoshop='http://ns.exiftool.ca/Photoshop/Photoshop/1.0/'
+  xmlns:ICC-header='http://ns.exiftool.ca/ICC_Profile/ICC-header/1.0/'
+  xmlns:ICC_Profile='http://ns.exiftool.ca/ICC_Profile/ICC_Profile/1.0/'
+  xmlns:XMP-x='http://ns.exiftool.ca/XMP/XMP-x/1.0/'
+  xmlns:XMP-tiff='http://ns.exiftool.ca/XMP/XMP-tiff/1.0/'
+  xmlns:XMP-exif='http://ns.exiftool.ca/XMP/XMP-exif/1.0/'
+  xmlns:XMP-xmp='http://ns.exiftool.ca/XMP/XMP-xmp/1.0/'
+  xmlns:XMP-crs='http://ns.exiftool.ca/XMP/XMP-crs/1.0/'
+  xmlns:Adobe='http://ns.exiftool.ca/APP14/Adobe/1.0/'
+  xmlns:Composite='http://ns.exiftool.ca/Composite/1.0/'>
+ <ExifTool:ExifToolVersion>7.76</ExifTool:ExifToolVersion>
+ <File:FileName>isawi-201107061813531-original.jpg</File:FileName>
+ <File:Directory>/Volumes/Lacie2Big/images-work/rogerdigifoto/kalabsha/originals</File:Directory>
+ <File:FileSize>922 kB</File:FileSize>
+ <File:FileModifyDate>2011:07:06 14:13:48-04:00</File:FileModifyDate>
+ <File:FileType>JPEG</File:FileType>
+ <File:MIMEType>image/jpeg</File:MIMEType>
+ <File:ExifByteOrder>Little-endian (Intel, II)</File:ExifByteOrder>
+ <File:ImageWidth>2836</File:ImageWidth>
+ <File:ImageHeight>2071</File:ImageHeight>
+ <File:EncodingProcess>Baseline DCT, Huffman coding</File:EncodingProcess>
+ <File:BitsPerSample>8</File:BitsPerSample>
+ <File:ColorComponents>3</File:ColorComponents>
+ <File:YCbCrSubSampling>YCbCr4:4:4 (1 1)</File:YCbCrSubSampling>
+ <IFD0:Make>SONY</IFD0:Make>
+ <IFD0:Model>DSC-H7</IFD0:Model>
+ <IFD0:XResolution>240</IFD0:XResolution>
+ <IFD0:YResolution>240</IFD0:YResolution>
+ <IFD0:ResolutionUnit>inches</IFD0:ResolutionUnit>
+ <IFD0:ModifyDate>2011:03:24 16:08:38</IFD0:ModifyDate>
+ <ExifIFD:ExposureTime>1/1600</ExifIFD:ExposureTime>
+ <ExifIFD:FNumber>5.6</ExifIFD:FNumber>
+ <ExifIFD:ExposureProgram>Not Defined</ExifIFD:ExposureProgram>
+ <ExifIFD:ISO>100</ExifIFD:ISO>
+ <ExifIFD:ExifVersion>0221</ExifIFD:ExifVersion>
+ <ExifIFD:DateTimeOriginal>2009:02:27 09:17:48</ExifIFD:DateTimeOriginal>
+ <ExifIFD:CreateDate>2009:02:27 09:17:48</ExifIFD:CreateDate>
+ <ExifIFD:ShutterSpeedValue>1/1600</ExifIFD:ShutterSpeedValue>
+ <ExifIFD:ApertureValue>5.6</ExifIFD:ApertureValue>
+ <ExifIFD:ExposureCompensation>0</ExifIFD:ExposureCompensation>
+ <ExifIFD:MaxApertureValue>2.7</ExifIFD:MaxApertureValue>
+ <ExifIFD:MeteringMode>Multi-segment</ExifIFD:MeteringMode>
+ <ExifIFD:LightSource>Unknown</ExifIFD:LightSource>
+ <ExifIFD:Flash>Off, Did not fire</ExifIFD:Flash>
+ <ExifIFD:FocalLength>5.5 mm</ExifIFD:FocalLength>
+ <ExifIFD:UserComment>; original file name was: DSC09696_1.JPG</ExifIFD:UserComment>
+ <ExifIFD:FileSource>Digital Camera</ExifIFD:FileSource>
+ <ExifIFD:SceneType>Directly photographed</ExifIFD:SceneType>
+ <ExifIFD:CustomRendered>Normal</ExifIFD:CustomRendered>
+ <ExifIFD:ExposureMode>Auto</ExifIFD:ExposureMode>
+ <ExifIFD:WhiteBalance>Auto</ExifIFD:WhiteBalance>
+ <ExifIFD:SceneCaptureType>Night</ExifIFD:SceneCaptureType>
+ <ExifIFD:Contrast>Normal</ExifIFD:Contrast>
+ <ExifIFD:Saturation>Normal</ExifIFD:Saturation>
+ <ExifIFD:Sharpness>Normal</ExifIFD:Sharpness>
+ <Photoshop:XResolution>240</Photoshop:XResolution>
+ <Photoshop:DisplayedUnitsX>inches</Photoshop:DisplayedUnitsX>
+ <Photoshop:YResolution>240</Photoshop:YResolution>
+ <Photoshop:DisplayedUnitsY>inches</Photoshop:DisplayedUnitsY>
+ <Photoshop:PhotoshopThumbnail>(Binary data 9650 bytes, use -b option to extract)</Photoshop:PhotoshopThumbnail>
+ <Photoshop:IPTCDigest>00000000000000000000000000000000</Photoshop:IPTCDigest>
+ <ICC-header:ProfileCMMType>ADBE</ICC-header:ProfileCMMType>
+ <ICC-header:ProfileVersion>2.1.0</ICC-header:ProfileVersion>
+ <ICC-header:ProfileClass>Display Device Profile</ICC-header:ProfileClass>
+ <ICC-header:ColorSpaceData>RGB </ICC-header:ColorSpaceData>
+ <ICC-header:ProfileConnectionSpace>XYZ </ICC-header:ProfileConnectionSpace>
+ <ICC-header:ProfileDateTime>1999:06:03 00:00:00</ICC-header:ProfileDateTime>
+ <ICC-header:ProfileFileSignature>acsp</ICC-header:ProfileFileSignature>
+ <ICC-header:PrimaryPlatform>Apple Computer Inc.</ICC-header:PrimaryPlatform>
+ <ICC-header:CMMFlags>Not Embedded, Independent</ICC-header:CMMFlags>
+ <ICC-header:DeviceManufacturer>none</ICC-header:DeviceManufacturer>
+ <ICC-header:DeviceModel></ICC-header:DeviceModel>
+ <ICC-header:DeviceAttributes>Reflective, Glossy, Positive, Color</ICC-header:DeviceAttributes>
+ <ICC-header:RenderingIntent>Perceptual</ICC-header:RenderingIntent>
+ <ICC-header:ConnectionSpaceIlluminant>0.9642 1 0.82491</ICC-header:ConnectionSpaceIlluminant>
+ <ICC-header:ProfileCreator>ADBE</ICC-header:ProfileCreator>
+ <ICC-header:ProfileID>0</ICC-header:ProfileID>
+ <ICC_Profile:ProfileCopyright>Copyright 1999 Adobe Systems Incorporated</ICC_Profile:ProfileCopyright>
+ <ICC_Profile:ProfileDescription>Adobe RGB (1998)</ICC_Profile:ProfileDescription>
+ <ICC_Profile:MediaWhitePoint>0.95045 1 1.08905</ICC_Profile:MediaWhitePoint>
+ <ICC_Profile:MediaBlackPoint>0 0 0</ICC_Profile:MediaBlackPoint>
+ <ICC_Profile:RedTRC>(Binary data 14 bytes, use -b option to extract)</ICC_Profile:RedTRC>
+ <ICC_Profile:GreenTRC>(Binary data 14 bytes, use -b option to extract)</ICC_Profile:GreenTRC>
+ <ICC_Profile:BlueTRC>(Binary data 14 bytes, use -b option to extract)</ICC_Profile:BlueTRC>
+ <ICC_Profile:RedMatrixColumn>0.60974 0.31111 0.01947</ICC_Profile:RedMatrixColumn>
+ <ICC_Profile:GreenMatrixColumn>0.20528 0.62567 0.06087</ICC_Profile:GreenMatrixColumn>
+ <ICC_Profile:BlueMatrixColumn>0.14919 0.06322 0.74457</ICC_Profile:BlueMatrixColumn>
+ <XMP-x:XMPToolkit>Adobe XMP Core 4.2-c020 1.124078, Tue Sep 11 2007 23:21:40        </XMP-x:XMPToolkit>
+ <XMP-tiff:Make>SONY</XMP-tiff:Make>
+ <XMP-tiff:Model>DSC-H7</XMP-tiff:Model>
+ <XMP-tiff:ImageWidth>2836</XMP-tiff:ImageWidth>
+ <XMP-tiff:ImageHeight>2071</XMP-tiff:ImageHeight>
+ <XMP-tiff:XResolution>240</XMP-tiff:XResolution>
+ <XMP-tiff:YResolution>240</XMP-tiff:YResolution>
+ <XMP-tiff:ResolutionUnit>inches</XMP-tiff:ResolutionUnit>
+ <XMP-exif:ExifVersion>0221</XMP-exif:ExifVersion>
+ <XMP-exif:ExposureTime>1/1600</XMP-exif:ExposureTime>
+ <XMP-exif:ShutterSpeedValue>1/1600</XMP-exif:ShutterSpeedValue>
+ <XMP-exif:FNumber>5.6</XMP-exif:FNumber>
+ <XMP-exif:ApertureValue>5.6</XMP-exif:ApertureValue>
+ <XMP-exif:ExposureProgram>Unknown (0)</XMP-exif:ExposureProgram>
+ <XMP-exif:DateTimeOriginal>2009:02:27 09:17:48-05:00</XMP-exif:DateTimeOriginal>
+ <XMP-exif:DateTimeDigitized>2009:02:27 09:17:48-05:00</XMP-exif:DateTimeDigitized>
+ <XMP-exif:ExposureCompensation>0</XMP-exif:ExposureCompensation>
+ <XMP-exif:MaxApertureValue>2.7</XMP-exif:MaxApertureValue>
+ <XMP-exif:MeteringMode>Multi-segment</XMP-exif:MeteringMode>
+ <XMP-exif:LightSource>Unknown</XMP-exif:LightSource>
+ <XMP-exif:FocalLength>5.5 mm</XMP-exif:FocalLength>
+ <XMP-exif:FileSource>Digital Camera</XMP-exif:FileSource>
+ <XMP-exif:SceneType>Directly photographed</XMP-exif:SceneType>
+ <XMP-exif:CustomRendered>Normal</XMP-exif:CustomRendered>
+ <XMP-exif:ExposureMode>Auto</XMP-exif:ExposureMode>
+ <XMP-exif:WhiteBalance>Auto</XMP-exif:WhiteBalance>
+ <XMP-exif:SceneCaptureType>Night</XMP-exif:SceneCaptureType>
+ <XMP-exif:Contrast>Normal</XMP-exif:Contrast>
+ <XMP-exif:Saturation>Normal</XMP-exif:Saturation>
+ <XMP-exif:Sharpness>Normal</XMP-exif:Sharpness>
+ <XMP-exif:ExifImageWidth>2836</XMP-exif:ExifImageWidth>
+ <XMP-exif:ExifImageHeight>2071</XMP-exif:ExifImageHeight>
+ <XMP-exif:ISO>100</XMP-exif:ISO>
+ <XMP-exif:FlashFired>False</XMP-exif:FlashFired>
+ <XMP-exif:FlashReturn>No return detection</XMP-exif:FlashReturn>
+ <XMP-exif:FlashMode>Off</XMP-exif:FlashMode>
+ <XMP-exif:FlashFunction>False</XMP-exif:FlashFunction>
+ <XMP-exif:FlashRedEyeMode>False</XMP-exif:FlashRedEyeMode>
+ <XMP-xmp:ModifyDate>2011:03:24 16:08:38-04:00</XMP-xmp:ModifyDate>
+ <XMP-xmp:CreateDate>2009:02:27 09:17:48-05:00</XMP-xmp:CreateDate>
+ <XMP-crs:RawFileName>DSC09696.JPG</XMP-crs:RawFileName>
+ <XMP-crs:Version>5.0</XMP-crs:Version>
+ <XMP-crs:WhiteBalance>As Shot</XMP-crs:WhiteBalance>
+ <XMP-crs:IncrementalTemperature>0</XMP-crs:IncrementalTemperature>
+ <XMP-crs:IncrementalTint>0</XMP-crs:IncrementalTint>
+ <XMP-crs:Exposure>+0.75</XMP-crs:Exposure>
+ <XMP-crs:Shadows>0</XMP-crs:Shadows>
+ <XMP-crs:Brightness>0</XMP-crs:Brightness>
+ <XMP-crs:Contrast>+11</XMP-crs:Contrast>
+ <XMP-crs:Saturation>0</XMP-crs:Saturation>
+ <XMP-crs:Sharpness>0</XMP-crs:Sharpness>
+ <XMP-crs:LuminanceSmoothing>0</XMP-crs:LuminanceSmoothing>
+ <XMP-crs:ColorNoiseReduction>0</XMP-crs:ColorNoiseReduction>
+ <XMP-crs:ChromaticAberrationR>0</XMP-crs:ChromaticAberrationR>
+ <XMP-crs:ChromaticAberrationB>0</XMP-crs:ChromaticAberrationB>
+ <XMP-crs:VignetteAmount>0</XMP-crs:VignetteAmount>
+ <XMP-crs:ShadowTint>0</XMP-crs:ShadowTint>
+ <XMP-crs:RedHue>0</XMP-crs:RedHue>
+ <XMP-crs:RedSaturation>0</XMP-crs:RedSaturation>
+ <XMP-crs:GreenHue>0</XMP-crs:GreenHue>
+ <XMP-crs:GreenSaturation>0</XMP-crs:GreenSaturation>
+ <XMP-crs:BlueHue>0</XMP-crs:BlueHue>
+ <XMP-crs:BlueSaturation>0</XMP-crs:BlueSaturation>
+ <XMP-crs:FillLight>0</XMP-crs:FillLight>
+ <XMP-crs:Vibrance>+30</XMP-crs:Vibrance>
+ <XMP-crs:HighlightRecovery>0</XMP-crs:HighlightRecovery>
+ <XMP-crs:Clarity>0</XMP-crs:Clarity>
+ <XMP-crs:Defringe>0</XMP-crs:Defringe>
+ <XMP-crs:HueAdjustmentRed>0</XMP-crs:HueAdjustmentRed>
+ <XMP-crs:HueAdjustmentOrange>0</XMP-crs:HueAdjustmentOrange>
+ <XMP-crs:HueAdjustmentYellow>0</XMP-crs:HueAdjustmentYellow>
+ <XMP-crs:HueAdjustmentGreen>0</XMP-crs:HueAdjustmentGreen>
+ <XMP-crs:HueAdjustmentAqua>0</XMP-crs:HueAdjustmentAqua>
+ <XMP-crs:HueAdjustmentBlue>0</XMP-crs:HueAdjustmentBlue>
+ <XMP-crs:HueAdjustmentPurple>0</XMP-crs:HueAdjustmentPurple>
+ <XMP-crs:HueAdjustmentMagenta>0</XMP-crs:HueAdjustmentMagenta>
+ <XMP-crs:SaturationAdjustmentRed>0</XMP-crs:SaturationAdjustmentRed>
+ <XMP-crs:SaturationAdjustmentOrange>0</XMP-crs:SaturationAdjustmentOrange>
+ <XMP-crs:SaturationAdjustmentYellow>0</XMP-crs:SaturationAdjustmentYellow>
+ <XMP-crs:SaturationAdjustmentGreen>0</XMP-crs:SaturationAdjustmentGreen>
+ <XMP-crs:SaturationAdjustmentAqua>0</XMP-crs:SaturationAdjustmentAqua>
+ <XMP-crs:SaturationAdjustmentBlue>0</XMP-crs:SaturationAdjustmentBlue>
+ <XMP-crs:SaturationAdjustmentPurple>0</XMP-crs:SaturationAdjustmentPurple>
+ <XMP-crs:SaturationAdjustmentMagenta>0</XMP-crs:SaturationAdjustmentMagenta>
+ <XMP-crs:LuminanceAdjustmentRed>0</XMP-crs:LuminanceAdjustmentRed>
+ <XMP-crs:LuminanceAdjustmentOrange>0</XMP-crs:LuminanceAdjustmentOrange>
+ <XMP-crs:LuminanceAdjustmentYellow>0</XMP-crs:LuminanceAdjustmentYellow>
+ <XMP-crs:LuminanceAdjustmentGreen>0</XMP-crs:LuminanceAdjustmentGreen>
+ <XMP-crs:LuminanceAdjustmentAqua>0</XMP-crs:LuminanceAdjustmentAqua>
+ <XMP-crs:LuminanceAdjustmentBlue>0</XMP-crs:LuminanceAdjustmentBlue>
+ <XMP-crs:LuminanceAdjustmentPurple>0</XMP-crs:LuminanceAdjustmentPurple>
+ <XMP-crs:LuminanceAdjustmentMagenta>0</XMP-crs:LuminanceAdjustmentMagenta>
+ <XMP-crs:SplitToningShadowHue>0</XMP-crs:SplitToningShadowHue>
+ <XMP-crs:SplitToningShadowSaturation>0</XMP-crs:SplitToningShadowSaturation>
+ <XMP-crs:SplitToningHighlightHue>0</XMP-crs:SplitToningHighlightHue>
+ <XMP-crs:SplitToningHighlightSaturation>0</XMP-crs:SplitToningHighlightSaturation>
+ <XMP-crs:SplitToningBalance>0</XMP-crs:SplitToningBalance>
+ <XMP-crs:ParametricShadows>0</XMP-crs:ParametricShadows>
+ <XMP-crs:ParametricDarks>0</XMP-crs:ParametricDarks>
+ <XMP-crs:ParametricLights>0</XMP-crs:ParametricLights>
+ <XMP-crs:ParametricHighlights>0</XMP-crs:ParametricHighlights>
+ <XMP-crs:ParametricShadowSplit>25</XMP-crs:ParametricShadowSplit>
+ <XMP-crs:ParametricMidtoneSplit>50</XMP-crs:ParametricMidtoneSplit>
+ <XMP-crs:ParametricHighlightSplit>75</XMP-crs:ParametricHighlightSplit>
+ <XMP-crs:SharpenRadius>+1.0</XMP-crs:SharpenRadius>
+ <XMP-crs:SharpenDetail>25</XMP-crs:SharpenDetail>
+ <XMP-crs:SharpenEdgeMasking>0</XMP-crs:SharpenEdgeMasking>
+ <XMP-crs:PostCropVignetteAmount>0</XMP-crs:PostCropVignetteAmount>
+ <XMP-crs:ConvertToGrayscale>False</XMP-crs:ConvertToGrayscale>
+ <XMP-crs:ToneCurveName>Linear</XMP-crs:ToneCurveName>
+ <XMP-crs:CameraProfile>Embedded</XMP-crs:CameraProfile>
+ <XMP-crs:CameraProfileDigest>54650A341B5B5CCAE8442D0B43A92BCE</XMP-crs:CameraProfileDigest>
+ <XMP-crs:HasSettings>True</XMP-crs:HasSettings>
+ <XMP-crs:CropTop>0.122023</XMP-crs:CropTop>
+ <XMP-crs:CropLeft>0.048689</XMP-crs:CropLeft>
+ <XMP-crs:CropBottom>0.953319</XMP-crs:CropBottom>
+ <XMP-crs:CropRight>0.925637</XMP-crs:CropRight>
+ <XMP-crs:CropAngle>-0.71835</XMP-crs:CropAngle>
+ <XMP-crs:HasCrop>True</XMP-crs:HasCrop>
+ <XMP-crs:AlreadyApplied>True</XMP-crs:AlreadyApplied>
+ <XMP-crs:ToneCurve>
+  <rdf:Bag>
+   <rdf:li>0, 0</rdf:li>
+   <rdf:li>255, 255</rdf:li>
+  </rdf:Bag>
+ </XMP-crs:ToneCurve>
+ <Adobe:DCTEncodeVersion>100</Adobe:DCTEncodeVersion>
+ <Adobe:APP14Flags0>[14]</Adobe:APP14Flags0>
+ <Adobe:APP14Flags1>(none)</Adobe:APP14Flags1>
+ <Adobe:ColorTransform>YCbCr</Adobe:ColorTransform>
+ <Composite:Aperture>5.6</Composite:Aperture>
+ <Composite:ImageSize>2836x2071</Composite:ImageSize>
+ <Composite:ShutterSpeed>1/1600</Composite:ShutterSpeed>
+ <Composite:FocalLength35efl>5.5 mm</Composite:FocalLength35efl>
+ <Composite:LightValue>15.6</Composite:LightValue>
+</rdf:Description>
+</rdf:RDF>
