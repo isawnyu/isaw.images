@@ -34,7 +34,7 @@ def test_create_package():
     assert_equals(os.path.isfile(os.path.join(temp, 'test_package', 'original-exif.json')), True)
     assert_equals(os.path.isfile(os.path.join(temp, 'test_package', 'master.tif')), True)
     assert_equals(os.path.isfile(os.path.join(temp, 'test_package', 'preview.jpg')), True)
-    assert_equals(os.path.isfile(os.path.join(temp, 'test_package', 'thumbnail.jpg')), True)
+    assert_equals(os.path.isfile(os.path.join(temp, 'test_package', 'thumb.jpg')), True)
     
     # make sure the open manifest dict is as expected
     filenames = sorted(p.manifest.get_all().keys())
