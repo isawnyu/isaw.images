@@ -38,22 +38,24 @@ def test_create_package():
     
     # make sure the open manifest dict is as expected
     filenames = sorted(p.manifest.get_all().keys())
-    assert_equals(len(filenames),5)
-    assert_in('master.tif', filenames[0])    
-    assert_in('original-exif.json', filenames[1])
-    assert_in('original.jpg', filenames[2])
-    assert_in('preview.jpg', filenames[3])
-    assert_in('thumbnail.jpg', filenames[4])
+    assert_equals(len(filenames),6)
+    assert_in('history.txt', filenames[0])
+    assert_in('master.tif', filenames[1])    
+    assert_in('original-exif.json', filenames[2])
+    assert_in('original.jpg', filenames[3])
+    assert_in('preview.jpg', filenames[4])
+    assert_in('thumb.jpg', filenames[5])
 
     # does manifest file contain expected content
     with open(manifest_path, 'r') as mf:
         manifest=mf.readlines()
-    assert_equals(len(manifest),5)
-    assert_in('master.tif', manifest[0])
-    assert_in('original-exif.json', manifest[1])
-    assert_in('original.jpg', manifest[2])
-    assert_in('preview.jpg', manifest[3])
-    assert_in('thumbnail.jpg', manifest[4])
+    assert_equals(len(manifest),6)
+    assert_in('history.txt', manifest[0])
+    assert_in('master.tif', manifest[1])
+    assert_in('original-exif.json', manifest[2])
+    assert_in('original.jpg', manifest[3])
+    assert_in('preview.jpg', manifest[4])
+    assert_in('thumb.jpg', manifest[5])
 
     # are ICC color profiles handled as expected
     # i.e., assumed/forced to sRGBv2 in original and converted to sRGBv4 in master
@@ -67,7 +69,7 @@ def test_create_package():
     im = Image.open(os.path.join(temp, 'test_package', 'preview.jpg'))
     assert_in('icc_profile', im.info.keys())
     assert_equals(getProfileName(getOpenProfile(BytesIO(im.info['icc_profile']))).strip(), 'sRGB v4 ICC preference perceptual intent beta')
-    im = Image.open(os.path.join(temp, 'test_package', 'thumbnail.jpg'))
+    im = Image.open(os.path.join(temp, 'test_package', 'thumb.jpg'))
     assert_in('icc_profile', im.info.keys())
     assert_equals(getProfileName(getOpenProfile(BytesIO(im.info['icc_profile']))).strip(), 'sRGB v4 ICC preference perceptual intent beta')
     p = None
@@ -119,12 +121,13 @@ def test_open_package():
     pp.open(os.path.join(temp, 'test_package'))
     # make sure the manifest file is as expected
     filenames = sorted(pp.manifest.get_all().keys())
-    assert_equals(len(filenames),5)
-    assert_in('master.tif', filenames[0])    
-    assert_in('original-exif.json', filenames[1])
-    assert_in('original.jpg', filenames[2])
-    assert_in('preview.jpg', filenames[3])
-    assert_in('thumbnail.jpg', filenames[4])
+    assert_equals(len(filenames),6)
+    assert_in('history.txt', filenames[0])    
+    assert_in('master.tif', filenames[1])    
+    assert_in('original-exif.json', filenames[2])
+    assert_in('original.jpg', filenames[3])
+    assert_in('preview.jpg', filenames[4])
+    assert_in('thumb.jpg', filenames[5])
     # did id get set?
     assert_equals(pp.id, 'test_package')
     shutil.rmtree(temp)
@@ -165,7 +168,7 @@ def test_make_derivatives():
     # make derivatives should just work if there aren't any yet (which there aren't)
     p.make_derivatives()
     assert_equals(p.thumbnail, True)
-    assert_equals(os.path.isfile(os.path.join(temp, 'test_package', 'thumbnail.jpg')), True)
+    assert_equals(os.path.isfile(os.path.join(temp, 'test_package', 'thumb.jpg')), True)
     assert_equals(p.preview, True)
     assert_equals(os.path.isfile(os.path.join(temp, 'test_package', 'preview.jpg')), True)
     # make derivatives should say 'no' if the derviative files already exist
@@ -181,7 +184,7 @@ def test_make_derivatives():
         raise IOError("could not open package manifest file at {0}".format(manifest_path))
     manifest = manifest_file.readlines()
     manifest_file.close()
-    assert_equals(len(manifest),5)
-    assert_in('preview.jpg', manifest[3])
-    assert_in('thumbnail.jpg', manifest[4])
+    assert_equals(len(manifest),6)
+    assert_in('preview.jpg', manifest[4])
+    assert_in('thumb.jpg', manifest[5])
     shutil.rmtree(temp)

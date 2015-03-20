@@ -101,13 +101,22 @@ class Proof():
                 h2("Image packages in this folder:")
                 for pkg in self.packages:
                     with div(id=pkg.id, cls='package'):
-                        p("{0} ({1}".format(pkg.metadata.data['title'], pkg.id), cls='caption')
+                        try:
+                            title=pkg.metadata.data['title']
+                        except AttributeError:
+                            title='[[no title]]'
+                        p("{0} ({1}".format(title, pkg.id), cls='caption')
                         pkg.make_derivatives(overwrite=False)
                         with div(cls='image'):
                             with a(href="./{0}/{1}".format(pkg.id, 'index.html')):
                                 img(src="./{0}/{1}".format(pkg.id, 'thumb.jpg'), alt="thumbnail of image with id='{0}'".format(pkg.id))
                         with div(cls='metadata'):
-                            p(pkg.metadata.data['description'])
+                            try:        
+                                meta=pkg.metadata
+                            except AttributeError:
+                                p('[[no description]]')
+                            else:
+                                p(pkg.metadata.data['description'])
             with div(id='stats'):
                 h2("Statistics and information:")
                 p("Proof sheet created at: {0}".format(datetime.datetime.now(pytz.timezone('US/Eastern')).isoformat()))

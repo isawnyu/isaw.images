@@ -194,12 +194,14 @@ class Package:
         # verify original and master and metadata and checksums
         # open manifest and metadata
         self.manifest = manifest.Manifest(os.path.join(self.path, 'manifest-sha1.txt'))
-        self.metadata = metadata.Metadata(os.path.join(self.path, 'meta.xml'))
+        try:
+            self.metadata = metadata.Metadata(os.path.join(self.path, 'meta.xml'))
+        except IOError:
+            logger.warning("no meta.xml file was found in the package for this image ({0})".format(self.id))
         # see if there is an original file yet
         filenames = self.manifest.get_all().keys()
         for filename in filenames:
             if 'original.' in filename:
-                logger.debug("whoop whoop")
                 front, extension = os.path.splitext(filename)
                 if 'sha1' not in extension:
                     self.original = filename
