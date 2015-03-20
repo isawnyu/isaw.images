@@ -45,8 +45,8 @@ class Proof():
             pkg = package.Package()
             try:
                 pkg.open(os.path.join(path,d))
-            except IOError:
-                logger.warning("failed trying to open directory '{0}' as a package".format(d))
+            except IOError, e:
+                logger.warning("failed trying to open directory '{0}' as a package: {1}".format(d, e))
                 self.other_directories.append(d)
             else:
                 if pkg.validate():
