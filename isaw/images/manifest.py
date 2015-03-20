@@ -5,6 +5,7 @@ manage manifest file
 """
 
 from arglogger import arglogger
+from filehashing import hash_of_file
 import logging
 import os
 from validate_path import validate_path
@@ -41,6 +42,21 @@ class Manifest():
             for filename in sorted(self.data.keys()):
                 line = "{0} {1}\n".format(self.data[filename], filename)
                 f.write(line)
+
+    @arglogger
+    def regenerate(self):
+        """
+        generates a bagit-style manifest for all files in the directory
+        warning: overwrites!
+        """
+        # assumes there is an existing manifest-sha1.txt file, either legacy
+        # or because this manifest object was instantiated with create=True
+        dirpath = os.path.dirname(self.path)
+        filenames = [o for o in os.listdir(dirpath) if os.path.isfile(os.path.join(dirpath,o))]
+        for filename in filenames:
+            if filename != 'manifest-sha1.txt':
+                filehash = hash_of_file(os.path.join(dirpath,filename))
+                self.set(filename, filehash)
 
     @arglogger
     def set(self, filename, filehash):
