@@ -34,6 +34,8 @@ class Proof():
         create the proof sheet
         """
 
+        logger = logging.getLogger(sys._getframe().f_code.co_name)
+
         real_path = validate_path(path, 'directory')
         # get a list of all the directories at path and determine which are image packages
         directories = [o for o in os.listdir(real_path) if os.path.isdir(os.path.join(real_path,o))]
@@ -44,11 +46,13 @@ class Proof():
             try:
                 pkg.open(os.path.join(path,d))
             except IOError:
+                logger.warning("failed trying to open directory '{0}' as a package".format(d))
                 self.other_directories.append(d)
             else:
                 if pkg.validate():
                     self.packages.append(pkg)
                 else:
+                    logger.warning("successfully opened directory '{0}' as a package, but it failed to validate".format(d))
                     self.other_directories.append(d)
 
         # create the HTML proof sheet
@@ -97,13 +101,13 @@ class Proof():
                 h2("Image packages in this folder:")
                 for pkg in self.packages:
                     with div(id=pkg.id, cls='package'):
-                        p(pkg.id, cls='caption')
+                        p("{0} ({1}".format(pkg.metadata.data['title'], pkg.id), cls='caption')
                         pkg.make_derivatives(overwrite=False)
                         with div(cls='image'):
-                            with a(href="./{0}/{1}".format(pkg.id, 'preview.jpg')):
-                                img(src="./{0}/{1}".format(pkg.id, 'thumbnail.jpg'), alt="thumbnail of image with id='{0}'".format(pkg.id))
+                            with a(href="./{0}/{1}".format(pkg.id, 'index.html')):
+                                img(src="./{0}/{1}".format(pkg.id, 'thumb.jpg'), alt="thumbnail of image with id='{0}'".format(pkg.id))
                         with div(cls='metadata'):
-                            p('foo')
+                            p(pkg.metadata.data['description'])
             with div(id='stats'):
                 h2("Statistics and information:")
                 p("Proof sheet created at: {0}".format(datetime.datetime.now(pytz.timezone('US/Eastern')).isoformat()))

@@ -44,17 +44,19 @@ class Manifest():
                 f.write(line)
 
     @arglogger
-    def regenerate(self):
+    def regenerate(self, create=False):
         """
         generates a bagit-style manifest for all files in the directory
         warning: overwrites!
         """
         # assumes there is an existing manifest-sha1.txt file, either legacy
         # or because this manifest object was instantiated with create=True
+        if create:
+            self.data={}
         dirpath = os.path.dirname(self.path)
         filenames = [o for o in os.listdir(dirpath) if os.path.isfile(os.path.join(dirpath,o))]
         for filename in filenames:
-            if filename != 'manifest-sha1.txt':
+            if filename not in ['manifest-sha1.txt', '.DS_Store']:
                 filehash = hash_of_file(os.path.join(dirpath,filename))
                 self.set(filename, filehash)
 

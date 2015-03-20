@@ -14,8 +14,10 @@ from PIL.ImageCms import getOpenProfile, getProfileName, profileToProfile, Image
 import json
 import logging
 import manifest
+import metadata
 import os
 from PIL import Image, TiffImagePlugin
+import pytz
 import shutil
 import sys
 from validate_path import validate_path
@@ -75,15 +77,6 @@ class Package:
     def __init__(self, path=None, id=None, original_path=None):
         if path is not None and id is not None and original_path is not None:
             self.create(path, id, original_path)
-
-    @arglogger
-    def __del__(self):
-        try:
-            history_f = self.history_file
-        except AttributeError:            
-            pass
-        else:
-            history_f.close()
 
 
     @arglogger
@@ -169,18 +162,10 @@ class Package:
         """
         logger = logging.getLogger(sys._getframe().f_code.co_name)
         logger.debug(msg)
-        event = '"{stamp}","{message}"\n'.format(stamp=datetime.datetime.now(), message=msg)
-        try:
-            history_f = self.history_file
-        except AttributeError:            
-            logger.debug("history file is not yet opened")
-            history_path = os.path.join(self.path, "history.txt")
-            self.history_file = open(history_path, "a")
-            logger.debug("opened history file at {path}".format(path=history_path))
-            history_f = self.history_file
-        history_f.write(event)
-        history_f.flush()
-
+        event = '{stamp} {message}\n'.format(stamp=datetime.datetime.now(pytz.timezone('US/Eastern')).isoformat(), message=msg)
+        with open(os.path.join(self.path, 'history.txt'), 'a') as hf:
+            hf.write(event)
+        self.manifest.set('history.txt', hash_of_file(os.path.join(self.path, "history.txt")))
 
     @arglogger
     def create(self, path, id, original_path):
@@ -207,8 +192,9 @@ class Package:
         self.path = validate_path(path, 'directory')
         self.id = os.path.basename(self.path)
         # verify original and master and metadata and checksums
-        # open manifest
+        # open manifest and metadata
         self.manifest = manifest.Manifest(os.path.join(self.path, 'manifest-sha1.txt'))
+        self.metadata = metadata.Metadata(os.path.join(self.path, 'meta.xml'))
         # see if there is an original file yet
         filenames = self.manifest.get_all().keys()
         for filename in filenames:
@@ -248,12 +234,12 @@ class Package:
         # make and save thumbnail image
         thumbnail_image = master_image.copy()
         thumbnail_image.thumbnail(SIZETHUMB)
-        thumbnail_path = os.path.join(self.path, 'thumbnail.jpg')
+        thumbnail_path = os.path.join(self.path, 'thumb.jpg')
         thumbnail_image.save(thumbnail_path, optimize=True, progressive=True, quality=80, icc_profile=master_image.info.get('icc_profile'))
         self.thumbnail = True
         thumbnail_hash = hash_of_file(thumbnail_path)
         self.__append_event__("wrote derivative 'thumbnail' jpeg file on {0}".format(thumbnail_path))
-        self.manifest.set('thumbnail.jpg', thumbnail_hash)
+        self.manifest.set('thumb.jpg', thumbnail_hash)
 
         return True
         
@@ -287,10 +273,10 @@ class Package:
         filenames=self.manifest.get_all().keys()
         if 'master.tif' not in filenames:
             result = False
+            logger.error("Validation failed to find 'master.tif' in manifest")
         if self.original not in filenames:
             result = False
-        if 'original-exif.json' not in filenames:
-            result = False
+            logger.error("Validation failed to find '{0}' in manifest".format(self.original))
 
         # verify that checksums are valid for every item in the manifest
         for filename in filenames:

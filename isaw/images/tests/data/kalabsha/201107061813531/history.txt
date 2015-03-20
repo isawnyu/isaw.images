@@ -1,2 +1,17 @@
-2015-03-18T20:26:36Z
-	Uttara Chavan
+2015-03-18T20:26:36Z converted from legacy folder format by Uttara Chavan
+2015-03-20T14:57:05.483281-04:00 wrote derivative 'preview' jpeg file on /Users/paregorios/Documents/files/I/isaw.images/isaw/images/tests/data/kalabsha/201107061813531/preview.jpg
+2015-03-20T14:57:05.742926-04:00 wrote derivative 'thumbnail' jpeg file on /Users/paregorios/Documents/files/I/isaw.images/isaw/images/tests/data/kalabsha/201107061813531/thumb.jpg
+2015-03-20T14:58:13.241610-04:00 wrote derivative 'preview' jpeg file on /Users/paregorios/Documents/files/I/isaw.images/isaw/images/tests/data/kalabsha/201107061813531/preview.jpg
+2015-03-20T14:58:13.499144-04:00 wrote derivative 'thumbnail' jpeg file on /Users/paregorios/Documents/files/I/isaw.images/isaw/images/tests/data/kalabsha/201107061813531/thumb.jpg
+2015-03-20T15:06:39.168248-04:00 wrote derivative 'preview' jpeg file on /Users/paregorios/Documents/files/I/isaw.images/isaw/images/tests/data/kalabsha/201107061813531/preview.jpg
+2015-03-20T15:06:39.425187-04:00 wrote derivative 'thumbnail' jpeg file on /Users/paregorios/Documents/files/I/isaw.images/isaw/images/tests/data/kalabsha/201107061813531/thumb.jpg
+2015-03-20T15:07:34.851647-04:00 wrote derivative 'preview' jpeg file on /Users/paregorios/Documents/files/I/isaw.images/isaw/images/tests/data/kalabsha/201107061813531/preview.jpg
+2015-03-20T15:07:35.114603-04:00 wrote derivative 'thumbnail' jpeg file on /Users/paregorios/Documents/files/I/isaw.images/isaw/images/tests/data/kalabsha/201107061813531/thumb.jpg
+2015-03-20T15:11:56.363037-04:00 wrote derivative 'preview' jpeg file on /Users/paregorios/Documents/files/I/isaw.images/isaw/images/tests/data/kalabsha/201107061813531/preview.jpg
+2015-03-20T15:11:56.617074-04:00 wrote derivative 'thumbnail' jpeg file on /Users/paregorios/Documents/files/I/isaw.images/isaw/images/tests/data/kalabsha/201107061813531/thumb.jpg
+2015-03-20T15:15:44.756712-04:00 wrote derivative 'preview' jpeg file on /Users/paregorios/Documents/files/I/isaw.images/isaw/images/tests/data/kalabsha/201107061813531/preview.jpg
+2015-03-20T15:15:45.012296-04:00 wrote derivative 'thumbnail' jpeg file on /Users/paregorios/Documents/files/I/isaw.images/isaw/images/tests/data/kalabsha/201107061813531/thumb.jpg
+2015-03-20T15:29:09.385841-04:00 wrote derivative 'preview' jpeg file on /Users/paregorios/Documents/files/I/isaw.images/isaw/images/tests/data/kalabsha/201107061813531/preview.jpg
+2015-03-20T15:29:09.647300-04:00 wrote derivative 'thumbnail' jpeg file on /Users/paregorios/Documents/files/I/isaw.images/isaw/images/tests/data/kalabsha/201107061813531/thumb.jpg
+2015-03-20T15:30:30.379439-04:00 wrote derivative 'preview' jpeg file on /Users/paregorios/Documents/files/I/isaw.images/isaw/images/tests/data/kalabsha/201107061813531/preview.jpg
+2015-03-20T15:30:30.636893-04:00 wrote derivative 'thumbnail' jpeg file on /Users/paregorios/Documents/files/I/isaw.images/isaw/images/tests/data/kalabsha/201107061813531/thumb.jpg
