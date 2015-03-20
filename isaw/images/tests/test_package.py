@@ -119,10 +119,12 @@ def test_open_package():
     pp.open(os.path.join(temp, 'test_package'))
     # make sure the manifest file is as expected
     filenames = sorted(pp.manifest.get_all().keys())
-    assert_equals(len(filenames),3)
+    assert_equals(len(filenames),5)
     assert_in('master.tif', filenames[0])    
     assert_in('original-exif.json', filenames[1])
     assert_in('original.jpg', filenames[2])
+    assert_in('preview.jpg', filenames[3])
+    assert_in('thumbnail.jpg', filenames[4])
     # did id get set?
     assert_equals(pp.id, 'test_package')
     shutil.rmtree(temp)
