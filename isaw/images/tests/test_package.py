@@ -37,7 +37,7 @@ def test_create_package():
     assert_equals(os.path.isfile(os.path.join(temp, 'test_package', 'thumbnail.jpg')), True)
     
     # make sure the open manifest dict is as expected
-    filenames = sorted(pp.manifest.get_all().keys())
+    filenames = sorted(p.manifest.get_all().keys())
     assert_equals(len(filenames),5)
     assert_in('master.tif', filenames[0])    
     assert_in('original-exif.json', filenames[1])
