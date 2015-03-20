@@ -216,7 +216,7 @@ class Package:
         self.__import_original__(original_path)
         self.master = self.__generate_master__()
         self.original = os.path.basename(original_path)
-
+        self.make_derivatives()
 
     @arglogger
     def open(self, path):
