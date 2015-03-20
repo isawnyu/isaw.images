@@ -33,14 +33,27 @@ def test_create_package():
     assert_equals(os.path.isfile(os.path.join(temp, 'test_package', 'original.jpg')), True)
     assert_equals(os.path.isfile(os.path.join(temp, 'test_package', 'original-exif.json')), True)
     assert_equals(os.path.isfile(os.path.join(temp, 'test_package', 'master.tif')), True)
+    assert_equals(os.path.isfile(os.path.join(temp, 'test_package', 'preview.jpg')), True)
+    assert_equals(os.path.isfile(os.path.join(temp, 'test_package', 'thumbnail.jpg')), True)
+    
+    # make sure the open manifest dict is as expected
+    filenames = sorted(pp.manifest.get_all().keys())
+    assert_equals(len(filenames),5)
+    assert_in('master.tif', filenames[0])    
+    assert_in('original-exif.json', filenames[1])
+    assert_in('original.jpg', filenames[2])
+    assert_in('preview.jpg', filenames[3])
+    assert_in('thumbnail.jpg', filenames[4])
 
     # does manifest file contain expected content
     with open(manifest_path, 'r') as mf:
         manifest=mf.readlines()
-    assert_equals(len(manifest),3)
+    assert_equals(len(manifest),5)
     assert_in('master.tif', manifest[0])
     assert_in('original-exif.json', manifest[1])
     assert_in('original.jpg', manifest[2])
+    assert_in('preview.jpg', manifest[3])
+    assert_in('thumbnail.jpg', manifest[4])
 
     # are ICC color profiles handled as expected
     # i.e., assumed/forced to sRGBv2 in original and converted to sRGBv4 in master
@@ -51,7 +64,12 @@ def test_create_package():
     im = Image.open(os.path.join(temp, 'test_package', 'master.tif'))
     assert_in('icc_profile', im.info.keys())
     assert_equals(getProfileName(getOpenProfile(BytesIO(im.info['icc_profile']))).strip(), 'sRGB v4 ICC preference perceptual intent beta')
-
+    im = Image.open(os.path.join(temp, 'test_package', 'preview.jpg'))
+    assert_in('icc_profile', im.info.keys())
+    assert_equals(getProfileName(getOpenProfile(BytesIO(im.info['icc_profile']))).strip(), 'sRGB v4 ICC preference perceptual intent beta')
+    im = Image.open(os.path.join(temp, 'test_package', 'thumbnail.jpg'))
+    assert_in('icc_profile', im.info.keys())
+    assert_equals(getProfileName(getOpenProfile(BytesIO(im.info['icc_profile']))).strip(), 'sRGB v4 ICC preference perceptual intent beta')
     p = None
     shutil.rmtree(temp)
 
