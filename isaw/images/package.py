@@ -4,6 +4,7 @@
 ISAW Images: Image Package
 """
 
+from arglogger import arglogger
 from io import BytesIO
 import datetime
 import exiftool
@@ -12,10 +13,12 @@ import hashlib
 from PIL.ImageCms import getOpenProfile, getProfileName, profileToProfile, ImageCmsProfile
 import json
 import logging
+import manifest
 import os
 from PIL import Image, TiffImagePlugin
 import shutil
 import sys
+from validate_path import validate_path
 
 IMAGETYPES = {
     'BMP' : {'mimetype' : 'image/bmp', 'description' : 'Windows or OS/2 Bitmap', 'write' : True, 'extensions' : ['bmp',]},
@@ -58,18 +61,8 @@ for k in IMAGETYPES.keys():
             r = ext
         EXTENSIONS[ext] = r
 
-
-def arglogger(func):
-    """
-    decorator to log argument calls to functions
-    """
-    @wraps(func)
-    def inner(*args, **kwargs): 
-        logger = logging.getLogger(func.__name__)
-        logger.debug("called with arguments: %s, %s" % (args, kwargs))
-        return func(*args, **kwargs) 
-    return inner    
-
+SIZEPREVIEW = 800, 600
+SIZETHUMB = 128, 128
 
 def hash_of_file(filepath):
     """
@@ -103,6 +96,15 @@ class Package:
         if path is not None and id is not None and original_path is not None:
             self.create(path, id, original_path)
 
+    @arglogger
+    def __del__(self):
+        try:
+            history_f = self.history_file
+        except AttributeError:            
+            pass
+        else:
+            history_f.close()
+
 
     @arglogger
     def __import_original__(self, original_path):
@@ -112,25 +114,14 @@ class Package:
         logger = logging.getLogger(sys._getframe().f_code.co_name)
 
         # verify and copy the original image
-        real_path = os.path.realpath(original_path)
-        if not os.path.exists(real_path):
-            raise IOError("non-existant original source path '%s'" % real_path)
-        if not os.path.isfile(real_path):
-            raise IOError("item at original source path is not a file '%s'" % real_path)
+        real_path = validate_path(original_path, 'file')
         filename, extension = os.path.splitext(real_path)
         self.original = '.'.join(('original', EXTENSIONS[extension[1:].lower()]))
         dest_path = os.path.join(self.path, self.original) # fix up filename extensions
         hash_orig = safe_copy(real_path, dest_path)
         self.__append_event__('copied original file from {src} to {dest}'.format(src=real_path, dest=dest_path))
-        self.__append_to_manifest__(self.original, hash_orig)
+        self.manifest.set(self.original, hash_orig)
 
-        # save the sha1 hash of the file for future fixity tests
-        hashfile_path = os.path.join(self.path, 'original.sha1')
-        with open(hashfile_path, 'wb') as hash_f:
-            hash_f.write(hash_orig)
-        self.__append_event__('wrote sha1 checksum for original file on {hash_path}'.format(hash_path=hashfile_path))
-        self.__append_to_manifest__('original.sha1')
-        
         # capture and store metadata from the original file using exiftool
         # note this could be optimized by re-using a single exiftool instance, but code refactoring will have to happen
         with exiftool.ExifTool() as et:
@@ -144,17 +135,11 @@ class Package:
                     logger.debug("exiftool found: {key}='{value}'".format(key=k, value=d[k]))
         hash_exif = hash_of_file(exif_path)
         self.__append_event__('wrote exif extracted from original file in json format on {exif_path}'.format(exif_path=exif_path))
-        self.__append_to_manifest__('original-exif.json', hash_exif)
-
-        # save the sha1 hash of the file for future fixity tests
-        hashfile_path = os.path.join(self.path, 'original-exif.sha1')
-        with open(hashfile_path, 'wb') as hash_f:
-            hash_f.write(hash_exif)
-        self.__append_event__('wrote sha1 checksum for exif file on {hash_path}'.format(hash_path=hashfile_path))
-        self.__append_to_manifest__('original-exif.sha1')
+        self.manifest.set('original-exif.json', hash_exif)
 
         # capture and store technical metadata using jhove (TBD)
-
+        # capture and store descriptive metadata in xml
+        logger.warning('no jhove metadata is created, nor is a descriptive metadata file created')
 
     @arglogger
     def __generate_master__(self):
@@ -195,15 +180,7 @@ class Package:
         hash_master = hash_of_file(master_path)
         logger.debug('saved converted master image to {master}'.format(master=master_path))
         self.__append_event__('created master.tif file at {master}'.format(master=master_path))
-        self.__append_to_manifest__('master.tif', hash_master)
-
-        # save the sha1 hash of the file for future fixity tests
-        hashfile_path = os.path.join(self.path, 'master.sha1')
-        with open(hashfile_path, 'wb') as hash_f:
-            hash_f.write(hash_master)
-        self.__append_event__('wrote sha1 checksum for master file on {hash_path}'.format(hash_path=hashfile_path))
-        self.__append_to_manifest__('master.sha1')
-
+        self.manifest.set('master.tif', hash_master)
 
 
     def __append_event__(self, msg):
@@ -222,29 +199,7 @@ class Package:
             logger.debug("opened history file at {path}".format(path=history_path))
             history_f = self.history_file
         history_f.write(event)
-
-
-
-    def __append_to_manifest__(self, filename, filehash=None):
-        """
-        add filename to bagit-style manifest
-        """
-        logger = logging.getLogger(sys._getframe().f_code.co_name)
-        if filehash is not None:
-            checksum = filehash
-        else:
-            checksum = hash_of_file(os.path.join(self.path, filename))
-        line = '{checksum} {filename}\n'.format(checksum=checksum, filename=filename)
-        logger.debug('appending to manifest: "{line}"'.format(line=line))
-        try:
-            manifest_f = self.manifest_file
-        except AttributeError:
-            logger.debug("manifest file is not yet opened")
-            manifest_path = os.path.join(self.path, "manifest-sha1.txt")
-            self.manifest_file = open(manifest_path, "a")
-            logger.debug("opened manifest file at {path}".format(path=manifest_path))
-            manifest_f = self.manifest_file
-        manifest_f.write(line)
+        history_f.flush()
 
 
     @arglogger
@@ -252,15 +207,15 @@ class Package:
         """
         create a new image package at the targeted path
         """
-        real_path = os.path.realpath(path)
-        if not os.path.isdir(real_path):
-            raise IOError("create package given non-existant working directory '%s'" % real_path)
-        os.makedirs(os.path.join(real_path, id, 'temp'))
+        real_path = validate_path(path, 'directory')
+        os.makedirs(os.path.join(real_path, id, 'temp')) # don't we need to destroy this when done? what is it for?
         self.path = os.path.join(real_path, id)
+        self.id = id
+        self.manifest = manifest.Manifest(os.path.join(self.path, 'manifest-sha1.txt'), create=True)
         self.__append_event__('created package at {path}'.format(path=self.path))
         self.__import_original__(original_path)
         self.master = self.__generate_master__()
-
+        self.original = os.path.basename(original_path)
 
 
     @arglogger
@@ -268,16 +223,66 @@ class Package:
         """
         open an existing image package at the targeted path
         """
-        package_path = self.__validate_path__(path)
+        logger = logging.getLogger(sys._getframe().f_code.co_name)        
+        self.path = validate_path(path, 'directory')
+        self.id = os.path.basename(self.path)
         # verify original and master and metadata and checksums
+        # open manifest
+        self.manifest = manifest.Manifest(os.path.join(self.path, 'manifest-sha1.txt'))
+        # see if there is an original file yet
+        filenames = self.manifest.get_all().keys()
+        for filename in filenames:
+            if 'original.' in filename:
+                logger.debug("whoop whoop")
+                front, extension = os.path.splitext(filename)
+                if 'sha1' not in extension:
+                    self.original = filename
 
 
+    @arglogger
+    def make_derivatives(self, overwrite=False):
+        """
+        create derivative images
+        """
+        logger = logging.getLogger(sys._getframe().f_code.co_name)   
+        try:
+            thumbnail = self.thumbnail
+        except AttributeError:
+            pass
+        else:
+            if not overwrite:
+                return False
+        master_path = os.path.join(self.path, 'master.tif')
+        master_image = Image.open(master_path)
+
+        # make and save preview image
+        preview_image = master_image.copy()
+        preview_image.thumbnail(SIZEPREVIEW)
+        preview_path = os.path.join(self.path, 'preview.jpg')
+        preview_image.save(preview_path, optimize=True, progressive=True, quality=80, icc_profile=master_image.info.get('icc_profile'))
+        self.preview = True
+        preview_hash = hash_of_file(preview_path)
+        self.__append_event__("wrote derivative 'preview' jpeg file on {0}".format(preview_path))
+        self.manifest.set('preview.jpg', preview_hash)
+
+        # make and save thumbnail image
+        thumbnail_image = master_image.copy()
+        thumbnail_image.thumbnail(SIZETHUMB)
+        thumbnail_path = os.path.join(self.path, 'thumbnail.jpg')
+        thumbnail_image.save(thumbnail_path, optimize=True, progressive=True, quality=80, icc_profile=master_image.info.get('icc_profile'))
+        self.thumbnail = True
+        thumbnail_hash = hash_of_file(thumbnail_path)
+        self.__append_event__("wrote derivative 'thumbnail' jpeg file on {0}".format(thumbnail_path))
+        self.manifest.set('thumbnail.jpg', thumbnail_hash)
+
+        return True
+        
     @arglogger
     def delete(self):
         """
         delete the current image package
         """
-        package_path = self.__validate_path__(path)
+        pass
 
 
     @arglogger
@@ -285,5 +290,39 @@ class Package:
         """
         verify completeness and fixity of the current package
         """
-        pass
+        logger = logging.getLogger(sys._getframe().f_code.co_name)  
+        try:
+            path = self.path
+        except AttributeError:
+            logger.warning('Package.validate() was called before Package.path was set.')
+            return False
+        try:
+            manifest = self.manifest
+        except AttributeError:
+            logger.warning('Package.validate() was called before Package.manifest was set.')
+            return False
+        result = True
+
+        # make sure the minimally required components are present and have been successfully opened
+        filenames=self.manifest.get_all().keys()
+        if 'master.tif' not in filenames:
+            result = False
+        if self.original not in filenames:
+            result = False
+        if 'original-exif.json' not in filenames:
+            result = False
+
+        # verify that checksums are valid for every item in the manifest
+        for filename in filenames:
+            checksum = self.manifest.get(filename)
+            filepath = os.path.join(path, filename)
+            real_filepath = validate_path(filepath, 'file')
+            if checksum != hash_of_file(real_filepath):
+                logger.error("checksum verification FAILED on '{0}' in Package.validate()".format(real_filepath))
+                result = False
+
+        return result
+
+
+
 

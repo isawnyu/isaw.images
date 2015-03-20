@@ -3,7 +3,7 @@ isaw.images
 
 By Tom Elliott (tom.elliott@nyu.edu)
 
-Copyright 2014 New York University.
+Copyright 2014, 2015 New York University.
 
 For rights and licensing, see LICENSE.txt file.
 
@@ -31,24 +31,25 @@ We start with a filesystem structure for managing each notional image as an "isa
 
  * history.txt = a text file to which is appended a single-line notice about each major change to the IIP
 
- * a series of files whose names follow the form [filename].sha1 = files containing the sha1 hash for each of the other files in the directory, to be used for fixity tests, etc.
-
- ![image showing structure of example directory without hash files](./documentation/file-structure.png)
+ ![image showing structure of example directory](./documentation/file-structure.png)
 
 
 Dependencies
 -------------
 
-This software has been tested under Python 2.7.8 running on Mac OSX 10.9.5 in a virtual environment. The following packages are installed:
+This software has been tested under Python 2.7.8 running on Mac OSX 10.9.5 in a virtual environment and also on Ubuntu Linux 14.04.2 LTS. Note that accompanying shell scripts only work on Linux. The following packages are installed:
+
+ * [dominate](https://github.com/Knio/dominate) 2.1.12, installed with pip
 
  * nose 1.3.3, installed with pip
  
  * wsgiref 0.1.2, auto-installed with nose
  
- * a fork of head thread of Pillow, installed with pip -e from a local clone of https://github.com/paregorios/Pillow
+ * a fork of head thread of Pillow, installed with pip -e from a local clone of https://github.com/paregorios/Pillow (latest release of Pillow seems to be working ok as of 20 March 2014)
  
  * pyexiftool, installed with pip -e from a local clone of git://github.com/smarnach/pyexiftool.git because it's not in pypi
 
+ * [pytz](http://pytz.sourceforge.net/) 2014.10, installed with pip
 
 Classes and Methods
 --------------------
