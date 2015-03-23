@@ -21,12 +21,28 @@ function checksrc {
 }
 
 function createSHA1 {
-	srcfile="$1"
-	destdir="$2"
+	destdir="$1"
+	for filepath in `find "$destdir" -maxdepth 1 -mindepth 1| sort`; do
+		if [[ "$filepath" != *"manifest"* ]]; then
+			echo "$filepath"
+			sha=`sha1sum "$filepath"`
+			echo $sha >> "$destdir/manifest.txt"
+		fi		
+	done
+}
 
-	filename="h.txt"
-	sha=`sha1sum "$srcfile"`
-	echo $sha > "$destdir-jhove-destdirsha1.txt"
+function createDirList {
+	rootDir="$1"
+	HTTP="/"
+	OUTPUT="$rootDir/Index.html" 
+
+	i=0
+	echo "<UL>" > $OUTPUT
+	for filepath in `find "$rootDir" -maxdepth 1 -mindepth 1 -type d| sort`; do
+		path=`basename "$filepath"`
+		echo "  <LI><a href="$path">$path</a></LI>" >> $OUTPUT
+	done
+	echo "</UL>" >> $OUTPUT
 }
 
 function startcopy {
@@ -34,6 +50,7 @@ function startcopy {
 	sitedestdir="$2"
 
 	seedfolder="$1/$seed/*"
+
 	for file in $seedfolder
 	do
 		if [ -f "$file" ]
@@ -44,8 +61,8 @@ function startcopy {
 
 			mkdir -p "$sitedestdir/$code"
 			`chmod "$perm" "$sitedestdir/$code"`
-			mkdir -p "$sitedestdir/$code/jhove"
-			`chmod "$perm" "$sitedestdir/$code/jhove"`
+
+			touch "$sitedestdir/$code/manifest.txt" || exit
 
 			for folder in ${files[@]}
 			do
@@ -71,7 +88,6 @@ function startcopy {
 
 				dest="$sitedestdir/$code/$suffix.$ext"
 				declare -a srcarr=("$srcdir/$folder/$filepatern")
-#				src="$srcdir/$folder/$filepatern"
 
 				for src in ${srcarr[@]}
 				do
@@ -90,15 +106,14 @@ function startcopy {
 									original_dest="${f##*original}"
 									echo "$original_dest"
 									dest="$sitedestdir/$code/$suffix$original_dest"
-									if [[ "$f" == *"jhove"* ]]; then
-										echo "contains";
-										dest="$sitedestdir/$code/jhove/$suffix$original_dest"
-										createSHA1 "$f" "$sitedestdir/$code/jhove/$suffix"
-									fi
-#									dest="$sitedestdir/$code/$suffix$original_dest"
+									#if [[ "$f" == *"jhove"* ]]; then
+										#echo "contains";
+
+									#fi
 								fi
 								`cp "$f" "$dest"`
 								echo "$dest"
+
 							fi
 						done
 					fi
@@ -108,8 +123,10 @@ function startcopy {
 			histFileName="$sitedestdir/$code/history.txt"
 			touch $histFileName || exit
 			
-			current_time=$(date -u +%FT%TZ)
+			current_time=$(date --utc +%FT%TZ)
 			printf '%s\n\t%s\n' $current_time 'Uttara Chavan' >> $histFileName
+
+			createSHA1 "$sitedestdir/$code"
 		fi		
 	done
 }
@@ -123,21 +140,14 @@ fi
 if [ ! -d "$1" ];
 then
 	echo "parameter 1 not a directory" 1>&2
-	#exit 1
 fi
-src="$1"
 
-#if [ ! -d "$2" ];
-#then
-	#echo "parameter 2 not a directory" 1>&2
-	##exit 1
-#fi
-#dest="$2"
+src="$1"
+dest="$2"
 
 checksrc "$src"
 
 sitedestdir="dest"`echo "$src" | sed -e 's/^.*\(\/[^/]\)/\1/g'`
-echo "sitedestdir=$sitedestdir"
 startcopy "$src" "$sitedestdir"
 
-
+createDirList "$sitedestdir"
