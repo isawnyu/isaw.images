@@ -24,7 +24,7 @@ function createSHA1 {
 	destdir="$1"
 	for filepath in `find "$destdir" -maxdepth 1 -mindepth 1| sort`; do
 		if [[ "$filepath" != *"manifest"* ]]; then
-			echo "$filepath"
+			#echo "$filepath"
 			sha=`sha1sum "$filepath"`
 			echo $sha >> "$destdir/manifest.txt"
 		fi		
@@ -62,11 +62,12 @@ function startcopy {
 			mkdir -p "$sitedestdir/$code"
 			`chmod "$perm" "$sitedestdir/$code"`
 
+			echo "$code"
 			touch "$sitedestdir/$code/manifest.txt" || exit
 
 			for folder in ${files[@]}
 			do
-				echo "$folder"
+				#echo "$folder"
 
 				suffix=${suffixmap["$folder"]}
 				ext=${extensionmap["$folder"]}
@@ -77,7 +78,7 @@ function startcopy {
 					filepatern="$prefix-$code-$suffix$ext"
 				fi
 
-				echo "$filepatern"
+				#echo "$filepatern"
 				if  [[ "$suffix" == "flickr" ]];
 				then 
 					suffix="flickr_old"
@@ -91,42 +92,43 @@ function startcopy {
 
 				for src in ${srcarr[@]}
 				do
-					echo "$src"
+					#echo "$src"
 					if [ -f "$src" ]
 					then	
-						echo "source condi"			
+						#echo "source condi"			
 						for f in $src
 						do
-							echo "$f"			
+							#echo "$f"			
 							if [ -f "$f" ] 
 							then
-								echo "its a file"
+								#echo "its a file"
 								if [[ "$folder" == "originals" ]]
 								then
 									original_dest="${f##*original}"
-									echo "$original_dest"
+									#echo "$original_dest"
 									dest="$sitedestdir/$code/$suffix$original_dest"
-									#if [[ "$f" == *"jhove"* ]]; then
-										#echo "contains";
-
-									#fi
+									
 								fi
 								`cp "$f" "$dest"`
-								echo "$dest"
+								#echo "$dest"
 
 							fi
 						done
 					fi
 				done
-			echo "---------------------------------------"
+			#echo "---------------------------------------"
 			done				
 			histFileName="$sitedestdir/$code/history.txt"
 			touch $histFileName || exit
 			
 			current_time=$(date --utc +%FT%TZ)
-			printf '%s\n\t%s\n' $current_time 'Uttara Chavan' >> $histFileName
+			
+			read -p 'Enter Name: ' name
+			read -p 'Enter Comment: ' comment
+			printf '%s\n\t%s\n\t%s\n' $current_time "$name" "$comment" >> $histFileName
 
 			createSHA1 "$sitedestdir/$code"
+			echo "------------------------------------------------------------------"
 		fi		
 	done
 }
@@ -147,7 +149,7 @@ dest="$2"
 
 checksrc "$src"
 
-sitedestdir="dest"`echo "$src" | sed -e 's/^.*\(\/[^/]\)/\1/g'`
+sitedestdir="$dest/dest"`echo "$src" | sed -e 's/^.*\(\/[^/]\)/\1/g'`
 startcopy "$src" "$sitedestdir"
 
 createDirList "$sitedestdir"
