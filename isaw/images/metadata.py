@@ -8,6 +8,7 @@ from arglogger import arglogger
 import logging
 import os
 import re
+import shutil
 from validate_path import validate_path
 import xml.etree.ElementTree as ET
 
@@ -17,7 +18,7 @@ def cleanval(raw):
         cooked=raw.strip()
     except AttributeError:
         raise
-    clean= R.sub(' ',cooked)
+    clean= R.sub(' ',cooked).strip()
     return clean
 
 
@@ -26,11 +27,23 @@ def xml2dict(d, element):
         dl=[]
         for child in element:
             try:
-                dl.append(cleanval(child.text))
+                v = cleanval(child.text)
+                if len(v) > 0:
+                    dl.append(v)
             except AttributeError:
                 pass
         if len(dl) > 0:
             d[element.tag]=dl
+    elif element.tag=='change-history':
+        dl=[]
+        for child in element:
+            dd={}
+            for grandchild in child:
+                xml2dict(dd, grandchild)
+            if len(dd) > 0:
+                dl.append(dd)
+        if len(dl) > 0:
+            d[element.tag] = dl
     elif element.getchildren():
         dd={}
         for child in element:
@@ -39,7 +52,9 @@ def xml2dict(d, element):
             d[element.tag]=dd
     else:
         try:
-            d[element.tag]=cleanval(element.text)
+            v = cleanval(element.text)
+            if len(v) > 0:
+                d[element.tag]=v
         except AttributeError:
             pass
 
@@ -54,7 +69,9 @@ class Metadata():
     def __init__(self, path, create=False):
         self.path=os.path.realpath(path)
         if create:
-            open(self.path, 'w').close()
+            current = os.path.dirname(os.path.abspath(__file__))
+            meta_template = os.path.join(current, 'meta', 'meta-template.xml')
+            shutil.copyfile(meta_template, self.path)
         self.__read__()
 
     @arglogger
@@ -73,7 +90,6 @@ class Metadata():
                         xml2dict(self.data, subchild)
             else:
                 xml2dict(self.data, child)
-
         return len(self.data)
 
     @arglogger
