@@ -222,27 +222,49 @@ class Package:
                 return False
         master_path = os.path.join(self.path, 'master.tif')
         master_image = Image.open(master_path)
+        master_profile = master_image.info.get('icc_profile')
 
         # make and save preview image
+        # Note: the resampling algorithm that gives the highest quality result (bicubic)
+        # is expensive in terms of compute time, and that expense is proportional to the
+        # size of the original image and the relative size of the target image. 
+        # Consequently, if the starting image is significantly larger than the desired 
+        # down-sampled image, we'll make a first pass with the much less expensive 
+        # "nearest neighbor" resampling algorithm to get an image that is only twice the
+        # size of the target, then use "bicubic" on it to get the desired outcome. The
+        # wisdom of the Internet seems to point to this as a time-saving step that 
+        # sacrifices little or nothing in quality. Caveat lector. Of course, if we 
+        # really wanted to do this fast, we'd write it in C.
         preview_image = master_image.copy()
+        del master_image # save the RAMs!
+        size = preview_image.size
+        logger.debug("master size: {0}, {1}".format(size[0], size[1]))
+        if size[0] > 3* SIZEPREVIEW[0] or size[1] > 3* SIZEPREVIEW[1]:
+            preview_image.thumbnail(tuple(s*2 for s in SIZEPREVIEW), Image.NEAREST)
+            logger.debug("did nearest pre-shrink for preview, resulting size: {0}, {1}".format(preview_image.size[0], preview_image.size[1]))
         preview_image.thumbnail(SIZEPREVIEW)
+        logger.debug("resulting preview size: {0}, {1}".format(preview_image.size[0], preview_image.size[1]))
         preview_path = os.path.join(self.path, 'preview.jpg')
-        preview_image.save(preview_path, optimize=True, progressive=True, quality=80, icc_profile=master_image.info.get('icc_profile'))
+        preview_image.save(preview_path, optimize=True, progressive=True, quality=80, icc_profile=master_profile)
         self.preview = True
         preview_hash = hash_of_file(preview_path)
         self.__append_event__("wrote derivative 'preview' jpeg file on {0}".format(preview_path))
         self.manifest.set('preview.jpg', preview_hash)
 
         # make and save thumbnail image
-        thumbnail_image = master_image.copy()
+        # Note: use the same approach as above, but start with the preview image, which
+        # is surely much smaller than the master.
+        thumbnail_image = preview_image.copy()
+        del preview_image # save the RAMs!
         thumbnail_image.thumbnail(SIZETHUMB)
         thumbnail_path = os.path.join(self.path, 'thumb.jpg')
-        thumbnail_image.save(thumbnail_path, optimize=True, progressive=True, quality=80, icc_profile=master_image.info.get('icc_profile'))
+        thumbnail_image.save(thumbnail_path, optimize=True, progressive=True, quality=80, icc_profile=master_profile)
         self.thumbnail = True
         thumbnail_hash = hash_of_file(thumbnail_path)
         self.__append_event__("wrote derivative 'thumbnail' jpeg file on {0}".format(thumbnail_path))
         self.manifest.set('thumb.jpg', thumbnail_hash)
 
+        del thumbnail_image # probably not necessary to save the RAMs here cuz gc will get it but anyway...
         return True
         
     @arglogger
