@@ -30,3 +30,9 @@ def test_create_metadata():
     del m
     shutil.rmtree(temp)
 
+def test_read_metadata():
+    current = os.path.dirname(os.path.abspath(__file__))
+    meta_path = os.path.join(current, 'data', 'kalabsha', '201107061813531', 'meta.xml')
+    m=metadata.Metadata(meta_path)
+    assert_equals(m.data, {'status': 'ready', 'isaw-publish-cleared': 'yes', 'license': 'cc-by', 'title': 'The Temple at Kalabsha (I)', 'photographer': {'given-name': 'Iris', 'family-name': 'Fernandez'}, 'copyright-holder': 'Iris Fernandez', 'flickr-url': 'http://www.flickr.com/photos/isawnyu/5913197834/in/set-72157627140459102', 'copyright-date': '2009-02-27', 'date-photographed': '2009-02-27', 'change-history': [{'date': '2011-07-06', 'description': 'created this metadata file automatically, using (where available) information extracted from the original image headers', 'agent': 'script'}, {'date': '2011-07-06', 'description': 'entered in isaw information, geography and typology, and uploaded to Flickr.', 'agent': 'Nate Nagy'}], 'license-release-verified': 'yes', 'geography': {'photographed-place': {'modern-name': 'Kalabsha', 'ancient-name': 'Talmis', 'uri': 'http://pleiades.stoa.org/places/795868'}}, 'typology': ['ancient', 'history', 'civilization', 'Egypt', 'Egyptology', 'Talmis', 'Kalabsha', 'temple', 'Roman', 'Nile', 'architecture', 'masonry', 'stone', 'mandulis', 'structure', 'pylon'], 'description': 'The pylon and sacred walkway of the Roman-era temple at Kalabsha, now located at New Kalabsha after being moved from ancient Talmis.'})
+    del m    
