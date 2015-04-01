@@ -34,6 +34,16 @@ def xml2dict(d, element):
                 pass
         if len(dl) > 0:
             d[element.tag]=dl
+    elif element.tag=='change-history':
+        dl=[]
+        for child in element:
+            dd={}
+            for grandchild in child:
+                xml2dict(dd, grandchild)
+            if len(dd) > 0:
+                dl.append(dd)
+        if len(dl) > 0:
+            d[element.tag] = dl
     elif element.getchildren():
         dd={}
         for child in element:
