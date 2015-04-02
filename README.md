@@ -10,6 +10,28 @@ For rights and licensing, see LICENSE.txt file.
 This package is intended to house various routines for managing ISAW's imagery collections. 
 
 
+Installation, Requirements, and Dependencies
+---------------------------------------------
+
+This Python package has been tested under Python 2.7.8 running on Mac OSX 10.9.5 and on Ubuntu Linux 14.04.2 LTS; however, the ```migrate.sh``` script expects a modern version of bash and associated utilities and therefore only runs successfully on Linux.
+
+**Note** that some of the Python requirements discussed below have their own dependencies on non-Python packages. So, you will need to ensure at least the following **before running pip**:
+
+ * Install libraries needed by the Pillow package to support TIFF and JPEG image formats and color management (i.e., libtiff, libjpeg, and littlecms): visit the [Pillow Installation page](https://pillow.readthedocs.org/installation.html) and scroll down to the appropriate section for your platform (Mac or Ubuntu) for instructions on how to install these libraries. Failure to install libtiff, libjpeg, and littlecms first will cause pip to fail to install requirements. You do not need to install Pillow separately from the ```pip install``` step below.
+
+ * Install the [ExifTool](http://www.sno.phy.queensu.ca/~phil/exiftool/	) utility, which is wrapped by the pyexiftool package included via requirements.txt. Failure to install ExifTool first will cause pip to fail to install requirements. You do not need to install pyexiftool separately from the ```pip install``` step below.
+
+Use of a [Python virtual environment](http://docs.python-guide.org/en/latest/dev/virtualenvs/) pinned to 2.7.8, with [pip](https://pip.pypa.io/en/latest/) installed in order to manage package installations, is highly recommended. Python dependencies are detailed in ```requirements.txt```, so that they can be installed easily into the virtual environment (after activation thereof) using this simple command:
+
+```pip install -r requirements.txt```
+
+Once everything is succesfully installed, try running the built-in code tests to make sure everything is operating right. This package uses the [nose](https://nose.readthedocs.org/en/latest/) Python unit test environment. It will have been installed along with the other requirements by pip. At the command line, enter the top-level directory of isaw.images package, activate the associated virtual environment, and type:
+
+```nosetests```
+
+If you get any errors, double-check installation steps above and, if you can't find the problem, contact the isaw.images package developer.
+
+
 Filesystem Structure
 ---------------------
 
@@ -33,23 +55,6 @@ We start with a filesystem structure for managing each notional image as an "isa
 
  ![image showing structure of example directory](./documentation/file-structure.png)
 
-
-Dependencies
--------------
-
-This software has been tested under Python 2.7.8 running on Mac OSX 10.9.5 in a virtual environment and also on Ubuntu Linux 14.04.2 LTS. Note that accompanying shell scripts only work on Linux. The following packages are installed:
-
- * [dominate](https://github.com/Knio/dominate) 2.1.12, installed with pip
-
- * nose 1.3.3, installed with pip
- 
- * wsgiref 0.1.2, auto-installed with nose
- 
- * a fork of head thread of Pillow, installed with pip -e from a local clone of https://github.com/paregorios/Pillow (latest release of Pillow seems to be working ok as of 20 March 2014)
- 
- * pyexiftool, installed with pip -e from a local clone of git://github.com/smarnach/pyexiftool.git because it's not in pypi
-
- * [pytz](http://pytz.sourceforge.net/) 2014.10, installed with pip
 
 Classes and Methods
 --------------------
