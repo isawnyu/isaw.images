@@ -181,6 +181,7 @@ class Package:
         self.master = self.__generate_master__()
         self.original = os.path.basename(original_path)
         self.make_derivatives()
+        self.metadata = metadata.Metadata(os.path.join(self.path, 'meta.xml'), create=True)
         self.__append_event__('created package at {path}'.format(path=self.path))
 
     @arglogger
@@ -192,12 +193,15 @@ class Package:
         self.path = validate_path(path, 'directory')
         self.id = os.path.basename(self.path)
         # verify original and master and metadata and checksums
+        # TBD
         # open manifest and metadata
         self.manifest = manifest.Manifest(os.path.join(self.path, 'manifest-sha1.txt'))
         try:
             self.metadata = metadata.Metadata(os.path.join(self.path, 'meta.xml'))
         except IOError:
             logger.warning("no meta.xml file was found in the package for this image ({0})".format(self.id))
+
+            raise 
         # see if there is an original file yet
         filenames = self.manifest.get_all().keys()
         for filename in filenames:
@@ -205,6 +209,12 @@ class Package:
                 front, extension = os.path.splitext(filename)
                 if 'sha1' not in extension:
                     self.original = filename
+        try:
+            o = self.original
+        except AttributeError:
+            logger.error("no original image file was found in the package for this image ({0})".format(self.id))
+            raise
+        # overview html
 
 
     @arglogger
