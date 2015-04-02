@@ -23,11 +23,15 @@ This Python package has been tested under Python 2.7.8 running on Mac OSX 10.9.5
 
 Use of a [Python virtual environment](http://docs.python-guide.org/en/latest/dev/virtualenvs/) pinned to 2.7.8, with [pip](https://pip.pypa.io/en/latest/) installed in order to manage package installations, is highly recommended. Python dependencies are detailed in ```requirements.txt```, so that they can be installed easily into the virtual environment (after activation thereof) using this simple command:
 
- ```pip install -r requirements.txt```
+```
+pip install -r requirements.txt
+```
 
 Once everything is succesfully installed, try running the built-in code tests to make sure everything is operating right. This package uses the [nose](https://nose.readthedocs.org/en/latest/) Python unit test environment. It will have been installed along with the other requirements by pip. At the command line, enter the top-level directory of isaw.images package, activate the associated virtual environment, and type:
 
- ```nosetests```
+```
+nosetests
+```
 
 
 If you get any errors, double-check installation steps above and, if you can't find the problem, contact the isaw.images package developer.
