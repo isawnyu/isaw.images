@@ -177,11 +177,11 @@ class Package:
         self.path = os.path.join(real_path, id)
         self.id = id
         self.manifest = manifest.Manifest(os.path.join(self.path, 'manifest-sha1.txt'), create=True)
-        self.__append_event__('created package at {path}'.format(path=self.path))
         self.__import_original__(original_path)
         self.master = self.__generate_master__()
         self.original = os.path.basename(original_path)
         self.make_derivatives()
+        self.__append_event__('created package at {path}'.format(path=self.path))
 
     @arglogger
     def open(self, path):
