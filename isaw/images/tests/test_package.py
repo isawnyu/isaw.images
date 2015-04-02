@@ -163,7 +163,7 @@ def test_make_derivatives():
     current = os.path.dirname(os.path.abspath(__file__))
     temp = os.path.join(current, 'temp')
     os.makedirs(temp)
-    original_path = os.path.join(current, 'data', 'turkey_road.jpg')
+    original_path = os.path.join(current, 'data', 'kalabsha', '201107061813531', 'master.tif')
     p = package.Package(temp, 'test_package', original_path)    
     # make derivatives should just work if there aren't any yet (which there aren't)
     p.make_derivatives()
