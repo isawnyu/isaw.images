@@ -103,7 +103,7 @@ class Proof():
                     with div(id=pkg.id, cls='package'):
                         try:
                             title=pkg.metadata.data['title']
-                        except AttributeError:
+                        except KeyError:
                             title='[[no title]]'
                         p("{0} ({1}".format(title, pkg.id), cls='caption')
                         pkg.make_derivatives(overwrite=False)
@@ -116,7 +116,12 @@ class Proof():
                             except AttributeError:
                                 p('[[no description]]')
                             else:
-                                p(pkg.metadata.data['description'])
+                                try:
+                                    description = pkg.metadata.data['description']
+                                except KeyError:
+                                    description = '[[no description]]'
+                                p(description)
+                                
             with div(id='stats'):
                 h2("Statistics and information:")
                 p("Proof sheet created at: {0}".format(datetime.datetime.now(pytz.timezone('US/Eastern')).isoformat()))
