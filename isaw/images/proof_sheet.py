@@ -19,7 +19,7 @@ METAKEYS = [
     'status',
     'isaw-publish-cleared',
     'license',
-    'license-release-verified'
+    'license-release-verified',
     'flickr-url'
 ]
 
