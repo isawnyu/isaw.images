@@ -15,6 +15,13 @@ import pytz
 import sys
 from validate_path import validate_path
 
+METAKEYS = [
+    'status',
+    'isaw-publish-cleared',
+    'license',
+    'license-release-verified',
+]
+
 class Proof():
     """
     HTML proof sheet for isaw.images
@@ -64,6 +71,7 @@ class Proof():
                     background-color: #F9F9F9;
                     padding: 10px;
                     font-family: Arial, sans-serif;
+                    font-size: smaller;
                 }                
                 .package {
                     background-color: white;
@@ -72,17 +80,28 @@ class Proof():
                     margin: 7px;
                     border: 1px solid #AAAAAA;
                     box-shadow: 1px 1px 1px rgba(255, 255, 255, 0.25) inset, 0px 1px 2px rgba(0, 0, 0, 0.5);  
-                    max-width: 160px;                  
+                    width: 160px;                  
+                    height: 280px;
+                    overflow: hidden;
                 }
                 .package .image img {
                     border: 1px solid #CCCCCC;
-                    box-shadow: 1px 1px 1px rgba(255, 255, 255, 0.25) inset, 0px 1px 2px rgba(0, 0, 0, 0.5);                    
-                }
-                .caption, .metadata {
-                    font-family: 'Times New Roman', serif;
+                    box-shadow: 1px 1px 1px rgba(255, 255, 255, 0.25) inset, 0px 1px 2px rgba(0, 0, 0, 0.5);
+                    max-height: 120px;   
+                    display: block;
+                    margin-left: auto;
+                    margin-right: auto;    
+                    margin-bottom: 7px;             
                 }
                 .caption {
                     font-weight: bold;
+                }
+                .metadata p {
+                    margin: 0px;
+                    padding: 0px;
+                    font-size: smaller;
+                    padding-left: 1em ;
+                    text-indent: -1em ;                    
                 }
                 .package .image img:hover {
                     box-shadow: none;
@@ -112,15 +131,23 @@ class Proof():
                                 img(src="./{0}/{1}".format(pkg.id, 'thumb.jpg'), alt="thumbnail of image with id='{0}'".format(pkg.id))
                         with div(cls='metadata'):
                             try:        
-                                meta=pkg.metadata
+                                m=pkg.metadata.data
                             except AttributeError:
-                                p('[[no description]]')
+                                p('[[no valid metadata!]]')
                             else:
-                                try:
-                                    description = pkg.metadata.data['description']
-                                except KeyError:
-                                    description = '[[no description]]'
-                                p(description)
+                                for k in METAKEYS:
+                                    try:
+                                        val = m[k]
+                                    except KeyError:
+                                        p("{0}: [[no {1}]]".format(k, k))
+                                    else:
+                                        p("{0}: {1}".format(k, val))
+                                if 'flickr-url' in m.keys():
+                                    with p():
+                                        a('flickr', href=m['flickr-url'])
+                                else:
+                                    p('not posted to flickr')
+                                
                                 
             with div(id='stats'):
                 h2("Statistics and information:")
