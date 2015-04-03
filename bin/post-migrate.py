@@ -4,6 +4,7 @@
 script to run after running migrate.sh
 """
 
+import _mypath
 import argparse
 from functools import wraps
 from isaw.images import package, proof_sheet, validate_path
@@ -12,6 +13,7 @@ import os
 import re
 import sys
 import traceback
+
 
 DEFAULTLOGLEVEL = logging.WARNING
 
@@ -34,7 +36,7 @@ def main (args):
     """
     logger = logging.getLogger(sys._getframe().f_code.co_name)
 
-    real_path = validate_path(args.tgt, type='directory')
+    real_path = validate_path.validate_path(args.tgt, type='directory')
     logger.info("beginning post-migration on {0}".format(real_path))
     # get a list of all the directories at path, determine which are image packages, open and validate
     directories = [o for o in os.listdir(real_path) if os.path.isdir(os.path.join(real_path,o))]
