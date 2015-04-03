@@ -354,8 +354,22 @@ class Package:
                         elif k == 'geography':
                             if 'photographed-place' in val.keys():
                                 geo = val['photographed-place']
-                                text = ['', geo['modern-name']]['modern-name' in geo.keys()]
-                                text = [text, "{0}, ancient {1}".format(text, geo['ancient-name'])]['ancient-name' in geo.keys()]
+                                try:
+                                    modern = geo['modern-name']
+                                except KeyError:
+                                    modern = ''
+                                try:
+                                    ancient = geo['ancient-name']
+                                except KeyError:
+                                    ancient = ''
+                                if modern != '':
+                                    text = modern
+                                else:
+                                    text = ''
+                                if modern != '' and ancient != '':
+                                    text = "{0}, ancient ".format(text)
+                                if ancient != '':
+                                    text = "{0}{1}".format(text, ancient)                                
                                 if 'uri' in geo.keys():
                                     with p('photographed place: '):
                                         a(text, href="{0}".format(geo['uri']))
