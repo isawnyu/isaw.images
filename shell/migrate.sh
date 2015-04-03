@@ -86,7 +86,7 @@ function startcopy {
 				#echo "$filepatern"
 				if  [[ "$suffix" == "flickr" ]];
 				then 
-					suffix="flickr_old"
+					suffix="flickr-old"
 				elif [[ "$suffix" == "review" ]];
 				then
 					suffix="preview"
@@ -127,7 +127,7 @@ function startcopy {
 			touch $histFileName || exit
 			
 			current_time=$(date --utc +%FT%TZ)
-			printf '%s\n\t%s\n\t%s\n' $current_time "$name" "$comment" >> $histFileName
+			printf '%s\t%s\t%s\n' $current_time "$name" "$comment" >> $histFileName
 
 			createSHA1 "$sitedestdir/$code"
 			echo "------------------------------------------------------------------"
