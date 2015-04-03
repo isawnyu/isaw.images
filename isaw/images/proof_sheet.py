@@ -80,18 +80,21 @@ class Proof():
                     border: 1px solid #AAAAAA;
                     box-shadow: 1px 1px 1px rgba(255, 255, 255, 0.25) inset, 0px 1px 2px rgba(0, 0, 0, 0.5);  
                     width: 160px;                  
-                    height: 300px;
+                    height: 350px;
+                    overflow: scroll;
                 }
                 .package .image img {
                     border: 1px solid #CCCCCC;
                     box-shadow: 1px 1px 1px rgba(255, 255, 255, 0.25) inset, 0px 1px 2px rgba(0, 0, 0, 0.5);
                     max-height: 120px;                    
                 }
-                .caption, .metadata {
-                    font-family: 'Times New Roman', serif;
-                }
                 .caption {
                     font-weight: bold;
+                }
+                .metadata p {
+                    margin: 0px;
+                    padding: 0px;
+                    font-size: smaller;
                 }
                 .package .image img:hover {
                     box-shadow: none;
