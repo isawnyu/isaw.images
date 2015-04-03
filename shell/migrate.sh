@@ -25,8 +25,11 @@ function createSHA1 {
 	for filepath in `find "$destdir" -maxdepth 1 -mindepth 1| sort`; do
 		if [[ "$filepath" != *"manifest"* ]]; then
 			#echo "$filepath"
+#			sha=`sha1sum "$filepath"`
+			temp="${filepath##*/}"
 			sha=`sha1sum "$filepath"`
-			echo $sha >> "$destdir/manifest.txt"
+			code="${sha/%\ */} $temp"
+			echo $code >> "$destdir/manifest-sha1.txt"
 		fi		
 	done
 }
@@ -50,6 +53,8 @@ function startcopy {
 	sitedestdir="$2"
 
 	seedfolder="$1/$seed/*"
+	read -p 'Enter Name: ' name
+	read -p 'Enter Comment: ' comment
 
 	for file in $seedfolder
 	do
@@ -63,7 +68,7 @@ function startcopy {
 			`chmod "$perm" "$sitedestdir/$code"`
 
 			echo "$code"
-			touch "$sitedestdir/$code/manifest.txt" || exit
+			touch "$sitedestdir/$code/manifest-sha1.txt" || exit
 
 			for folder in ${files[@]}
 			do
@@ -122,9 +127,6 @@ function startcopy {
 			touch $histFileName || exit
 			
 			current_time=$(date --utc +%FT%TZ)
-			
-			read -p 'Enter Name: ' name
-			read -p 'Enter Comment: ' comment
 			printf '%s\n\t%s\n\t%s\n' $current_time "$name" "$comment" >> $histFileName
 
 			createSHA1 "$sitedestdir/$code"
