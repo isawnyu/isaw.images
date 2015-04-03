@@ -81,7 +81,7 @@ class Proof():
                     border: 1px solid #AAAAAA;
                     box-shadow: 1px 1px 1px rgba(255, 255, 255, 0.25) inset, 0px 1px 2px rgba(0, 0, 0, 0.5);  
                     width: 160px;                  
-                    height: 320px;
+                    height: 280px;
                     overflow: hidden;
                 }
                 .package .image img {
