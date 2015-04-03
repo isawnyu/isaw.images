@@ -278,6 +278,11 @@ class Package:
         return True
         
     @arglogger
+    def make_overview(self):
+        pass
+        
+
+    @arglogger
     def delete(self):
         """
         delete the current image package
