@@ -20,6 +20,7 @@ METAKEYS = [
     'isaw-publish-cleared',
     'license',
     'license-release-verified'
+    'flickr-url'
 ]
 
 class Proof():
@@ -87,7 +88,9 @@ class Proof():
                     border: 1px solid #CCCCCC;
                     box-shadow: 1px 1px 1px rgba(255, 255, 255, 0.25) inset, 0px 1px 2px rgba(0, 0, 0, 0.5);
                     max-height: 120px;   
-                    margin: auto;                 
+                    display: block;
+                    margin-left: auto;
+                    margin-right: auto;                 
                 }
                 .caption {
                     font-weight: bold;
@@ -96,6 +99,8 @@ class Proof():
                     margin: 0px;
                     padding: 0px;
                     font-size: smaller;
+                    padding-left: 2em ;
+                    text-indent: -2em ;                    
                 }
                 .package .image img:hover {
                     box-shadow: none;
@@ -135,7 +140,11 @@ class Proof():
                                     except KeyError:
                                         p("{0}: [[no {1}]]".format(k, k))
                                     else:
-                                        p("{0}: {1}".format(k, val))
+                                        if k == 'flickr-url':
+                                            with p():
+                                                a("flickr", href="{0}".format(val))
+                                        else:
+                                            p("{0}: {1}".format(k, val))
 
                                 
                                 
