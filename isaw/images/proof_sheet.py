@@ -20,7 +20,6 @@ METAKEYS = [
     'isaw-publish-cleared',
     'license',
     'license-release-verified',
-    'flickr-url'
 ]
 
 class Proof():
@@ -135,15 +134,17 @@ class Proof():
                                 p('[[no valid metadata!]]')
                             else:
                                 for k in METAKEYS:
-                                    if k == 'flickr-url':
-                                        pass
                                     try:
                                         val = m[k]
                                     except KeyError:
                                         p("{0}: [[no {1}]]".format(k, k))
                                     else:
                                         p("{0}: {1}".format(k, val))
-
+                                if 'flickr-url' in m.keys():
+                                    with p():
+                                        a('flickr', href=m['flickr-url'])
+                                else:
+                                    p('not posted to flickr')
                                 
                                 
             with div(id='stats'):
