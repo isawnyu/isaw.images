@@ -71,6 +71,7 @@ class Proof():
                     background-color: #F9F9F9;
                     padding: 10px;
                     font-family: Arial, sans-serif;
+                    font-size: smaller;
                 }                
                 .package {
                     background-color: white;
@@ -89,7 +90,8 @@ class Proof():
                     max-height: 120px;   
                     display: block;
                     margin-left: auto;
-                    margin-right: auto;                 
+                    margin-right: auto;    
+                    margin-bottom: 7px;             
                 }
                 .caption {
                     font-weight: bold;
@@ -98,8 +100,8 @@ class Proof():
                     margin: 0px;
                     padding: 0px;
                     font-size: smaller;
-                    padding-left: 2em ;
-                    text-indent: -2em ;                    
+                    padding-left: 1em ;
+                    text-indent: -1em ;                    
                 }
                 .package .image img:hover {
                     box-shadow: none;
