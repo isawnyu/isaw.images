@@ -44,7 +44,7 @@ def main (args):
     for d in directories:
         pkg = package.Package()
         try:
-            pkg.open(os.path.join(path,d))
+            pkg.open(os.path.join(real_path,d))
         except IOError, e:
             logger.info("failed trying to open directory '{0}' as a package: {1}".format(d, e))
         else:
