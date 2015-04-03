@@ -1,11 +1,12 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 """
-template
+script to run after running migrate.sh
 """
 
 import argparse
 from functools import wraps
+from isaw.images import package, proof_sheet, validate_path
 import logging
 import os
 import re
@@ -33,6 +34,28 @@ def main (args):
     """
     logger = logging.getLogger(sys._getframe().f_code.co_name)
 
+    real_path = validate_path(args.tgt, type='directory')
+    logger.info("beginning post-migration on {0}".format(real_path))
+    # get a list of all the directories at path, determine which are image packages, open and validate
+    directories = [o for o in os.listdir(real_path) if os.path.isdir(os.path.join(real_path,o))]
+    logger.debug("found {0} sub-directories".format(len(directories)))
+    for d in directories:
+        pkg = package.Package()
+        try:
+            pkg.open(os.path.join(path,d))
+        except IOError, e:
+            logger.info("failed trying to open directory '{0}' as a package: {1}".format(d, e))
+        else:
+            if pkg.validate():
+                logger.info("directory '{0}' is a valid image package".format(d))
+                pass
+            else:
+                logger.warning("successfully opened directory '{0}' as a package, but it failed to validate".format(d))
+        del pkg
+    proof_sheet.Proof(real_path)
+    logger.info("wrote proof sheet on {0}".format(os.path.join(real_path, 'index.html')))
+    logger.info("finished post-migration on {0}".format(real_path))
+
 
 if __name__ == "__main__":
     log_level = DEFAULTLOGLEVEL
@@ -44,8 +67,7 @@ if __name__ == "__main__":
         parser.add_argument ("-l", "--loglevel", type=str, help="desired logging level (case-insensitive string: DEBUG, INFO, WARNING, ERROR" )
         parser.add_argument ("-v", "--verbose", action="store_true", default=False, help="verbose output (logging level == INFO")
         parser.add_argument ("-vv", "--veryverbose", action="store_true", default=False, help="very verbose output (logging level == DEBUG")
-        # example positional argument:
-        # parser.add_argument('integers', metavar='N', type=int, nargs='+', help='an integer for the accumulator')
+        parser.add_argument('tgt', help='target directory in which to run post-migration')
         args = parser.parse_args()
         if args.loglevel is not None:
             args_log_level = re.sub('\s+', '', args.loglevel.strip().upper())
