@@ -188,3 +188,16 @@ def test_make_derivatives():
     assert_in('preview.jpg', manifest[4])
     assert_in('thumb.jpg', manifest[5])
     shutil.rmtree(temp)
+
+def test_make_overview():
+    # create a package in the temp directory
+    current = os.path.dirname(os.path.abspath(__file__))
+    temp = os.path.join(current, 'temp')
+    os.makedirs(temp)
+    original_path = os.path.join(current, 'data', 'turkey_road.jpg')
+    p = package.Package(temp, 'test_package', original_path)    
+    # package creation should have created an overview
+    overview_path = os.path.join(current, 'temp', 'index.html')
+    assert_equals(os.path.isfile(overview_path), True)
+
+    shutil.rmtree(temp)
