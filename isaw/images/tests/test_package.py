@@ -11,10 +11,14 @@ from nose.tools import assert_equals, assert_not_equal, assert_in, assert_not_in
 import os
 from PIL import Image
 from PIL.ImageCms import getOpenProfile, getProfileName
+import re
 import shutil
 import textwrap
 
 logging.basicConfig(level=logging.DEBUG)
+
+RWHITESPACE = re.compile(r"\s+", re.MULTILINE)
+RDQUOTES = re.compile(r"\"")
 
 def test_instantiate_package():
     p = package.Package()
@@ -196,8 +200,28 @@ def test_make_overview():
     os.makedirs(temp)
     original_path = os.path.join(current, 'data', 'turkey_road.jpg')
     p = package.Package(temp, 'test_package', original_path)    
-    # package creation should have created an overview
-    overview_path = os.path.join(current, 'temp', 'index.html')
+    # package creation should have created an overview with expected contents
+    overview_path = os.path.join(current, 'temp', 'test_package', 'index.html')
     assert_equals(os.path.isfile(overview_path), True)
-
+    with open(overview_path, 'r') as f:
+        guts = f.read()
+    guts = RWHITESPACE.sub('', guts).strip()
+    guts = RDQUOTES.sub('', guts)
+    assert_equals(guts, "<!DOCTYPEhtml><html><head><title>Overview'test_package'</title><style>body{background-color:#F9F9F9;padding:10px;font-family:Arial,sans-serif;}.image{float:right;margin-left:10px;}img{border:1pxsolid#CCCCCC;box-shadow:1px1px1pxrgba(255,255,255,0.25)inset,0px1px2pxrgba(0,0,0,0.5);}.metadatap,.metadataul{margin-bottom:0.25em;margin-top:0px;}.metadatap{padding-left:2em;text-indent:-2em;}</style></head><body><h1>Overviewfor'test_package'</h1><divclass=image><imgalt=previewofimagewithid='test_package'src=preview.jpg></div><divclass=metadata><p>id:test_package</p><p>title:[[notitle]]</p><p>status:draft</p><p>isaw-publish-cleared:no</p><p>license:undetermined</p><p>license-release-verified:no</p><p>copyright:[[nocopyright]]</p><p>copyright-holder:[[nocopyright-holder]]</p><p>copyright-date:[[nocopyright-date]]</p><p>photographer:[[nophotographer]]</p><p>date-photographed:[[nodate-photographed]]</p><p>description:[[nodescription]]</p><p>geography:[[nogeography]]</p><p>typology:[[notypology]]</p><p>change-history:[[nochange-history]]</p></div></body></html>")
+    # get rid of that package and open one that's got some metadata
+    shutil.rmtree(temp)
+    os.makedirs(temp)
+    srcpath = os.path.join(current, 'data', 'kalabsha', '201107061813531')
+    destpath = os.path.join(temp, '201107061813531')
+    shutil.copytree(srcpath, destpath)
+    assert_equals(os.path.isdir(destpath), True)
+    p = package.Package()
+    p.open(destpath)
+    overview_path = os.path.join(destpath, 'index.html')
+    assert_equals(os.path.isfile(overview_path), True)
+    with open(overview_path, 'r') as f:
+        guts = f.read()
+    guts = RWHITESPACE.sub('', guts).strip()
+    guts = RDQUOTES.sub('', guts)
+    assert_equals(guts, "<!DOCTYPEhtml><html><head><title>Overview'201107061813531'</title><style>body{background-color:#F9F9F9;padding:10px;font-family:Arial,sans-serif;}.image{float:right;margin-left:10px;}img{border:1pxsolid#CCCCCC;box-shadow:1px1px1pxrgba(255,255,255,0.25)inset,0px1px2pxrgba(0,0,0,0.5);}.metadatap,.metadataul{margin-bottom:0.25em;margin-top:0px;}.metadatap{padding-left:2em;text-indent:-2em;}</style></head><body><h1>Overviewfor'201107061813531'</h1><divclass=image><imgalt=previewofimagewithid='201107061813531'src=preview.jpg></div><divclass=metadata><p>id:201107061813531</p><p>title:TheTempleatKalabsha(I)</p><p>status:ready</p><p>isaw-publish-cleared:yes</p><p>license:cc-by</p><p>license-release-verified:yes</p><p>copyright:[[nocopyright]]</p><p>copyright-holder:IrisFernandez</p><p>copyright-date:2009-02-27</p><p>photographer:IrisFernandez</p><p>date-photographed:2009-02-27</p><p>description:ThepylonandsacredwalkwayoftheRoman-eratempleatKalabsha,nowlocatedatNewKalabshaafterbeingmovedfromancientTalmis.</p><p>photographedplace:<ahref=http://pleiades.stoa.org/places/795868>Kalabsha,ancientTalmis</a></p><p>typology:<ul><li>ancient</li><li>architecture</li><li>civilization</li><li>Egypt</li><li>Egyptology</li><li>history</li><li>Kalabsha</li><li>mandulis</li><li>masonry</li><li>Nile</li><li>pylon</li><li>Roman</li><li>stone</li><li>structure</li><li>Talmis</li><li>temple</li></ul></p><p>changehistory:<ul><li>2011-07-06:scriptcreatedthismetadatafileautomatically,using(whereavailable)informationextractedfromtheoriginalimageheaders</li><li>2011-07-06:NateNagyenteredinisawinformation,geographyandtypology,anduploadedtoFlickr.</li></ul></p></div></body></html>")
     shutil.rmtree(temp)

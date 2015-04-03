@@ -7,6 +7,8 @@ ISAW Images: Image Package
 from arglogger import arglogger
 from io import BytesIO
 import datetime
+import dominate
+from dominate.tags import *
 import exiftool
 from filehashing import hash_of_file, safe_copy
 from functools import wraps
@@ -53,6 +55,24 @@ IMAGETYPES = {
     'XBM' : {'mimetype' : 'image/x-xbitmap', 'description' : 'X11 Bitmap Format', 'write' : False, 'extensions' : ['xbm',]},
     'XPM' : {'mimetype' : 'image/x-xpixmap', 'description' : 'X11 Pixmap Format', 'write' : True, 'extensions' : ['xpm',]}
 }
+
+# the following list governs the order of presentation of items in the html overview for the package
+OVERVIEWKEYS = [
+    'title',
+    'status',
+    'isaw-publish-cleared',
+    'license',
+    'license-release-verified',
+    'copyright',
+    'copyright-holder',
+    'copyright-date',
+    'photographer',
+    'date-photographed',
+    'description',
+    'geography',
+    'typology',
+    'change-history'
+]
 
 EXTENSIONS = {}
 for k in IMAGETYPES.keys():
@@ -182,6 +202,7 @@ class Package:
         self.original = os.path.basename(original_path)
         self.make_derivatives()
         self.metadata = metadata.Metadata(os.path.join(self.path, 'meta.xml'), create=True)
+        self.make_overview()
         self.__append_event__('created package at {path}'.format(path=self.path))
 
     @arglogger
@@ -214,7 +235,7 @@ class Package:
         except AttributeError:
             logger.error("no original image file was found in the package for this image ({0})".format(self.id))
             raise
-        # overview html
+        self.make_overview()
 
 
     @arglogger
@@ -279,8 +300,89 @@ class Package:
         
     @arglogger
     def make_overview(self):
-        pass
-        
+        self.doc = dominate.document(title="Overview '{0}'".format(self.id))
+        with self.doc.head:
+            style(""" 
+                body {
+                    background-color: #F9F9F9;
+                    padding: 10px;
+                    font-family: Arial, sans-serif;
+                }                
+                .image {
+                    float: right;
+                    margin-left: 10px;
+                }
+                img {
+                    border: 1px solid #CCCCCC;
+                    box-shadow: 1px 1px 1px rgba(255, 255, 255, 0.25) inset, 0px 1px 2px rgba(0, 0, 0, 0.5);                    
+                }
+                .metadata p, .metadata ul {
+                    margin-bottom: 0.25em;
+                    margin-top: 0px;
+                }
+                .metadata p {
+                    padding-left: 2em ;
+                    text-indent: -2em ;
+                }
+                """)
+        m = self.metadata.data
+        with self.doc:
+            h1("Overview for '{0}'".format(self.id))
+            with div(cls='image'):
+                img(src="{0}".format('preview.jpg'), alt="preview of image with id='{0}'".format(self.id))
+            with div(cls='metadata'):
+                p("id: {0}".format(self.id))
+                for k in OVERVIEWKEYS:
+                    try:
+                        val = m[k]
+                    except KeyError:
+                        p("{0}: [[no {1}]]".format(k, k))
+                    else:
+                        if k == 'photographer':
+                            if 'name' in val.keys():
+                                text = val['name']                        
+                            elif 'given-name' in val.keys() and 'family-name' in val.keys():
+                                text = "{0} {1}".format(val['given-name'], val['family-name'])
+                            else:
+                                logger.error("unexpected construct for photographer: {0}".format(val))
+                                raise Exception
+                            if 'uri' in val.keys():
+                                with p('photographer: '):
+                                    a(text, href="{0}".format(val['uri']))
+                            else:                                
+                                p("{0}: {1}".format(k, text))
+                        elif k == 'geography':
+                            if 'photographed-place' in val.keys():
+                                geo = val['photographed-place']
+                                text = ['', geo['modern-name']]['modern-name' in geo.keys()]
+                                text = [text, "{0}, ancient {1}".format(text, geo['ancient-name'])]['ancient-name' in geo.keys()]
+                                if 'uri' in geo.keys():
+                                    with p('photographed place: '):
+                                        a(text, href="{0}".format(geo['uri']))
+                                else:
+                                    p('photographed place: {0}'.format(text))
+                            else:
+                                logger.error("unexpected construct for geography: {0}".format(val))
+                                raise Exception
+                        elif k == 'typology':
+                            with p('typology:'):
+                                with ul():
+                                    for term in sorted(val, key=lambda v: v.lower()):
+                                        li(term)
+                        elif k == 'change-history':
+                            with p('change history:'):
+                                with ul():
+                                    for d in sorted(val, key=lambda kk: kk['date']):
+                                        li("{0}: {1} {2}".format(d['date'], d['agent'], d['description']))
+                        else:
+                            p("{0}: {1}".format(k, val))
+
+
+        outfn = os.path.join(self.path, 'index.html')
+        outf = open(outfn, 'w')
+        outf.write(self.doc.render())
+        outf.close()        
+
 
     @arglogger
     def delete(self):
