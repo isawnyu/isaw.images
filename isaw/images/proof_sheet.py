@@ -135,16 +135,14 @@ class Proof():
                                 p('[[no valid metadata!]]')
                             else:
                                 for k in METAKEYS:
+                                    if k == 'flickr-url':
+                                        pass
                                     try:
                                         val = m[k]
                                     except KeyError:
                                         p("{0}: [[no {1}]]".format(k, k))
                                     else:
-                                        if k == 'flickr-url':
-                                            with p():
-                                                a("flickr", href="{0}".format(val))
-                                        else:
-                                            p("{0}: {1}".format(k, val))
+                                        p("{0}: {1}".format(k, val))
 
                                 
                                 
