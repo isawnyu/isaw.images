@@ -131,8 +131,7 @@ class Package:
         self.manifest.set('original-exif.json', hash_exif)
 
         # capture and store technical metadata using jhove (TBD)
-        # capture and store descriptive metadata in xml
-        logger.warning('no jhove metadata is created, nor is a descriptive metadata file created')
+        logger.warning('no jhove metadata is created')
 
     @arglogger
     def __generate_master__(self):
@@ -201,7 +200,7 @@ class Package:
         self.master = self.__generate_master__()
         self.original = os.path.basename(original_path)
         self.make_derivatives()
-        self.metadata = metadata.Metadata(os.path.join(self.path, 'meta.xml'), create=True)
+        self.metadata = metadata.Metadata(os.path.join(self.path, 'meta.xml'), create=True, exiftool_json=os.path.join(self.path, 'original-exif.json'))
         self.make_overview()
         self.__append_event__('created package at {path}'.format(path=self.path))
 

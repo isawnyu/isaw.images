@@ -5,12 +5,73 @@ manage metadata file
 """
 
 from arglogger import arglogger
+import json
 import logging
 import os
 import re
 import shutil
 from validate_path import validate_path
 import xml.etree.ElementTree as ET
+
+# original file name? origin?
+IMAGE_TAGS = {
+    'IPTC' : {
+        'By-line': 'photographer:name',
+        'By-lineTitle': 'photographer:title',
+        'Caption-Abstract': 'description',
+        'Credit': 'photographer:name',
+        'Source': 'description',
+        'Writer-Editor': 'contributor:name',
+        'ObjectName': 'title',
+        'Keywords': '',     # special handling
+        'CopyrightNotice': 'rights-statement',
+        'DateCreated':'',     # special handling
+        'TimeCreated':''     # special handling
+    },
+    'ExifIFD' : {
+        'FileSource':'',     # special handling
+        'CreateDate': '',     # special handling
+        'UserComment': 'description',
+        'ImageDescription': 'description',
+        'Artist': 'photographer:name',
+        'Copyright': 'rights-statement'
+    },
+    'XMP' : {
+        'CreateDate': '',     # special handling
+        'DateCreated': '',     # special handling
+        'AuthorsPosition': 'photographer:title',
+        'CaptionWriter': 'contributor:name',
+        'WebStatement': 'description',
+        'Description': 'description',
+        'Title': 'title',
+        'Creator': 'photographer:name',
+        'Subject': '',     # special handling
+        'Rights': 'rights-statement',
+        'UsageTerms': 'license',
+        'ImageCreatorName': 'photographer:name',
+        'ImageCreatorID': 'photographer:uri',
+        'CopyrightOwnerName': 'copyright-holder:name',
+        'CopyrightOwnerID': 'copyright-holder:uri',
+        'CreatorWorkEmail': 'photographer:email',
+        'CreatorWorkURL': 'photographer:url',
+        'LocationCreatedSublocation': 'geography:photographed-place:modern-name',
+        'LocationCreatedCity': 'geography:photographed-place:modern-name',
+        'LocationCreatedProvinceState': 'geography:photographed-place:modern-name',
+        'LocationCreatedCountryName': 'geography:photographed-place:modern-name',
+        'LocationShownSublocation': 'geography:photographed-place:modern-name',
+        'LocationShownCity': 'geography:photographed-place:modern-name',
+        'LocationShownProvinceState': 'geography:photographed-place:modern-name',
+        'LocationShownCountryName': 'geography:photographed-place:modern-name'
+    }
+}
+
+EXIF_FILESOURCE_CODES = {
+    '1': 'Film Scanner',
+    '2': 'Reflection Print Scanner',
+    '3': 'Digital Camera'
+}
+
+RPUNCT = re.compile(r"\W+")
 
 R = re.compile(r"\s+", re.MULTILINE)
 def cleanval(raw):
@@ -66,13 +127,141 @@ class Metadata():
     """
 
     @arglogger
-    def __init__(self, path, create=False):
+    def __init__(self, path, create=False, exiftool_json=None):
         self.path=os.path.realpath(path)
         if create:
+            # copy template file and open it
             current = os.path.dirname(os.path.abspath(__file__))
             meta_template = os.path.join(current, 'meta', 'meta-template.xml')
             shutil.copyfile(meta_template, self.path)
-        self.__read__()
+            self.__read__()
+
+            # parse any provided exiftool json into the new metadata file
+            if exiftool_json is not None:
+                with open(exiftool_json, 'r') as exif_file:
+                    exif = json.load(exif_file)
+                # figure out the source device, since that conditions how we handle some other tags
+                try:
+                    file_source_code = exif['ExifIFD:FileSource']
+                except KeyError:
+                    file_source_code = '3' # default is digital camera
+
+                # create a conversion table from the json tags to isaw images metadata xml tags
+                tagverts = []
+                for vocabk in sorted(IMAGE_TAGS.keys()):
+                    for termk in sorted(IMAGE_TAGS[vocabk].keys()):
+                        tagverts.append((':'.join((vocabk, termk)), IMAGE_TAGS[vocabk][termk]))
+                tagverts = [tagvert for tagvert in tagverts if tagvert[0] in exif.keys()]
+
+                # create a list of xml tags to create by doing the conversions
+                tags = {}
+                for tagvert in tagverts:
+                    etag = tagvert[0]
+                    xtag = tagvert[1]
+                    if etag == 'IPTC:Keywords' or etag == 'XMP:Subject':
+                        if 'typology' not in tags.keys():
+                            tags['typology'] = []
+                        keywords = [cleanval(keyword) for keyword in exif[etag]]
+                        for keyword in keywords:
+                            if keyword not in tags['typology']:
+                                tags['typology'].append(keyword)
+                    elif etag in [
+                        'EXIFIFD:CreateDate',
+                        'IPTC:DateCreated',
+                        'IPTC:TimeCreated',
+                        'XMP:CreateDate',
+                        'XMP:DateCreated'
+                        ]:
+                        val = exif[etag]
+                        dateval = None
+                        timeval = None
+                        if 'T' in val:
+                            dateval, timeval = val.split('T')
+                        elif ' ' in val:
+                            dateval, timeval = val.split(' ')
+                        elif etag == 'IPTC:TimeCreated':
+                            timeval = val
+                        else:
+                            dateval = val
+
+                        if file_source_code == '3':
+                            # digital camera
+                            xmltag = 'date-photographed'
+                        else:
+                            xmltag = 'date-scanned'
+                        if dateval is not None:
+                            dateval = RPUNCT.sub('',dateval).strip()
+                            dateval = '{0}-{1}-{2}'.format(dateval[0:4], dateval[4:6], dateval[6:])
+                            if xmltag not in tags.keys():
+                                tags[xmltag] = dateval
+                            elif len(tags[xmltag]) == 0:
+                                tags[xmltag] = dateval
+                            elif tags[xmltag][0] == 'T':
+                                tags[xmltag] = dateval + tags[xmltag]
+                            elif 'T' in tags[xmltag]:
+                                olddateval, oldtimeval = tags[xmltag].split('T')
+                                if olddateval != dateval:
+                                    raise Exception
+                                else:
+                                    tags[xmltag] = dateval + 'T' + oldtimeval
+                            elif tags[xmltag] != dateval:
+                                raise Exception
+                        if timeval is not None:
+                            timeval = 'T{0}'.format(timeval)
+                            if xmltag not in tags.keys():
+                                tags[xmltag] = timeval
+                            elif len(tags[xmltag]) == 0:
+                                tags[xmltag] = timeval
+                            elif tags[xmltag][0] == 'T':
+                                olddateval = tags[xmltag]
+                                if len(olddateval) < len(timeval):
+                                    if timeval[0:len(olddateval)] != tags[xmltag]:
+                                        raise Exception
+                                    else:
+                                        tags[xmltag] = timeval
+                                elif len(olddateval) > len(timeval):
+                                    if olddateval[0:len(timeval)] != timeval:
+                                        raise Exception
+                                elif tags[xmltag] != timeval:
+                                    raise Exception
+                            elif 'T' in tags[xmltag]:
+                                olddateval, oldtimeval = tags[xmltag].split('T')
+                                oldtimeval = 'T' + oldtimeval
+                                if len(oldtimeval) < len(timeval):
+                                    if timeval[0:len(oldtimeval)] != oldtime:
+                                        raise Exception
+                                    else:
+                                        tags[xmltag] = olddateval + timeval
+                                elif len(oldtimeval) > len(timeval):
+                                    if oldtimeval[0:len(timeval)] != timeval:
+                                        raise Exception
+                                elif oldtimeval != timeval:
+                                    raise Exception
+                            elif len(tags[xmltag]) != 10:
+                                raise Exception
+                            else:
+                                tags[xmltag] = tags[xmltag] + timeval
+                    elif xtag == '':
+                        # skip blanks because they are handled programmatically
+                        logger.warning("skipped processing {0}".format(xtag))
+                    else:
+                        if xtag not in tags.keys():
+                            tags[xtag] = ''
+                        if cleanval(exif[etag]) not in tags[xtag]:
+                            tags[xtag] += ' ' + exif[etag]
+                        tags[xtag] = cleanval(tags[xtag])
+
+                # write the conversions to the xml metadata file
+                
+                for k in sorted(tags.keys()):
+                    if ':' in k:
+                        hierarchy = k.split(':')
+                        self.set_hierarchy(hierarchy, tags[k])
+                    else:
+                        self.set(k, tags[k])
+                
+        else:
+            self.__read__()
 
     @arglogger
     def __read__(self):
@@ -98,22 +287,23 @@ class Metadata():
 
     @arglogger
     def set(self, key, value):
-        self.data[filename]=filehash
+        self.data[key]=value
         self.__write__()
 
     @arglogger
-    def set_photographer(self, given_name=None, family_name=None, viaf_id=None, name_string=None):
-        d={}
-        if given_name is not None:
-            d['given-name']=given_name
-        if family_name is not None:
-            d['family-name']=family_name
-        if viaf_id is not None:
-            d['viaf-id']=viaf_id
-        if name_string is not None:
-            d['name']=name_string
-        self.data['photographer']=d
-        self.__write__()
+    def set_hierarchy(self, keys, value, d=None):
+        if d is None:
+            d = self.data
+        if len(keys) == 1:
+            d[keys[0]]=value
+            self.__write__()
+            return d
+        else:
+            if keys[0] in d.keys():
+                d[keys[0]]=self.set_hierarchy(keys[1:], value, d[keys[0]])
+            else:
+                d[keys[0]]=self.set_hierarchy(keys[1:], value, {})
+            return d
 
     @arglogger
     def add_keyword(self, keyword):
