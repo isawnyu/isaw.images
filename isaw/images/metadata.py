@@ -10,6 +10,7 @@ import logging
 import os
 import re
 import shutil
+import sys
 from validate_path import validate_path
 import xml.etree.ElementTree as ET
 
@@ -82,7 +83,29 @@ def cleanval(raw):
     clean= R.sub(' ',cooked).strip()
     return clean
 
+@arglogger
+def dict2xml(item, parent):
+    logger = logging.getLogger(sys._getframe().f_code.co_name)
+    if type(item)==dict:
+        for k in item.keys():
+            ele = parent.find(k)
+            if ele is None:
+                ele = ET.SubElement(parent, k)
+            if k == 'typology':
+                pass
+            elif k == 'change-history':
+                pass
+            else:
+                dict2xml(item[k], ele)
+    elif type(item) == unicode or type(item) == str:
+        v = cleanval(item)
+        if len(v) > 0:
+            parent.text = v
+    else:
+        logger.error("type is '{0}'".format(type(item)))
+        raise TypeError
 
+@arglogger
 def xml2dict(d, element):
     if element.tag=='typology':
         dl=[]
@@ -128,6 +151,7 @@ class Metadata():
 
     @arglogger
     def __init__(self, path, create=False, exiftool_json=None):
+        logger = logging.getLogger(sys._getframe().f_code.co_name)
         self.path=os.path.realpath(path)
         if create:
             # copy template file and open it
@@ -256,12 +280,22 @@ class Metadata():
                 for k in sorted(tags.keys()):
                     if ':' in k:
                         hierarchy = k.split(':')
+                        logger.debug("setting hierarchy for {0}".format(k))
                         self.set_hierarchy(hierarchy, tags[k])
+                        logger.debug("writing to original")
+                        self.__write__('original')
                     else:
+                        logger.debug("setting {0}".format(k))
                         self.set(k, tags[k])
+                        logger.debug("writing to original")
+                        self.__write__('original')
+
+                raise Exception
                 
         else:
             self.__read__()
+
+
 
     @arglogger
     def __read__(self):
@@ -282,28 +316,53 @@ class Metadata():
         return len(self.data)
 
     @arglogger
-    def __write__(self):
-        pass
+    def __write__(self, info_type='isaw'):
+        logger = logging.getLogger(sys._getframe().f_code.co_name)
+        tree=ET.parse(self.path)    
+        root= tree.getroot()
+        for child in root:
+            if child.tag=='info':
+                if child.attrib['type']==info_type:
+                    dict2xml(self.data, child)
+        logger.debug("info_type={0}".format(info_type))
+        logger.debug(ET.tostring(root))
 
     @arglogger
-    def set(self, key, value):
+    def set(self, key, value, flush=True, isaw_info=True, original_info=False):
         self.data[key]=value
-        self.__write__()
+        if flush:
+            if isaw_info:
+                self.__write__()
+            if original_info:
+                self.__write__('original')
 
     @arglogger
-    def set_hierarchy(self, keys, value, d=None):
+    def set_hierarchy(self, keys, value, d=None, flush=True, isaw_info=True, original_info=False, level=0):
+        logger = logging.getLogger(sys._getframe().f_code.co_name)
         if d is None:
+            logger.debug("setting hierarchy dict == self.data")
             d = self.data
         if len(keys) == 1:
+            logger.debug("only one item in keys ({0}); setting = '{1}'".format(keys[0], value))
             d[keys[0]]=value
-            self.__write__()
-            return d
         else:
             if keys[0] in d.keys():
-                d[keys[0]]=self.set_hierarchy(keys[1:], value, d[keys[0]])
+                if type(d[keys[0]] == dict):
+                    logger.debug("first key ({0}) yields a dictionary, recursing with child structure".format(keys[0]))
+                    d[keys[0]]=self.set_hierarchy(keys[1:], value, d[keys[0]], level=level+1)
+                else:
+                    logger.error("first key {0} does not yield a dictionary!".format(keys[0]))
+                    raise TypeError
             else:
-                d[keys[0]]=self.set_hierarchy(keys[1:], value, {})
-            return d
+                logger.debug("first key ({0}) is not in the parent dict, so recursing with a new dict".format(keys[0]))
+                d[keys[0]]=self.set_hierarchy(keys[1:], value, {}, level=level+1)
+        if level == 0:
+            if flush:
+                if isaw_info:
+                    self.__write__()
+                if original_info:
+                    self.__write__('original')
+        return d
 
     @arglogger
     def add_keyword(self, keyword):
