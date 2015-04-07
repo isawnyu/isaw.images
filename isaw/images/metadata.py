@@ -72,6 +72,17 @@ EXIF_FILESOURCE_CODES = {
     '3': 'Digital Camera'
 }
 
+TOPMETA_FRONT = [
+    'status',
+    'license-release-verified',
+    'isaw-publish-cleared',
+    'review-notes',
+]
+
+TOPMETA_BACK = [
+    'change-history'
+]
+
 RPUNCT = re.compile(r"\W+")
 
 R = re.compile(r"\s+", re.MULTILINE)
@@ -258,7 +269,17 @@ class Metadata():
                                         tags[xmltag] = olddateval + timeval
                                 elif len(oldtimeval) > len(timeval):
                                     if oldtimeval[0:len(timeval)] != timeval:
-                                        raise Exception
+                                        logger.debug("oldtimeval: '{0}'".format(oldtimeval))
+                                        logger.debug("timeval: '{0}'".format(timeval))
+                                        if '+' in oldtimeval and not('+' in timeval):
+                                            oldtimeval, tz = oldtimeval.split('+')
+                                            if oldtimeval != timeval:
+                                                if '.' in timeval and not('.' in oldtimeval):
+                                                    timeval, timedecimal = timeval.split('.')
+                                                    if timeval == oldtimeval:
+                                                        tags[xmltag] = '+'.join(('.'.join((timeval,timedecimal)), tz))
+                                        else:
+                                            raise Exception
                                 elif oldtimeval != timeval:
                                     raise Exception
                             elif len(tags[xmltag]) != 10:
@@ -289,8 +310,6 @@ class Metadata():
                         self.set(k, tags[k])
                         logger.debug("writing to original")
                         self.__write__('original')
-
-                raise Exception
                 
         else:
             self.__read__()
@@ -318,14 +337,21 @@ class Metadata():
     @arglogger
     def __write__(self, info_type='isaw'):
         logger = logging.getLogger(sys._getframe().f_code.co_name)
+        # split dictionary into top-level and info-level items
+        topfd = {k:v for (k,v) in self.data.iteritems() if k in TOPMETA_FRONT}
+        topbd = {k:v for (k,v) in self.data.iteritems() if k in TOPMETA_BACK}
+        infod = {k:v for (k,v) in self.data.iteritems() if k not in TOPMETA_FRONT and k not in TOPMETA_BACK}
         tree=ET.parse(self.path)    
         root= tree.getroot()
+        dict2xml(topfd, root)
         for child in root:
             if child.tag=='info':
                 if child.attrib['type']==info_type:
-                    dict2xml(self.data, child)
-        logger.debug("info_type={0}".format(info_type))
-        logger.debug(ET.tostring(root))
+                    dict2xml(infod, child)
+        dict2xml(topbd, root)
+        #logger.debug("info_type={0}".format(info_type))
+        #logger.debug(ET.tostring(root))
+        tree.write(self.path, encoding="UTF-8")
 
     @arglogger
     def set(self, key, value, flush=True, isaw_info=True, original_info=False):
