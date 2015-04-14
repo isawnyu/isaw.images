@@ -97,6 +97,8 @@ class Package:
     def __init__(self, path=None, id=None, original_path=None):
         if path is not None and id is not None and original_path is not None:
             self.create(path, id, original_path)
+        elif path is not None and id is None and original_path is None:
+            self.open(path)
 
 
     @arglogger
