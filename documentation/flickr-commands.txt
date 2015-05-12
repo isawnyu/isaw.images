@@ -1,0 +1,71 @@
+from isaw.images import package
+pkg = package.Package("/home/uttara/myProjectVENV/kalabsha/201107061813531")
+pkg.validate()
+from isaw.images import flickr_image_upload
+
+//Create class object
+imgClassObj = flickr_image_upload.Flickr_image_upload()
+
+//Upload image
+import os
+pkgimg = os.path.join(pkg.path, 'thumb.jpg')
+id = imgClassObj.uploadImage(pkgimg)
+
+//To create a new album
+albumID = imgClassObj.createFolder(photo id to be set as cover page for the album)
+
+//To create new collection
+collectionID = imgClassObj.createCollection()
+
+//Replace photo
+import os
+newPath = os.path.join(pkg.path, 'original.jpg') //This pkg can b different
+imgClassObj.replaceImage(newPath, id)
+
+//Add photo to existing album
+import os
+pkgimg = os.path.join(pkg.path, 'nature.jpg')
+photosetID = '72157652542335065'
+imgClassObj.addImageToExistingAlbum(pkgimg, photosetID)
+
+//Add photoset to collection 
+collectionID = '130688244-72157652123248040' 
+imgClassObj.movePhotosetToCollection(collectionID, albumID)
+
+//Delete a colection
+imgClassObj.deleteCollection('130688244-72157652480959226')
+
+//Display collection contents
+collectionID = '130688244-72157652123248040' 
+imgClassObj.displayCollectionContents(collectionID)
+
+
+
+
+
+
+some other test examples
+
+import logging
+logging.basicConfig(level=logging.DEBUG)
+import os
+from isaw.images import package
+from isaw.images import flickr_image_upload
+path_current = os.getcwd()
+path_scratch = os.path.join(path_current, 'scratch')
+path_original = os.path.join(path_scratch, 'cash20141125.tif')
+os.path.isfile(path_original)
+
+pkg = package.Package(path_scratch, 'cashpkg', path_original)
+
+path_key = os.path.join(path_current, 'flickr.key')
+with open(path_key, 'r') as keyf:
+    key = keyf.read()
+key = key.rstrip()
+path_secret = os.path.join(path_current, 'flickr.secret')
+with open(path_secret, 'r') as secretf:
+    secret = secretf.read()
+secret = secret.rstrip()
+flick = flickr_image_upload.Flickr_image_upload(key, secret)
+
+
