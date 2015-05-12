@@ -19,6 +19,7 @@ import manifest
 import metadata
 import os
 from PIL import Image, TiffImagePlugin
+from pilkit.utils import save_image
 import pytz
 import shutil
 import sys
@@ -278,7 +279,12 @@ class Package:
         preview_image.thumbnail(SIZEPREVIEW)
         logger.debug("resulting preview size: {0}, {1}".format(preview_image.size[0], preview_image.size[1]))
         preview_path = os.path.join(self.path, 'preview.jpg')
-        preview_image.save(preview_path, optimize=True, progressive=True, quality=80, icc_profile=master_profile)
+        #preview_image.save(preview_path, optimize=True, progressive=True, quality=80, icc_profile=master_profile)
+        try:
+            save_image(preview_image, preview_path, 'JPEG', options={'optimize':True, 'progressive':True, 'quality':80, 'icc_profile':master_profile})
+        except IOError:
+            save_image(preview_image, preview_path, 'JPEG', options={'optimize':True, 'progressive':True, 'icc_profile':master_profile})
+            logger.warning("preview image could not be written at quality 80; using defaults")
         self.preview = True
         preview_hash = hash_of_file(preview_path)
         self.__append_event__("wrote derivative 'preview' jpeg file on {0}".format(preview_path))
@@ -291,7 +297,12 @@ class Package:
         del preview_image # save the RAMs!
         thumbnail_image.thumbnail(SIZETHUMB)
         thumbnail_path = os.path.join(self.path, 'thumb.jpg')
-        thumbnail_image.save(thumbnail_path, optimize=True, progressive=True, quality=80, icc_profile=master_profile)
+        #thumbnail_image.save(thumbnail_path, optimize=True, progressive=True, quality=80, icc_profile=master_profile)
+        try:
+            save_image(thumbnail_image, thumbnail_path, 'JPEG', options={'optimize':True, 'progressive':True, 'quality':80, 'icc_profile':master_profile})
+        except IOError:
+            save_image(thumbnail_image, thumbnail_path, 'JPEG', options={'optimize':True, 'progressive':True, 'icc_profile':master_profile})
+            logger.warning("preview image could not be written at quality 80; using defaults")
         self.thumbnail = True
         thumbnail_hash = hash_of_file(thumbnail_path)
         self.__append_event__("wrote derivative 'thumbnail' jpeg file on {0}".format(thumbnail_path))
