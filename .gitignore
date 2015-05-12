@@ -52,3 +52,8 @@ docs/_build/
 # PyBuilder
 target/
 .DS_Store
+
+# unique to isaw.images
+*.key
+*.secret
+
