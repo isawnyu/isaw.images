@@ -191,7 +191,15 @@ def test_make_derivatives():
     assert_equals(len(manifest),6)
     assert_in('preview.jpg', manifest[4])
     assert_in('thumb.jpg', manifest[5])
+    del manifest
+
+    # try this with a file known to cause PIL/Pillow's JPEG converter to overflow its buffer
+    # verifies that pilkit is doing its job
+    original_path = os.path.join(current, 'data', 'cash20141125.jpg')
+    p = package.Package(temp, 'cash_package', original_path)  
+    p.make_derivatives()
     shutil.rmtree(temp)
+
 
 def test_make_overview():
     # create a package in the temp directory
