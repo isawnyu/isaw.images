@@ -61,11 +61,14 @@ pkg = package.Package(path_scratch, 'cashpkg', path_original)
 path_key = os.path.join(path_current, 'flickr.key')
 with open(path_key, 'r') as keyf:
     key = keyf.read()
+
 key = key.rstrip()
 path_secret = os.path.join(path_current, 'flickr.secret')
 with open(path_secret, 'r') as secretf:
     secret = secretf.read()
+
 secret = secret.rstrip()
 flick = flickr_image_upload.Flickr_image_upload(key, secret)
-
+path_image = os.path.join(pkg.path, 'master.tif')
+id = flick.uploadImage(path_image)
 
