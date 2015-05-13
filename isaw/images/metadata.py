@@ -18,7 +18,7 @@ import xml.etree.ElementTree as ET
 IMAGE_TAGS = {
     'IPTC' : {
         'By-line': 'photographer:name',
-        'By-lineTitle': 'photographer:title',
+        # 'By-lineTitle': 'photographer:title', suppress, because gets truncated
         'Caption-Abstract': 'description',
         'Credit': 'photographer:name',
         'Source': 'description',
