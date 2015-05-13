@@ -8,6 +8,7 @@ from isaw.images import metadata, package
 from nose.tools import assert_equals, assert_not_equal, assert_in, assert_is
 import logging
 import os
+from pprint import pprint
 import re
 import shutil
 
@@ -52,6 +53,22 @@ def test_create_metadata():
     original_path = os.path.join(current, 'data', 'oracle.jpg')
     p = package.Package(temp, 'test_package', original_path)    
     m = p.metadata
+    d = m.data
+    assert_equals(sorted(d.keys()), ['contributor', 'date-photographed', 'description', 'isaw-publish-cleared', 'license', 'license-release-verified', 'photographer', 'rights-statement', 'status', 'title', 'typology'])
+    assert_equals(d['contributor']['name'], u'Tom Elliott')
+    assert_equals(d['date-photographed'], '2014-11-15T17:39:19.457+00:00')
+    assert_equals(d['description'], u'Interior of a Magic Hat #9 beer bottle cap bearing the slogan: "Banana costumes, by nature, are funny."')
+    assert_equals(d['isaw-publish-cleared'], 'no')
+    assert_equals(d['license'], u'https://creativecommons.org/licenses/by/3.0/us/')
+    assert_equals(d['license-release-verified'], 'no')
+    assert_equals(d['photographer']['email'], u'tom.elliott@nyu.edu')
+    assert_equals(d['photographer']['name'], u'Tom Elliott')
+    assert_equals(d['photographer']['title'], u'Associate Director for Digital Programs and Senior Research Scholar')
+    assert_equals(d['photographer']['url'], u'http://www.paregorios.org/')
+    assert_equals(d['rights-statement'], u'Copyright 2014. Tom Elliott')
+    assert_equals(d['status'], 'draft')
+    assert_equals(d['title'], u'The Oracle')
+    assert_equals(sorted(d['typology']), [u'aphorisms', u'banana costumes', u'bananas', u'beer', u'bottle cap', u'costumes', u'humor', u'Magic Hat'])
     with open(m.path, 'r') as f:
         guts = f.read()
     guts = RWHITESPACE.sub('', guts).strip()
