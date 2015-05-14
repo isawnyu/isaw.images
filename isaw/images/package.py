@@ -89,7 +89,7 @@ SIZEPREVIEW = 800, 600
 SIZETHUMB = 128, 128
 
 
-class Package:
+class Package(flickr.Flickr):
     """
     manage an ISAW image Package
     """
