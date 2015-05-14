@@ -28,7 +28,7 @@ class Flickr():
         pass
 
     @arglogger
-    def authenticate(self, key=None, secret=None, dry_run=False):
+    def flickr_authenticate(self, key=None, secret=None, dry_run=False):
         """
         authenticate with flickr
         """
@@ -36,7 +36,7 @@ class Flickr():
 
         # get flickr api key and secret
         if key is None and secret is None:
-            self.__load_credentials__()
+            self.__flickr_load_credentials__()
         elif key is None or secret is None:
             err = "unexpected mix of credential values: key={0}, secret={1}".format(key, secret)
             raise ValueError(err)
@@ -68,7 +68,7 @@ class Flickr():
 
 
     @arglogger
-    def upload(self, 
+    def flickr_upload(self, 
         image_filename, 
         title=None, 
         description=None, 
@@ -112,21 +112,21 @@ class Flickr():
         return photoid
 
     @arglogger
-    def replace(self):
+    def flickr_replace(self):
         """
         replace an image on flickr
         """
         pass
 
     @arglogger
-    def generate(self):
+    def flickr_generate(self):
         """
         create what we consider to be a flickr-ready image
         """
         pass
 
     @arglogger
-    def __load_credentials__(self, key_path=DEFAULT_KEY_PATH, secret_path=DEFAULT_SECRET_PATH):
+    def __flickr_load_credentials__(self, key_path=DEFAULT_KEY_PATH, secret_path=DEFAULT_SECRET_PATH):
         """
         load flickr api key and secret from file 
         """
