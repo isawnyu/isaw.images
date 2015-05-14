@@ -4,21 +4,22 @@
 ISAW Images: Image Package
 """
 
-from arglogger import arglogger
+from arglogger import arglogger # part of isaw.images
 from io import BytesIO
 import datetime
 import dominate
 from dominate.tags import *
 import exiftool
 from filehashing import hash_of_file, safe_copy
+import flickr # part of isaw.images
 from functools import wraps
-from PIL.ImageCms import getOpenProfile, getProfileName, profileToProfile, ImageCmsProfile
 import json
 import logging
-import manifest
-import metadata
+import manifest # part of isaw.images
+import metadata # part of isaw.images
 import os
 from PIL import Image, TiffImagePlugin
+from PIL.ImageCms import getOpenProfile, getProfileName, profileToProfile, ImageCmsProfile
 from pilkit.utils import save_image
 import pytz
 import shutil
