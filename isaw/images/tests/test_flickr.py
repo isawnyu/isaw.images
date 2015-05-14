@@ -20,7 +20,7 @@ def test_authentication_pass():
     ensure we can pass key and secret via the authenticate method
     """
     f = flickr.Flickr()
-    f.authenticate('12345', '67890')
+    f.authenticate(u'12345', u'67890', dry_run=True)
     assert_is_not_none(f.key)
     assert_is_not_none(f.secret)
 
@@ -30,7 +30,7 @@ def test_authentication_pass_no_key():
     ensure error gets raised when we pass only the secret via the authenticate method
     """
     f = flickr.Flickr()
-    f.authenticate(secret='67890')
+    f.authenticate(secret=u'67890', dry_run=True)
 
 @raises(ValueError)
 def test_authentication_pass_no_secret():
@@ -38,16 +38,25 @@ def test_authentication_pass_no_secret():
     ensure error gets raised when we pass only the key via the authenticate method
     """
     f = flickr.Flickr()
-    f.authenticate(key='12345')
+    f.authenticate(key=u'12345', dry_run=True)
 
 def test_authentication_load():
     """
     ensure we can load key and secret from default disk location
     """
     f = flickr.Flickr()
-    f.authenticate()
+    f.authenticate(dry_run=True)
     assert_is_not_none(f.key)
     assert_is_not_none(f.secret)
-    
+
+def test_authentication_writeaccess():
+    """
+    ensure we actually authenticate with flickr and get write access
+    """
+    f = flickr.Flickr()
+    f.authenticate()  # dry_run defaults to False, so we're actually pinging flickr here
+    assert_is_not_none(f.key)
+    assert_is_not_none(f.secret)
+    assert_is_not_none(f.api)
 
 
