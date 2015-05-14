@@ -41,13 +41,13 @@ class Flickr():
             err = "unexpected mix of credential values: key={0}, secret={1}".format(key, secret)
             raise ValueError(err)
         else:
-            self.key = key
-            self.secret = secret
+            self.flickr_key = key
+            self.flickr_secret = secret
 
         # initialize the api wrapper and go through whatever authentication
         # process is needed to get write access (or fail trying)
         if not dry_run:
-            fapi = flickrapi.FlickrAPI(self.key, self.secret)
+            fapi = flickrapi.FlickrAPI(self.flickr_key, self.flickr_secret)
             if not fapi.token_valid(perms='write'):
                 # Get a request token
                 fapi.get_request_token(oauth_callback='oob')
@@ -64,15 +64,52 @@ class Flickr():
                 # Trade the request token for an access token
                 fapi.get_access_token(verifier)
 
-            self.api = fapi
+            self.flickr_api = fapi
 
 
     @arglogger
-    def upload(self):
+    def upload(self, 
+        image_filename, 
+        title=None, 
+        description=None, 
+        tags=None, 
+        public=False, 
+        family=False, 
+        friends=False, 
+        content_type='photo'):
         """
         upload a new image to flickr
         """
-        pass
+        logger = logging.getLogger(sys._getframe().f_code.co_name)
+
+        params = {}
+        params['filename'] = image_filename
+        if title is not None:
+            params['title'] = title
+        if description is not None:
+            params['description'] = description
+        if tags is not None:
+            if len(tags) > 0:
+                params['tags'] = ' '.join([[tag, '"{0}"'.format(tag)][' ' in tag] for tag in tags])
+        logger.debug("tags: '{0}'".format(params['tags']))
+        params['is_public'] = [0,1][public]
+        logger.debug("is_public: {0}".format(params['is_public']))
+        if not public:
+            params['is_family'] = [0,1][family]
+            params['is_friends'] = [0,1][friends]
+        if content_type == 'photo':
+            params['content_type'] = 1
+        elif content_type == 'screenshot':
+            params['content_type'] = 2
+        else:
+            params['content_type'] = 3
+        logger.debug("calling flickrapi.upload with params: {0}".format(repr(params)))
+        response = self.flickr_api.upload(**params)
+        logger.debug("raw flickrapi response: {0}".format(repr(response)))
+        photoid = response.find('photoid').text
+        logger.debug("flickr photoid parsed from response: {0}".format(photoid))
+        self.flickr_id = photoid
+        return photoid
 
     @arglogger
     def replace(self):
@@ -97,11 +134,11 @@ class Flickr():
 
         path = os.path.realpath(key_path)
         with codecs.open(path, encoding='utf-8', mode='r') as keyf:
-            self.key = keyf.read().rstrip()
+            self.flickr_key = keyf.read().rstrip()
 
         path = os.path.realpath(secret_path)
         with codecs.open(path, encoding='utf-8', mode='r') as secretf:
-            self.secret = secretf.read().rstrip()
+            self.flickr_secret = secretf.read().rstrip()
 
 
     # more methods here to set/change metadata
