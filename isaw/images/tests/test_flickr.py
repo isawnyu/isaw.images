@@ -5,7 +5,7 @@ test template for nosetests
 """
 
 from nose.tools import *
-from isaw.images import flickr
+from isaw.images import flickr, package
 import logging
 import os
 import shutil
@@ -63,15 +63,16 @@ def test_upload():
     """
     ensure we can actually upload a test image to flickr
     """
-    f = flickr.Flickr()
-    f.flickr_authenticate()
-    image_path = os.path.join(os.getcwd(), 'isaw', 'images', 'tests', 'data', 'turkey_road.jpg')
-    assert_true(os.path.isfile(image_path))
-    id = f.flickr_upload(
-        unicode(image_path),
-        title=u'Turkey Road', 
-        description=u'Wild turkeys crossing Moontown Rd. in Madison County, Alabama',
-        tags=[u'Moontown', u'wild turkeys', u'asphalt'])
-    assert_is_not_none(id)
-
-
+    current = os.path.dirname(os.path.abspath(__file__))
+    temp = os.path.join(current, 'temp')
+    os.makedirs(temp)
+    srcpath = os.path.join(current, 'data', 'kalabsha', '201107061813531')
+    destpath = os.path.join(temp, '201107061813531')
+    shutil.copytree(srcpath, destpath)
+    assert_equals(os.path.isdir(destpath), True)
+    p = package.Package()
+    p.open(destpath)
+    p.make_derivatives()
+    p.flickr_upload(p.metadata.data, thumbnail=True)
+    shutil.rmtree(temp)
+    
