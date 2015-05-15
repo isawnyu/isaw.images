@@ -188,9 +188,10 @@ def test_make_derivatives():
         raise IOError("could not open package manifest file at {0}".format(manifest_path))
     manifest = manifest_file.readlines()
     manifest_file.close()
-    assert_equals(len(manifest),6)
+    assert_equals(len(manifest),7)
     assert_in('preview.jpg', manifest[4])
     assert_in('thumb.jpg', manifest[5])
+    assert_in('maximum.jpg', manifest[6])
     del manifest
 
     # try this with a file known to cause PIL/Pillow's JPEG converter to overflow its buffer
