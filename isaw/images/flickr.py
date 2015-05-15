@@ -101,7 +101,7 @@ class Flickr():
             # primarily here to speed tests/debugging
             image_filename = os.path.join(self.path, 'thumb.jpg')
         else:
-            image_filename = os.path.join(self.path, 'preview.jpg') # todo: change to specially created jpeg
+            image_filename = os.path.join(self.path, 'maximum.jpg') 
 
         # assign title
         try:
