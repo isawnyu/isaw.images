@@ -7,7 +7,7 @@ nose tests for code in isaw.images/isaw/images/package.py
 from io import BytesIO
 from isaw.images import package
 import logging
-from nose.tools import assert_equals, assert_not_equal, assert_in, assert_not_in, assert_is
+from nose.tools import *
 import os
 from PIL import Image
 from PIL.ImageCms import getOpenProfile, getProfileName
@@ -233,3 +233,10 @@ def test_make_overview():
     guts = RDQUOTES.sub('', guts)
     assert_equals(guts, "<!DOCTYPEhtml><html><head><title>Overview'201107061813531'</title><style>body{background-color:#F9F9F9;padding:10px;font-family:Arial,sans-serif;}.image{float:right;margin-left:10px;}img{border:1pxsolid#CCCCCC;box-shadow:1px1px1pxrgba(255,255,255,0.25)inset,0px1px2pxrgba(0,0,0,0.5);}.metadatap,.metadataul{margin-bottom:0.25em;margin-top:0px;}.metadatap{padding-left:2em;text-indent:-2em;}</style></head><body><h1>Overviewfor'201107061813531'</h1><divclass=image><imgalt=previewofimagewithid='201107061813531'src=preview.jpg></div><divclass=metadata><p>id:201107061813531</p><p>title:TheTempleatKalabsha(I)</p><p>status:ready</p><p>isaw-publish-cleared:yes</p><p>license:cc-by</p><p>license-release-verified:yes</p><p>copyright:[[nocopyright]]</p><p>copyright-holder:IrisFernandez</p><p>copyright-date:2009-02-27</p><p>photographer:IrisFernandez</p><p>date-photographed:2009-02-27</p><p>description:ThepylonandsacredwalkwayoftheRoman-eratempleatKalabsha,nowlocatedatNewKalabshaafterbeingmovedfromancientTalmis.</p><p>photographedplace:<ahref=http://pleiades.stoa.org/places/795868>Kalabsha,ancientTalmis</a></p><p>typology:<ul><li>ancient</li><li>architecture</li><li>civilization</li><li>Egypt</li><li>Egyptology</li><li>history</li><li>Kalabsha</li><li>mandulis</li><li>masonry</li><li>Nile</li><li>pylon</li><li>Roman</li><li>stone</li><li>structure</li><li>Talmis</li><li>temple</li></ul></p><p>changehistory:<ul><li>2011-07-06:scriptcreatedthismetadatafileautomatically,using(whereavailable)informationextractedfromtheoriginalimageheaders</li><li>2011-07-06:NateNagyenteredinisawinformation,geographyandtypology,anduploadedtoFlickr.</li></ul></p></div></body></html>")
     shutil.rmtree(temp)
+
+def test_flickr_capable():
+    """
+    make sure flickr class inheritance and initialization has worked properly
+    """
+    p = package.Package()
+    assert_true(p.flickr_capable)

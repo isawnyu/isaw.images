@@ -25,7 +25,7 @@ class Flickr():
 
     @arglogger
     def __init__(self):
-        pass
+        self.flickr_capable = True
 
     @arglogger
     def flickr_authenticate(self, key=None, secret=None, dry_run=False):

@@ -11,7 +11,7 @@ import dominate
 from dominate.tags import *
 import exiftool
 from filehashing import hash_of_file, safe_copy
-import flickr # part of isaw.images
+from flickr import Flickr # part of isaw.images
 from functools import wraps
 import json
 import logging
@@ -89,7 +89,7 @@ SIZEPREVIEW = 800, 600
 SIZETHUMB = 128, 128
 
 
-class Package(flickr.Flickr):
+class Package(Flickr):
     """
     manage an ISAW image Package
     """
@@ -101,6 +101,7 @@ class Package(flickr.Flickr):
             self.create(path, id, original_path)
         elif path is not None and id is None and original_path is None:
             self.open(path)
+        Flickr.__init__(self)
 
 
     @arglogger
