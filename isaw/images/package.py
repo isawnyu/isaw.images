@@ -421,11 +421,12 @@ class Package(Flickr):
             return False
 
         self.flickr_authenticate()
-        
+
         # todo: test metadata to see if we are cleared
         meta = self.metadata.data
         params = {}
         if thumbnail:
+            # primarily here to speed tests/debugging
             params['image_filename'] = os.path.join(self.path, 'thumb.jpg')
         else:
             params['image_filename'] = os.path.join(self.path, 'preview.jpg') # todo: change to specially created jpeg
@@ -439,6 +440,10 @@ class Package(Flickr):
         except KeyError:
             logger.warning("no description found for image {0}".format(self.id))
             params['description'] = "[[ no description ]]"
+        try:
+            params['tags'] = meta['typology']
+        except KeyError:
+            pass
 
         photoid = self.flickr_upload(**params)
 
