@@ -42,24 +42,26 @@ def test_create_package():
     
     # make sure the open manifest dict is as expected
     filenames = sorted(p.manifest.get_all().keys())
-    assert_equals(len(filenames),6)
+    assert_equals(len(filenames),7)
     assert_in('history.txt', filenames[0])
     assert_in('master.tif', filenames[1])    
-    assert_in('original-exif.json', filenames[2])
-    assert_in('original.jpg', filenames[3])
-    assert_in('preview.jpg', filenames[4])
-    assert_in('thumb.jpg', filenames[5])
+    assert_in('maximum.jpg', filenames[2])
+    assert_in('original-exif.json', filenames[3])
+    assert_in('original.jpg', filenames[4])
+    assert_in('preview.jpg', filenames[5])
+    assert_in('thumb.jpg', filenames[6])
 
     # does manifest file contain expected content
     with open(manifest_path, 'r') as mf:
         manifest=mf.readlines()
-    assert_equals(len(manifest),6)
+    assert_equals(len(manifest),7)
     assert_in('history.txt', manifest[0])
     assert_in('master.tif', manifest[1])
-    assert_in('original-exif.json', manifest[2])
-    assert_in('original.jpg', manifest[3])
-    assert_in('preview.jpg', manifest[4])
-    assert_in('thumb.jpg', manifest[5])
+    assert_in('maximum.jpg', manifest[2])
+    assert_in('original-exif.json', manifest[3])
+    assert_in('original.jpg', manifest[4])
+    assert_in('preview.jpg', manifest[5])
+    assert_in('thumb.jpg', manifest[6])
 
     # are ICC color profiles handled as expected
     # i.e., assumed/forced to sRGBv2 in original and converted to sRGBv4 in master
@@ -125,13 +127,14 @@ def test_open_package():
     pp.open(os.path.join(temp, 'test_package'))
     # make sure the manifest file is as expected
     filenames = sorted(pp.manifest.get_all().keys())
-    assert_equals(len(filenames),6)
+    assert_equals(len(filenames),7)
     assert_in('history.txt', filenames[0])    
     assert_in('master.tif', filenames[1])    
-    assert_in('original-exif.json', filenames[2])
-    assert_in('original.jpg', filenames[3])
-    assert_in('preview.jpg', filenames[4])
-    assert_in('thumb.jpg', filenames[5])
+    assert_in('maximum.jpg', filenames[2])
+    assert_in('original-exif.json', filenames[3])
+    assert_in('original.jpg', filenames[4])
+    assert_in('preview.jpg', filenames[5])
+    assert_in('thumb.jpg', filenames[6])
     # did id get set?
     assert_equals(pp.id, 'test_package')
     shutil.rmtree(temp)
@@ -189,9 +192,9 @@ def test_make_derivatives():
     manifest = manifest_file.readlines()
     manifest_file.close()
     assert_equals(len(manifest),7)
-    assert_in('preview.jpg', manifest[4])
-    assert_in('thumb.jpg', manifest[5])
-    assert_in('maximum.jpg', manifest[6])
+    assert_in('maximum.jpg', manifest[2])
+    assert_in('preview.jpg', manifest[5])
+    assert_in('thumb.jpg', manifest[6])
     del manifest
 
     # try this with a file known to cause PIL/Pillow's JPEG converter to overflow its buffer
