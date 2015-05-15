@@ -101,6 +101,7 @@ class Package(Flickr):
             self.create(path, id, original_path)
         elif path is not None and id is None and original_path is None:
             self.open(path)
+        self.flickr_capable = False
         Flickr.__init__(self)
 
 
@@ -410,6 +411,39 @@ class Package(Flickr):
         outf = open(outfn, 'w')
         outf.write(self.doc.render())
         outf.close()        
+
+    @arglogger
+    def upload_to_flickr(self, thumbnail=False):
+        """
+        upload/update this image package to flickr
+        """
+        if not self.flickr_capable:
+            return False
+
+        self.flickr_authenticate()
+        
+        # todo: test metadata to see if we are cleared
+        meta = self.metadata.data
+        params = {}
+        if thumbnail:
+            params['image_filename'] = os.path.join(self.path, 'thumb.jpg')
+        else:
+            params['image_filename'] = os.path.join(self.path, 'preview.jpg') # todo: change to specially created jpeg
+        try:
+            params['title'] = meta['title']
+        except KeyError:
+            logger.warning("no title found for image {0}".format(self.id))
+            params['title'] = "[[ no title ]]"
+        try:
+            params['description'] = meta['description']
+        except KeyError:
+            logger.warning("no description found for image {0}".format(self.id))
+            params['description'] = "[[ no description ]]"
+
+        photoid = self.flickr_upload(**params)
+
+        return photoid
+        
 
 
     @arglogger

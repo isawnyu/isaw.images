@@ -91,9 +91,7 @@ class Flickr():
         if tags is not None:
             if len(tags) > 0:
                 params['tags'] = ' '.join([[tag, '"{0}"'.format(tag)][' ' in tag] for tag in tags])
-        logger.debug("tags: '{0}'".format(params['tags']))
         params['is_public'] = [0,1][public]
-        logger.debug("is_public: {0}".format(params['is_public']))
         if not public:
             params['is_family'] = [0,1][family]
             params['is_friends'] = [0,1][friends]

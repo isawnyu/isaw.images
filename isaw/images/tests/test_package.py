@@ -240,3 +240,21 @@ def test_flickr_capable():
     """
     p = package.Package()
     assert_true(p.flickr_capable)
+
+def test_flickr_upload():
+    """
+    make sure we can upload a full package to flickr
+    """
+    current = os.path.dirname(os.path.abspath(__file__))
+    temp = os.path.join(current, 'temp')
+    os.makedirs(temp)
+    srcpath = os.path.join(current, 'data', 'kalabsha', '201107061813531')
+    destpath = os.path.join(temp, '201107061813531')
+    shutil.copytree(srcpath, destpath)
+    assert_equals(os.path.isdir(destpath), True)
+    p = package.Package()
+    p.open(destpath)
+    p.make_derivatives()
+    p.upload_to_flickr(thumbnail=True)
+    shutil.rmtree(temp)
+    
