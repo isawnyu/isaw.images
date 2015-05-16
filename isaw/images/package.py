@@ -4,21 +4,22 @@
 ISAW Images: Image Package
 """
 
-from arglogger import arglogger
+from arglogger import arglogger # part of isaw.images
 from io import BytesIO
 import datetime
 import dominate
 from dominate.tags import *
 import exiftool
 from filehashing import hash_of_file, safe_copy
+from flickr import Flickr # part of isaw.images
 from functools import wraps
-from PIL.ImageCms import getOpenProfile, getProfileName, profileToProfile, ImageCmsProfile
 import json
 import logging
-import manifest
-import metadata
+import manifest # part of isaw.images
+import metadata # part of isaw.images
 import os
 from PIL import Image, TiffImagePlugin
+from PIL.ImageCms import getOpenProfile, getProfileName, profileToProfile, ImageCmsProfile
 from pilkit.utils import save_image
 import pytz
 import shutil
@@ -88,7 +89,7 @@ SIZEPREVIEW = 800, 600
 SIZETHUMB = 128, 128
 
 
-class Package:
+class Package(Flickr):
     """
     manage an ISAW image Package
     """
@@ -100,6 +101,8 @@ class Package:
             self.create(path, id, original_path)
         elif path is not None and id is None and original_path is None:
             self.open(path)
+        self.flickr_capable = False
+        Flickr.__init__(self)
 
 
     @arglogger
@@ -257,6 +260,19 @@ class Package:
         master_image = Image.open(master_path)
         master_profile = master_image.info.get('icc_profile')
 
+        # make and save "maximum" image, a jpeg same resolution as the master
+        maximum_image = master_image.copy()
+        maximum_path = os.path.join(self.path, 'maximum.jpg')
+        try:
+            save_image(maximum_image, maximum_path, 'JPEG', options={'optimize':True, 'progressive':False, 'quality':95, 'icc_profile':master_profile})
+        except IOError:
+            save_image(preview_image, preview_path, 'JPEG', options={'optimize':True, 'progressive':False, 'icc_profile':master_profile})
+        self.maximum = True
+        maximum_hash = hash_of_file(maximum_path)
+        self.__append_event__("Wrote derivative 'maximum' jpeg file on {0}".format(maximum_path))
+        self.manifest.set('maximum.jpg', maximum_hash)
+        del maximum_image # save RAM
+
         # make and save preview image
         # Note: the resampling algorithm that gives the highest quality result (bicubic)
         # is expensive in terms of compute time, and that expense is proportional to the
@@ -269,7 +285,7 @@ class Package:
         # sacrifices little or nothing in quality. Caveat lector. Of course, if we 
         # really wanted to do this fast, we'd write it in C.
         preview_image = master_image.copy()
-        del master_image # save the RAMs!
+        del master_image # save RAM
         size = preview_image.size
         logger.debug("master size: {0}, {1}".format(size[0], size[1]))
         if size[0] > 3* SIZEPREVIEW[0] or size[1] > 3* SIZEPREVIEW[1]:
@@ -278,7 +294,6 @@ class Package:
         preview_image.thumbnail(SIZEPREVIEW)
         logger.debug("resulting preview size: {0}, {1}".format(preview_image.size[0], preview_image.size[1]))
         preview_path = os.path.join(self.path, 'preview.jpg')
-        #preview_image.save(preview_path, optimize=True, progressive=True, quality=80, icc_profile=master_profile)
         try:
             save_image(preview_image, preview_path, 'JPEG', options={'optimize':True, 'progressive':True, 'quality':80, 'icc_profile':master_profile})
         except IOError:
@@ -296,7 +311,6 @@ class Package:
         del preview_image # save the RAMs!
         thumbnail_image.thumbnail(SIZETHUMB)
         thumbnail_path = os.path.join(self.path, 'thumb.jpg')
-        #thumbnail_image.save(thumbnail_path, optimize=True, progressive=True, quality=80, icc_profile=master_profile)
         try:
             save_image(thumbnail_image, thumbnail_path, 'JPEG', options={'optimize':True, 'progressive':True, 'quality':80, 'icc_profile':master_profile})
         except IOError:
@@ -307,7 +321,7 @@ class Package:
         self.__append_event__("wrote derivative 'thumbnail' jpeg file on {0}".format(thumbnail_path))
         self.manifest.set('thumb.jpg', thumbnail_hash)
 
-        del thumbnail_image # probably not necessary to save the RAMs here cuz gc will get it but anyway...
+        del thumbnail_image # probably not necessary to save the RAM here cuz gc will get it but anyway...
         return True
         
     @arglogger

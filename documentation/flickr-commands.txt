@@ -53,10 +53,14 @@ from isaw.images import package
 from isaw.images import flickr_image_upload
 path_current = os.getcwd()
 path_scratch = os.path.join(path_current, 'scratch')
+	path_tdata = os.path.join(path_current, 'isaw', 'images', 'tests', 'data')
 path_original = os.path.join(path_scratch, 'cash20141125.tif')
+	path_original = os.path.join(path_tdata, 'oracle.jpg')
 os.path.isfile(path_original)
 
 pkg = package.Package(path_scratch, 'cashpkg', path_original)
+	pkg = package.Package(path_scratch, 'oraclepkg', path_original)
+
 
 path_key = os.path.join(path_current, 'flickr.key')
 with open(path_key, 'r') as keyf:
@@ -70,5 +74,6 @@ with open(path_secret, 'r') as secretf:
 secret = secret.rstrip()
 flick = flickr_image_upload.Flickr_image_upload(key, secret)
 path_image = os.path.join(pkg.path, 'master.tif')
+	path_image = os.path.join(pkg.path, 'preview.jpg')
 id = flick.uploadImage(path_image)
 

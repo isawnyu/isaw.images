@@ -7,7 +7,7 @@ nose tests for code in isaw.images/isaw/images/package.py
 from io import BytesIO
 from isaw.images import package
 import logging
-from nose.tools import assert_equals, assert_not_equal, assert_in, assert_not_in, assert_is
+from nose.tools import *
 import os
 from PIL import Image
 from PIL.ImageCms import getOpenProfile, getProfileName
@@ -42,24 +42,26 @@ def test_create_package():
     
     # make sure the open manifest dict is as expected
     filenames = sorted(p.manifest.get_all().keys())
-    assert_equals(len(filenames),6)
+    assert_equals(len(filenames),7)
     assert_in('history.txt', filenames[0])
     assert_in('master.tif', filenames[1])    
-    assert_in('original-exif.json', filenames[2])
-    assert_in('original.jpg', filenames[3])
-    assert_in('preview.jpg', filenames[4])
-    assert_in('thumb.jpg', filenames[5])
+    assert_in('maximum.jpg', filenames[2])
+    assert_in('original-exif.json', filenames[3])
+    assert_in('original.jpg', filenames[4])
+    assert_in('preview.jpg', filenames[5])
+    assert_in('thumb.jpg', filenames[6])
 
     # does manifest file contain expected content
     with open(manifest_path, 'r') as mf:
         manifest=mf.readlines()
-    assert_equals(len(manifest),6)
+    assert_equals(len(manifest),7)
     assert_in('history.txt', manifest[0])
     assert_in('master.tif', manifest[1])
-    assert_in('original-exif.json', manifest[2])
-    assert_in('original.jpg', manifest[3])
-    assert_in('preview.jpg', manifest[4])
-    assert_in('thumb.jpg', manifest[5])
+    assert_in('maximum.jpg', manifest[2])
+    assert_in('original-exif.json', manifest[3])
+    assert_in('original.jpg', manifest[4])
+    assert_in('preview.jpg', manifest[5])
+    assert_in('thumb.jpg', manifest[6])
 
     # are ICC color profiles handled as expected
     # i.e., assumed/forced to sRGBv2 in original and converted to sRGBv4 in master
@@ -125,13 +127,14 @@ def test_open_package():
     pp.open(os.path.join(temp, 'test_package'))
     # make sure the manifest file is as expected
     filenames = sorted(pp.manifest.get_all().keys())
-    assert_equals(len(filenames),6)
+    assert_equals(len(filenames),7)
     assert_in('history.txt', filenames[0])    
     assert_in('master.tif', filenames[1])    
-    assert_in('original-exif.json', filenames[2])
-    assert_in('original.jpg', filenames[3])
-    assert_in('preview.jpg', filenames[4])
-    assert_in('thumb.jpg', filenames[5])
+    assert_in('maximum.jpg', filenames[2])
+    assert_in('original-exif.json', filenames[3])
+    assert_in('original.jpg', filenames[4])
+    assert_in('preview.jpg', filenames[5])
+    assert_in('thumb.jpg', filenames[6])
     # did id get set?
     assert_equals(pp.id, 'test_package')
     shutil.rmtree(temp)
@@ -188,9 +191,10 @@ def test_make_derivatives():
         raise IOError("could not open package manifest file at {0}".format(manifest_path))
     manifest = manifest_file.readlines()
     manifest_file.close()
-    assert_equals(len(manifest),6)
-    assert_in('preview.jpg', manifest[4])
-    assert_in('thumb.jpg', manifest[5])
+    assert_equals(len(manifest),7)
+    assert_in('maximum.jpg', manifest[2])
+    assert_in('preview.jpg', manifest[5])
+    assert_in('thumb.jpg', manifest[6])
     del manifest
 
     # try this with a file known to cause PIL/Pillow's JPEG converter to overflow its buffer
@@ -233,3 +237,5 @@ def test_make_overview():
     guts = RDQUOTES.sub('', guts)
     assert_equals(guts, "<!DOCTYPEhtml><html><head><title>Overview'201107061813531'</title><style>body{background-color:#F9F9F9;padding:10px;font-family:Arial,sans-serif;}.image{float:right;margin-left:10px;}img{border:1pxsolid#CCCCCC;box-shadow:1px1px1pxrgba(255,255,255,0.25)inset,0px1px2pxrgba(0,0,0,0.5);}.metadatap,.metadataul{margin-bottom:0.25em;margin-top:0px;}.metadatap{padding-left:2em;text-indent:-2em;}</style></head><body><h1>Overviewfor'201107061813531'</h1><divclass=image><imgalt=previewofimagewithid='201107061813531'src=preview.jpg></div><divclass=metadata><p>id:201107061813531</p><p>title:TheTempleatKalabsha(I)</p><p>status:ready</p><p>isaw-publish-cleared:yes</p><p>license:cc-by</p><p>license-release-verified:yes</p><p>copyright:[[nocopyright]]</p><p>copyright-holder:IrisFernandez</p><p>copyright-date:2009-02-27</p><p>photographer:IrisFernandez</p><p>date-photographed:2009-02-27</p><p>description:ThepylonandsacredwalkwayoftheRoman-eratempleatKalabsha,nowlocatedatNewKalabshaafterbeingmovedfromancientTalmis.</p><p>photographedplace:<ahref=http://pleiades.stoa.org/places/795868>Kalabsha,ancientTalmis</a></p><p>typology:<ul><li>ancient</li><li>architecture</li><li>civilization</li><li>Egypt</li><li>Egyptology</li><li>history</li><li>Kalabsha</li><li>mandulis</li><li>masonry</li><li>Nile</li><li>pylon</li><li>Roman</li><li>stone</li><li>structure</li><li>Talmis</li><li>temple</li></ul></p><p>changehistory:<ul><li>2011-07-06:scriptcreatedthismetadatafileautomatically,using(whereavailable)informationextractedfromtheoriginalimageheaders</li><li>2011-07-06:NateNagyenteredinisawinformation,geographyandtypology,anduploadedtoFlickr.</li></ul></p></div></body></html>")
     shutil.rmtree(temp)
+
+
